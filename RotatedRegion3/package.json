@@ -1,0 +1,29 @@
+{
+  "name": "@rbxts/rotatedregion3",
+  "version": "1.0.0",
+  "description": "A port of EgoMoose's Rotated Region 3 module.",
+  "main": "init.lua",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/RotatedRegion3"
+  },
+  "keywords": [
+    "RotatedRegion3",
+    "roblox",
+    "roblox-typescript",
+    "roblox-ts"
+  ],
+  "author": "OverHash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/RotatedRegion3/README.md",
+  "publishConfig": {
+    "access": "public"
+  }
+}
