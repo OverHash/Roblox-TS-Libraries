@@ -96,7 +96,7 @@ declare class RotatedRegion3 {
 	 * @param maxParts a maximum number of parts in array. the default is 20
 	 * @returns array of parts in the RotatedRegion3 object
 	 */
-	FindPartsInRegion3(ignore: Instance, maxParts: number): Array<Part>
+	FindPartsInRegion3(ignore?: Instance, maxParts?: number): Array<Part>
 
 	/**
 	 * Finds any parts inside the Region3, up to a limit, with a ignore list
@@ -104,7 +104,7 @@ declare class RotatedRegion3 {
 	 * @param maxParts a maximum number of parts in the return array. the default is 20
 	 * @returns array of parts in the RotatedRegion3 object
 	 */
-	FindPartsInRegion3WithIgnoreList(ignore: Array<Instance>, maxParts: number): Array<Part>
+	FindPartsInRegion3WithIgnoreList(ignore: Array<Instance>, maxParts?: number): Array<Part>
 
 	/**
 	 * Finds any parts inside the Region3, up to a limit, with a ignore list
@@ -112,12 +112,12 @@ declare class RotatedRegion3 {
 	 * @param maxParts a maximum number of parts in the return array. the default is 20
 	 * @returns array of parts in the RotatedRegion3 object
 	 */
-	FindPartsInRegion3WithWhiteList(whiteList: Array<Instance>, maxParts: number): Array<Part>
+	FindPartsInRegion3WithWhiteList(whiteList: Array<Instance>, maxParts?: number): Array<Part>
 
 	/**
 	 * Same as the `.FindPartsInRegion3WithIgnoreList` method, but will check if the ignore argument is an array or single instance
 	 * @param ignore An instance or array to ignore in the search, descendants included
 	 * @param maxParts a maximum number of parts in the return array. the default is 20
 	 */
-	Cast(ignore: Instance | Array<Instance>, maxParts: number): Array<Part>
+	Cast(ignore: Instance | Array<Instance>, maxParts?: number): Array<Part>
 }
