@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/rotatedregion3",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A port of EgoMoose's Rotated Region 3 module.",
   "main": "init.lua",
   "types": "index.d.ts",

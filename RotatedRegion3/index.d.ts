@@ -121,3 +121,5 @@ declare class RotatedRegion3 {
 	 */
 	Cast(ignore: Instance | Array<Instance>, maxParts?: number): Array<Part>
 }
+
+export = RotatedRegion3;
