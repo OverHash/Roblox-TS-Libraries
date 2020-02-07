@@ -1,0 +1,30 @@
+{
+	"name": "@rbxts/abbreviate",
+	"version": "1.0.0",
+	"description": "A lightweight number abbreviator",
+	"main": "init.lua",
+	"types": "index.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/abbreviate"
+	},
+	"keywords": [
+		"abbreviate",
+		"roblox",
+		"roblox-ts",
+		"roblox-typescript",
+		"number"
+	],
+	"author": "OverHash",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+	},
+	"homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/README.md",
+	"publishConfig": {
+		"access": "public"
+	}
+}
