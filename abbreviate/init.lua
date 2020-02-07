@@ -64,8 +64,14 @@ return function()
 		end
 		local realSetting = '_' .. settingName
 
-		if module[realSetting] and not type(module[realSetting]) == 'function' then
+		if module[realSetting] and type(module[realSetting]) ~= 'function' then
 			module[realSetting] = settingValue
+		else
+			if module[realSetting] then
+				error('Attempt to index setting ' ..settingName..' which is not an editable field.');
+			else
+				error('Attempt to index setting ' ..settingName..' which is not a valid setting!');
+			end
 		end
 	end
 
