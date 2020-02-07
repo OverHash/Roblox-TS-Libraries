@@ -81,7 +81,7 @@ return function()
 		for index = #module._suffixTable, 1, -1 do
 			local shortenedNumber = 10 ^ (index * 3)
 
-			if number > shortenedNumber then
+			if number >= shortenedNumber then
 				local suffix = module._suffixTable[index]
 				return string.format('%.'..module._decimalPlaces..'f'..suffix, number / shortenedNumber)
 			end
