@@ -19,6 +19,14 @@ declare namespace tableutil {
 	export function Sync<T extends Object>(tbl: Object, templateTbl: T): T;
 
 	/**
+	 * Prints the table to the output. This is useful for debugging tables.
+	 * @param tbl The table to print
+	 * @param label The name of the table
+	 * @param deepPrint If print should be called on deep objects
+	 */
+	export function Print(tbl: Object, label: string, deepPrint?: boolean): void;
+
+	/**
 	 * Shuffles the array. Internally, this is using the Fisher-Yates algorithm to shuffle around the items.
 	 * @param tbl The array to shuffle
 	 */
