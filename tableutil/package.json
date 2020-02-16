@@ -1,0 +1,29 @@
+{
+  "name": "@rbxts/tableutil",
+  "version": "1.1.0",
+  "description": "A port of AeroGameFramework's TableUtil",
+  "main": "init.lua",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/tableutil"
+  },
+  "keywords": [
+	"tableutil",
+	"AeroGameFramework",
+	"roblox-ts",
+	"roblox"
+  ],
+  "author": "OverHash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/tableutil/README.md",
+  "publishConfig": {
+    "access": "public"
+  }
+}
