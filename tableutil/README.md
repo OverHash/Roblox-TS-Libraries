@@ -3,6 +3,7 @@
 [![NPM](https://nodei.co/npm/@rbxts/tableutil.png)](https://npmjs.org/package/@rbxts/tableutil)
 
 A simple table utility for [roblox-ts](https://github.com/roblox-ts/roblox-ts)
+
 Updated since [this commit](https://github.com/Sleitnick/AeroGameFramework/blob/master/src/ReplicatedStorage/Aero/Shared/TableUtil.lua)
 
 ## Changes
