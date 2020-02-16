@@ -8,7 +8,7 @@ Updated since [this commit](https://github.com/Sleitnick/AeroGameFramework/blob/
 
 ## Changes
 - All methods do not mutate objects
-	- This means that methods such as `tableutil.Print` will not modify the original table, but rather return a new table.
+	- This means that methods such as `tableutil.Sync` will not modify the original table, but rather return a new table.
 - FastRemove, FastRemoveFirstValue, Map, Filter, Reduce, IndexOf, Reverse have been removed, as you should be using Array methods.
 - Assign has been removed, as you should be using Object methods.
 - EncodeJSON/DecodeJSON has been removed, it's better practice to use the HttpService methods.
