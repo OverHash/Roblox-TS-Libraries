@@ -24,6 +24,13 @@ print(abbreviator.numberToString(1000000)) // 1.00m
 print(abbreviator.numberToString(1234567)) // 1.23m
 ```
 
+## Settings
+The possible settings you can set are the following:
+| Setting Name | Setting Value Type | Setting Description | Setting Default | Setting Example
+|---|---|---|---|---|
+| suffixTable | Array<string> | Sets the suffix table to be used when using `numberToString` | [here](https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/init.lua#L1-L52) 	| <pre lang="ts">["k", "m", "b"] |
+| decimalPlaces | number | Sets the amount of decimal places a number may have when using `numberToString` | 2 | 4 |
+
 ## Why make me call the function?
 You may want multiple abbreviators throughout your game with different settings, i.e. one module may want only 2 d.p. while another may want 0 d.p
 To solve this, abbreviate requires you to construct a new "app"
