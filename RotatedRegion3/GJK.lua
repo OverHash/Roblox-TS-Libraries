@@ -1,21 +1,16 @@
+
 local MAX_TRIES = 20
 local ZERO3 = Vector3.new(0, 0, 0)
-
 -- Class
-
 local GJK = {}
 GJK.__index = GJK
-
 -- Private Functions
-
 local function tripleProduct(a, b, c)
 	return b * c:Dot(a) - a * c:Dot(b)
 end
-
 local function containsOrigin(self, simplex, direction)
 	local a = simplex[#simplex]
 	local ao = -a
-
 	if (#simplex == 4) then
 		local b, c, d = simplex[3], simplex[2], simplex[1]
 		local ab, ac, ad = b - a, c - a, d - a
@@ -68,9 +63,7 @@ local function containsOrigin(self, simplex, direction)
 	
 	return false, direction
 end
-
 -- Public Constructors
-
 function GJK.new(SetA, SetB, CentroidA, CentroidB, SupportA, SupportB)
 	local self = setmetatable({}, GJK)
 	
@@ -80,12 +73,9 @@ function GJK.new(SetA, SetB, CentroidA, CentroidB, SupportA, SupportB)
 	self.CentroidB = CentroidB
 	self.SupportA = SupportA
 	self.SupportB = SupportB
-
 	return self
 end
-
 -- Public Methods
-
 function GJK:IsColliding()
 	local direction = (self.CentroidA - self.CentroidB).Unit
 	local simplex = {self.SupportA(self.SetA, direction) - self.SupportB(self.SetB, -direction)}
@@ -110,7 +100,5 @@ function GJK:IsColliding()
 	
 	return false
 end
-
 --
-
 return GJK

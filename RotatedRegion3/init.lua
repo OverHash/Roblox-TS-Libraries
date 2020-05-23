@@ -1,13 +1,10 @@
 -- TAKEN FROM https://www.roblox.com/library/3686163417/Rotated-Region3-GJK
--- PACKAGE UPDATED SINCE AUG 19 2019 UPDATE
+-- PACKAGE UPDATED SINCE MAY 02, 2020 12:15:45 PM
 
 --[[
-
 This is a Rotated Region3 Class that behaves much the same as the standard Region3 class expect that it allows
 for both rotated regions and also a varying array of shapes.	
-
 API:
-
 Constructors:
 	RotatedRegion3.new(CFrame cframe, Vector3 size)
 		> Creates a region from a cframe which acts as the center of the region and size which extends to 
@@ -29,7 +26,6 @@ Constructors:
 	RotatedRegion3.FromPart(part)
 		> Creates a region from a part in the game. It can be used on any base part, but the region 
 		> will treat unknown shapes (meshes, unions, etc) as block shapes.
-
 Methods:
 	RotatedRegion3:CastPoint(Vector3 point)
 		> returns true or false if the point is within the RotatedRegion3 object
@@ -49,7 +45,6 @@ Methods:
 		> parts that either are descendants of the [whiteList array] or actually are the [whiteList array] instances are all that will be checked
 	RotatedRegion3:Cast(Instance or Instance Array ignore, Integer maxParts)
 		> Same as the `:FindPartsInRegion3WithIgnoreList` method, but will check if the ignore argument is an array or single instance
-
 Properties:
 	RotatedRegion3.CFrame
 		> cframe that represents the center of the region
@@ -65,27 +60,30 @@ Properties:
 		> vector3 that represents the center of the set, again used for the GJK algorithm
 	RotatedRegion3.AlignedRegion3
 		> standard region3 that represents the world bounding box of the RotatedRegion3 object
-
 Note: I haven't actually done anything to enforce this, but you should treat all these properties as read only
-
 Enjoy!
 - EgoMoose
-
 --]]
-
 --
-
 local GJK = require(script:WaitForChild("GJK"))
 local Supports = require(script:WaitForChild("Supports"))
 local Vertices = require(script:WaitForChild("Vertices"))
-
 -- Class
-
 local RotatedRegion3 = {}
 RotatedRegion3.__index = RotatedRegion3
-
 -- Private functions
-
+local function getCorners(cf, s2)
+	return {
+		cf:PointToWorldSpace(Vector3.new(-s2.x, s2.y, s2.z));
+		cf:PointToWorldSpace(Vector3.new(-s2.x, -s2.y, s2.z));
+		cf:PointToWorldSpace(Vector3.new(-s2.x, -s2.y, -s2.z));
+		cf:PointToWorldSpace(Vector3.new(s2.x, -s2.y, -s2.z));
+		cf:PointToWorldSpace(Vector3.new(s2.x, s2.y, -s2.z));
+		cf:PointToWorldSpace(Vector3.new(s2.x, s2.y, s2.z));
+		cf:PointToWorldSpace(Vector3.new(s2.x, -s2.y, s2.z));
+		cf:PointToWorldSpace(Vector3.new(-s2.x, s2.y, -s2.z));
+	}
+end
 local function worldBoundingBox(set)
 	local x, y, z = {}, {}, {}
 	for i = 1, #set do x[i], y[i], z[i] = set[i].x, set[i].y, set[i].z end
@@ -93,32 +91,24 @@ local function worldBoundingBox(set)
 	local max = Vector3.new(math.max(unpack(x)), math.max(unpack(y)), math.max(unpack(z)))
 	return min, max
 end
-
 -- Public Constructors
-
 function RotatedRegion3.new(cframe, size)
 	local self = setmetatable({}, RotatedRegion3)
-	local set = Vertices.Block(cframe, size/2)
 	
 	self.CFrame = cframe
 	self.Size = size
 	self.Shape = "Block"
 	
-	self.Set = set
+	self.Set = Vertices.Block(cframe, size/2)
 	self.Support = Supports.PointCloud
 	self.Centroid = cframe.p
 	
-	self.AlignedRegion3 = Region3.new(worldBoundingBox(set))
-
+	self.AlignedRegion3 = Region3.new(worldBoundingBox(self.Set))
 	return self
 end
-
 RotatedRegion3.Block = RotatedRegion3.new
-
 function RotatedRegion3.Wedge(cframe, size)
 	local self = setmetatable({}, RotatedRegion3)
-	local set = Vertices.Block(cframe, size/2)
-	
 	self.CFrame = cframe
 	self.Size = size
 	self.Shape = "Wedge"
@@ -127,15 +117,11 @@ function RotatedRegion3.Wedge(cframe, size)
 	self.Support = Supports.PointCloud
 	self.Centroid = Vertices.GetCentroid(self.Set)
 	
-	self.AlignedRegion3 = Region3.new(worldBoundingBox(set))
-
+	self.AlignedRegion3 = Region3.new(worldBoundingBox(self.Set))
 	return self
 end
-
 function RotatedRegion3.CornerWedge(cframe, size)
 	local self = setmetatable({}, RotatedRegion3)
-	local set = Vertices.Block(cframe, size/2)
-	
 	self.CFrame = cframe
 	self.Size = size
 	self.Shape = "CornerWedge"
@@ -144,15 +130,11 @@ function RotatedRegion3.CornerWedge(cframe, size)
 	self.Support = Supports.PointCloud
 	self.Centroid = Vertices.GetCentroid(self.Set)
 	
-	self.AlignedRegion3 = Region3.new(worldBoundingBox(set))
-
+	self.AlignedRegion3 = Region3.new(worldBoundingBox(self.Set))
 	return self
 end
-
 function RotatedRegion3.Cylinder(cframe, size)
 	local self = setmetatable({}, RotatedRegion3)
-	local set = Vertices.Block(cframe, size/2)
-	
 	self.CFrame = cframe
 	self.Size = size
 	self.Shape = "Cylinder"
@@ -161,15 +143,11 @@ function RotatedRegion3.Cylinder(cframe, size)
 	self.Support = Supports.Cylinder
 	self.Centroid = cframe.p
 	
-	self.AlignedRegion3 = Region3.new(worldBoundingBox(set))
-
+	self.AlignedRegion3 = Region3.new(worldBoundingBox(getCorners(unpack(self.Set))))
 	return self
 end
-
 function RotatedRegion3.Ball(cframe, size)
 	local self = setmetatable({}, RotatedRegion3)
-	local set = Vertices.Block(cframe, size/2)
-	
 	self.CFrame = cframe
 	self.Size = size
 	self.Shape = "Ball"
@@ -178,28 +156,22 @@ function RotatedRegion3.Ball(cframe, size)
 	self.Support = Supports.Ellipsoid
 	self.Centroid = cframe.p
 	
-	self.AlignedRegion3 = Region3.new(worldBoundingBox(set))
-
+	self.AlignedRegion3 = Region3.new(worldBoundingBox(getCorners(unpack(self.Set))))
 	return self
 end
-
 function RotatedRegion3.FromPart(part)
 	return RotatedRegion3[Vertices.Classify(part)](part.CFrame, part.Size)
 end
-
 -- Public Constructors
-
 function RotatedRegion3:CastPoint(point)
 	local gjk = GJK.new(self.Set, {point}, self.Centroid, point, self.Support, Supports.PointCloud)
 	return gjk:IsColliding()
 end
-
 function RotatedRegion3:CastPart(part)
 	local r3 = RotatedRegion3.FromPart(part)
 	local gjk = GJK.new(self.Set, r3.Set, self.Centroid, r3.Centroid, self.Support, r3.Support)
 	return gjk:IsColliding()
 end
-
 function RotatedRegion3:FindPartsInRegion3(ignore, maxParts)
 	local found = {}
 	local parts = game.Workspace:FindPartsInRegion3(self.AlignedRegion3, ignore, maxParts)
@@ -210,7 +182,6 @@ function RotatedRegion3:FindPartsInRegion3(ignore, maxParts)
 	end
 	return found
 end
-
 function RotatedRegion3:FindPartsInRegion3WithIgnoreList(ignore, maxParts)
 	ignore = ignore or {}
 	local found = {}
@@ -222,7 +193,6 @@ function RotatedRegion3:FindPartsInRegion3WithIgnoreList(ignore, maxParts)
 	end
 	return found
 end
-
 function RotatedRegion3:FindPartsInRegion3WithWhiteList(whiteList, maxParts)
 	whiteList = whiteList or {}
 	local found = {}
@@ -234,12 +204,9 @@ function RotatedRegion3:FindPartsInRegion3WithWhiteList(whiteList, maxParts)
 	end
 	return found
 end
-
 function RotatedRegion3:Cast(ignore, maxParts)
 	ignore = type(ignore) == "table" and ignore or {ignore}
 	return self:FindPartsInRegion3WithIgnoreList(ignore, maxParts)
 end
-
 --
-
 return RotatedRegion3
