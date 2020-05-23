@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/tableutil",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A port of AeroGameFramework's TableUtil",
   "main": "init.lua",
   "types": "index.d.ts",

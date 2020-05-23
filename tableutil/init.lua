@@ -239,24 +239,23 @@ local function Sync(tbl, templateTbl)
 	assert(type(tbl) == "table", "First argument must be a table")
 	assert(type(templateTbl) == "table", "Second argument must be a table")
 	
-	local newTbl = CopyTable(tbl)
 	-- If 'tbl' has something 'templateTbl' doesn't, then remove it from 'tbl'
 	-- If 'tbl' has something of a different type than 'templateTbl', copy from 'templateTbl'
 	-- If 'templateTbl' has something 'tbl' doesn't, then add it to 'tbl'
-	for k,v in pairs(newTbl) do
+	for k,v in pairs(tbl) do
 		
 		local vTemplate = templateTbl[k]
 		
 		-- Remove keys not within template:
 		if (vTemplate == nil) then
-			newTbl[k] = nil
+			tbl[k] = nil
 			
 		-- Synchronize data types:
 		elseif (type(v) ~= type(vTemplate)) then
 			if (type(vTemplate) == "table") then
-				newTbl[k] = CopyTable(vTemplate)
+				tbl[k] = CopyTable(vTemplate)
 			else
-				newTbl[k] = vTemplate
+				tbl[k] = vTemplate
 			end
 		
 		-- Synchronize sub-tables:
@@ -269,19 +268,18 @@ local function Sync(tbl, templateTbl)
 	-- Add any missing keys:
 	for k,vTemplate in pairs(templateTbl) do
 		
-		local v = newTbl[k]
+		local v = tbl[k]
 		
 		if (v == nil) then
 			if (type(vTemplate) == "table") then
-				newTbl[k] = CopyTable(vTemplate)
+				tbl[k] = CopyTable(vTemplate)
 			else
-				newTbl[k] = vTemplate
+				tbl[k] = vTemplate
 			end
 		end
 		
 	end
 	
-	return newTbl
 end
 
 
@@ -387,15 +385,15 @@ local function Print(tbl, label, deepPrint)
 		end
 		table.sort(nonTbls, AlphaKeySort)
 		table.sort(tbls, AlphaKeySort)
-		for _,v in pairs(nonTbls) do
+		for _,v in ipairs(nonTbls) do
 			Insert(tostring(v.k) .. ":" .. (" "):rep(keySpaces - #tostring(v.k)) .. v.v, lvl)
 		end
 		if (deepPrint) then
-			for _,v in pairs(tbls) do
+			for _,v in ipairs(tbls) do
 				PrintTable(v.v, lvl + 1, tostring(v.k) .. (" "):rep(keySpaces - #tostring(v.k)) .. " [Table]")
 			end
 		else
-			for _,v in pairs(tbls) do
+			for _,v in ipairs(tbls) do
 				Insert(tostring(v.k) .. ":" .. (" "):rep(keySpaces - #tostring(v.k)) .. "[Table]", lvl)
 			end
 		end
@@ -420,15 +418,11 @@ end
 
 local function Shuffle(tbl)
 	assert(type(tbl) == "table", "First argument must be a table")
-
-	local shuffledTbl = CopyTable(tbl)
 	local rng = Random.new()
-	for i = #shuffledTbl, 2, -1 do
+	for i = #tbl, 2, -1 do
 		local j = rng:NextInteger(1, i)
-		shuffledTbl[i], shuffledTbl[j] = shuffledTbl[j], shuffledTbl[i]
+		tbl[i], tbl[j] = tbl[j], tbl[i]
 	end
-
-	return shuffledTbl
 end
 
 
