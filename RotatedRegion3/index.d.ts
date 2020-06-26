@@ -1,4 +1,4 @@
-export class RotatedRegion3 {
+declare class RotatedRegion3 {
 	/**
 	 * cframe that represents the center of the region
 	 */
@@ -121,3 +121,5 @@ export class RotatedRegion3 {
 	 */
 	Cast(ignore: Instance | Array<Instance>, maxParts?: number): Array<Part>
 }
+
+export = RotatedRegion3
