@@ -16,3 +16,9 @@ parts.forEach(part => {
 	print(`${part.Name} was inside the region!`)
 });
 ```
+
+## Changelog
+### Unreleased
+
+### 1.0.7
+- Fixed imports not working correct, see [https://github.com/OverHash/Roblox-TS-Libraries/issues/1](1)
