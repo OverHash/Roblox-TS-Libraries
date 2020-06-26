@@ -21,4 +21,4 @@ parts.forEach(part => {
 ### Unreleased
 
 ### 1.0.7
-- Fixed imports not working correct, see [https://github.com/OverHash/Roblox-TS-Libraries/issues/1](1)
+- Fixed imports not working correct, see [#1](https://github.com/OverHash/Roblox-TS-Libraries/issues/1)
