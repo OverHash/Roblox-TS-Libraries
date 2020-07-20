@@ -1,13 +1,13 @@
-# @rbxts/rotatedregion3
+# @rbxts/module3d
 
-[![NPM](https://nodei.co/npm/@rbxts/rotatedregion3.png)](https://npmjs.org/package/@rbxts/rotatedregion3)
+[![NPM](https://nodei.co/npm/@rbxts/module3d.png)](https://npmjs.org/package/@rbxts/module3d)
 
 ## Installation:
-```npm i @rbxts/rotatedregion3```
+```npm i @rbxts/module3d```
 
 ## Example Usage
 ```typescript
-import * as RotatedRegion3 from "@rbxts/rotatedregion3";
+import * as module3d from "@rbxts/rotatedregion3";
 
 const myRegion = new RotatedRegion3(new CFrame(10, 0, 5), new Vector3(5, 10, 5));
 const parts = myRegion.FindPartsInRegion3();

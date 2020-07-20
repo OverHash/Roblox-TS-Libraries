@@ -1,0 +1,30 @@
+{
+  "name": "@rbxts/module3d",
+  "version": "1.0.0",
+  "description": "A port of TheNexusAvenger's Module3D module.",
+  "main": "init.lua",
+  "types": "index.d.ts",
+  "files": ["index.d.ts", "init.lua"],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/module3d"
+  },
+  "keywords": [
+    "module3d",
+    "roblox",
+    "roblox-typescript",
+    "roblox-ts"
+  ],
+  "author": "OverHash",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/module3d/README.md",
+  "publishConfig": {
+    "access": "public"
+  }
+}
