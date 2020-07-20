@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/module3d",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A port of TheNexusAvenger's Module3D module.",
   "main": "init.lua",
   "types": "index.d.ts",
