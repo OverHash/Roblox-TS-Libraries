@@ -6,19 +6,7 @@
 ```npm i @rbxts/profileservice```
 
 ## Example Usage
-```typescript
-import ProfileService from "@rbxts/profileservice";
-
-const ProfileTemplate = {
-	Cash: 0,
-	Items: [],
-	LogInTimes: 0,
-} as const;
-
-const GameProfileStore = ProfileStore.GetProfileStore("PlayerData", ProfileTemplate);
-
-const profiles = new Map<Player, profile>();
-```
+See [https://github.com/MadStudioRoblox/ProfileService](MadStudioRoblox/ProfileService)
 
 ## Changelog
 ### Unreleased
