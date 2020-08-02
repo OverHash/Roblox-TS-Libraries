@@ -11,5 +11,8 @@ See [https://github.com/MadStudioRoblox/ProfileService](MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.0.2
+- Reworked export ordering so that you can import types such as `Profile` into your code.
+
 ### 1.0.0
 - Published profileservice V1.0.0 (from GitHub commit [ac9be3f](https://github.com/MadStudioRoblox/ProfileService/commit/ac9be3f9ce20c0657aecf6cb498e245b66530dc0))
