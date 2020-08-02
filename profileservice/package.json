@@ -1,0 +1,33 @@
+{
+	"name": "@rbxts/profileservice",
+	"version": "1.0.0",
+	"description": "Roblox-ts typings for loleris's ProfileService",
+	"main": "src/init.lua",
+	"types": "index.d.ts",
+	"files": ["src/", "index.d.ts"],
+	"scripts": {
+	  "test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+	  "type": "git",
+	  "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/profileservice"
+	},
+	"keywords": [
+	  "profileservice",
+	  "roblox",
+	  "roblox-typescript",
+	  "roblox-ts",
+	  "loleris",
+	  "datastore"
+	],
+	"author": "OverHash",
+	"license": "Apache-2.0",
+	"bugs": {
+	  "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+	},
+	"homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/profileservice/README.md",
+	"publishConfig": {
+	  "access": "public"
+	}
+  }
+  
