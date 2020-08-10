@@ -11,6 +11,9 @@ See [https://github.com/MadStudioRoblox/ProfileService](MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.0.3
+- Fixed globals.d.ts not being included in the npm package
+
 ### 1.0.2
 - Reworked export ordering so that you can import types such as `Profile` into your code.
 
