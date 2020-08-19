@@ -6,7 +6,7 @@
 ```npm i @rbxts/profileservice```
 
 ## Example Usage
-See [https://github.com/MadStudioRoblox/ProfileService](MadStudioRoblox/ProfileService)
+See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileService)
 
 ## Changelog
 ### Unreleased
