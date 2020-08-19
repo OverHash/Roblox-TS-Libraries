@@ -6,7 +6,7 @@
 ```npm i @rbxts/flipper```
 
 ## Example Usage
-See [https://github.com/Reselim/Flipper](Reselim/Flipper)
+See [Reselim/Flipper](https://github.com/Reselim/Flipper)
 
 ## Info
 The following globals are exposed from `@rbxts/flipper`
@@ -32,6 +32,9 @@ flipper.isMotor
 
 ## Changelog
 ### Unreleased
+
+### 1.0.1
+- Fixed README.md not linking to Reselim/Flipper correctly.
 
 ### 1.0.0
 - Published flipper V1.0.0 (from GitHub commit [bf385fd](https://github.com/Reselim/Flipper/commit/bf385fdbb92612122689318960138342b795c13d))
