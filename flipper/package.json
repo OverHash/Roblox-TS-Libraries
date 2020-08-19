@@ -1,10 +1,10 @@
 {
 	"name": "@rbxts/flipper",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "roblox-ts typings for flipper",
 	"main": "src/init.lua",
 	"types": "index.d.ts",
-	"files": ["src/", "index.d.ts"],
+	"files": ["src/", "index.d.ts", "BaseMotor.d.ts", "BaseSpring.d.ts", "connection.d.ts"],
 	"scripts": {
 	  "test": "echo \"Error: no test specified\" && exit 1"
 	},

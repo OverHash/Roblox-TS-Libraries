@@ -33,6 +33,9 @@ flipper.isMotor
 ## Changelog
 ### Unreleased
 
+### 1.0.2
+- Update `files` in `package.json` to include missing files.
+
 ### 1.0.1
 - Fixed README.md not linking to Reselim/Flipper correctly.
 
