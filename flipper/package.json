@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/flipper",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "roblox-ts typings for flipper",
 	"main": "src/init.lua",
 	"types": "index.d.ts",

@@ -58,4 +58,9 @@ export class BaseMotor<T> {
 	 * Stops a motor where it is
 	 */
 	public stop(): void;
+
+	/**
+	 * Alias for `stop`
+	 */
+	public destroy(): void;
 }

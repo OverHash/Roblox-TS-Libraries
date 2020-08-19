@@ -33,6 +33,9 @@ flipper.isMotor
 ## Changelog
 ### Unreleased
 
+### 1.0.3
+- Add BaseMotor.destroy
+
 ### 1.0.2
 - Update `files` in `package.json` to include missing files.
 
