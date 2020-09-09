@@ -81,7 +81,7 @@ return function()
 		end
 
 		if number < 1000 then
-			return tostring(number)
+			return string.format('%.'..module._decimalPlaces..'f', number)
 		end
 
 		for index = #module._suffixTable, 1, -1 do
