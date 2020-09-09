@@ -35,3 +35,7 @@ The possible settings you can set are the following:
 You may want multiple abbreviators throughout your game with different settings, i.e. one module may want only 2 d.p. while another may want 0 d.p
 To solve this, abbreviate requires you to construct a new "app"
 These settings are independent of other "apps"
+
+## Changelog
+### 2.3.3
+- Fixed numbers under 1000 not being decimal placed correctly when numberToString is called
