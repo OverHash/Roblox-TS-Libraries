@@ -11,6 +11,12 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.0.5
+- Fixed IsActive not being a function (See [#4](https://github.com/OverHash/Roblox-TS-Libraries/pull/4))
+
+### 1.0.4
+- Updated README.md
+
 ### 1.0.3
 - Fixed globals.d.ts not being included in the npm package
 
