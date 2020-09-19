@@ -150,7 +150,7 @@ export interface ViewProfile<DataType extends Object> {
 	/**
 	 * Returns `true` while the profile is session-locked and saving of changes to Profile.Data is guaranteed.
 	 */
-	IsActive: boolean;
+	IsActive(): boolean;
 	/**
 	 * Equivalent of `Profile.MetaData.MetaTags.get(tagName)`.
 	 * @see `Profile.SetMetaTag` for more info.
