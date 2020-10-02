@@ -10,13 +10,13 @@ declare namespace tableutil {
 	 * @param tbl The table to copy. **This only copies at a shallow level**
 	 */
 	export function CopyShallow<T extends Object>(tbl: T): T;
-	
+
 	/**
 	 * Synchronizes a table to the template table. If the table does not have an item that exists within the template, it gets added. If the table has something that the template doesn't have, it gets removed.
 	 * @param tbl The object to synchronise
 	 * @param templateTbl The template object
 	 */
-	export function Sync<T extends Object>(tbl: Object, templateTbl: T): T;
+	export function Sync(tbl: Object, templateTbl: Object): void;
 
 	/**
 	 * Prints the table to the output. This is useful for debugging tables.
