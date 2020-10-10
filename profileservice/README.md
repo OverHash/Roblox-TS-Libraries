@@ -10,6 +10,7 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 
 ## Changelog
 ### Unreleased
+- Update to commit [f5ef22b](https://github.com/MadStudioRoblox/ProfileService/commit/f5ef22b2e2d31c039f59656f38df60df7ad08eb2)
 
 ### 1.0.5
 - Fixed IsActive not being a function (See [#4](https://github.com/OverHash/Roblox-TS-Libraries/pull/4))

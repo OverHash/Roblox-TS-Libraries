@@ -1,4 +1,4 @@
-import { ProfileStore } from '@rbxts/profileservice/globals';
+import { ProfileStore } from "@rbxts/profileservice/globals";
 
 declare namespace ProfileService {
 	/**
@@ -31,7 +31,10 @@ declare namespace ProfileService {
 	 * @param profileStoreName The DataStore name
 	 * @param profileTemplate Profile.Data will default to given table (deep-copy) when no data was previously saved.
 	 */
-	const GetProfileStore: <playerData extends Object>(profileStoreName: string, profileTemplate: playerData) => ProfileStore<playerData>;
+	const GetProfileStore: <playerData extends Object>(
+		profileStoreName: string,
+		profileTemplate: playerData,
+	) => ProfileStore<playerData>;
 }
 
 export = ProfileService;

@@ -1,4 +1,7 @@
-export type notReleasedHandlerFunc = (placeId: number, gameJobId: string) => "Repeat" | "Cancel" | "ForceLoad";
+export type notReleasedHandlerFunc = (
+	placeId: number,
+	gameJobId: string,
+) => "Repeat" | "Cancel" | "ForceLoad" | "Steal";
 export type GlobalUpdateHandler = (globalUpdates: GlobalUpdates) => void;
 export type GlobalUpdateData = {
 	[index: string]: unknown;
@@ -159,6 +162,30 @@ export interface ViewProfile<DataType extends Object> {
 	GetMetaTags(tagName: string): unknown;
 
 	/**
+	 * Fills in missing variables inside `Profile.Data` from `profile_template` table that was provided when calling `ProfileService.GetProfileStore()`. It's often necessary to use `Reconcile()` if you're applying changes to your `profile_template` over the course of your game's development after release.
+	 *
+	 * The following function is used in the reconciliation process:
+	 * ```lua
+	 * local function ReconcileTable(target, template)
+	 * 	for k, v in pairs(template) do
+	 *    	if type(k) == "string" then -- Only string keys will be reconciled
+	 *        	if target[k] == nil then
+	 *            	if type(v) == "table" then
+	 *                	target[k] = DeepCopyTable(v)
+	 *            	else
+	 *                	target[k] = v
+	 *            	end
+	 *        	elseif type(target[k]) == "table" and type(v) == "table" then
+	 *            	ReconcileTable(target[k], v)
+	 *        	end
+	 *    	end
+	 * 	end
+	 * end
+	 * ```
+	 */
+	Reconcile(): void;
+
+	/**
 	 * Listener functions subscribed to `Profile.ListenToRelease()` will be called when the profile is released remotely (Being "ForceLoad"'ed on a remote server) or locally (`Profile.Release()`). In common practice, the profile will rarely be released before the player leaves the game so it's recommended to simply [.Kick()](https://developer.roblox.com/en-us/api-reference/function/Player/Kick) the Player when this happens.
 	 *
 	 * You cannot modify `Profile.Data` once this has been triggered.
@@ -195,6 +222,25 @@ export interface ViewProfile<DataType extends Object> {
 
 export interface ProfileStore<T> {
 	/**
+	 * `ProfileStore.Mock` is a reflection of methods available in the `ProfileStore` object with the exception of profile operations being performed on profiles stored on a separate, detached "fake" DataStore that will be forgotten when the game session ends. You may load profiles of the same key from `ProfileStore` and `ProfileStore.Mock` in parallel - these will be two different profiles because the regular and mock versions of the same `ProfileStore` are completely isolated from each other.
+	 *
+	 * `ProfileStore.Mock` is useful for customizing your testing environment in cases when you want to [enable Roblox API services](https://developer.roblox.com/en-us/articles/Data-store#using-data-stores-in-studio) in studio, but don't want ProfileService to save to live keys:
+	 * @example
+	 * ```ts
+	 * const RunService = game:GetService("RunService")
+	 * let GameProfileStore = ProfileService.GetProfileStore("PlayerData", ProfileTemplate)
+	 * if (RunService:IsStudio() === true) {
+	 *		GameProfileStore = GameProfileStore.Mock
+	 * }
+	 * ```
+	 * A few more things:
+
+	 * - Even when Roblox API services are disabled, ProfileStore and ProfileStore.Mock will store profiles in separate stores.
+	 * - It's better to think of ProfileStore and ProfileStore.Mock as two different ProfileStore objects unrelated to each other in any way.
+	 * - It's possible to create a project that utilizes both live and mock profiles on live servers!
+	 */
+	Mock: ProfileStore<T>;
+	/**
 	 * For basic usage, pass "ForceLoad" for the not_released_handler argument.
 	 *
 	 * Can return `void` when another remote Roblox server attempts to load the profile at the same time. This case should be extremely rare and it would be recommended to [Kick](https://developer.roblox.com/en-us/api-reference/function/Player/Kick) theh player if `LoadProfileAsync` does not return a `Profile` object.
@@ -217,7 +263,7 @@ export interface ProfileStore<T> {
 	 */
 	LoadProfileAsync(
 		profileKey: string,
-		notReleasedHandler: "ForceLoad" | notReleasedHandlerFunc,
+		notReleasedHandler: "ForceLoad" | "Steal" | notReleasedHandlerFunc,
 	): Profile<T> | void;
 
 	/**
@@ -241,4 +287,11 @@ export interface ProfileStore<T> {
 	 * @param profileKey DataStore key
 	 */
 	ViewProfileAsync(profileKey: string): Profile<false> | void;
+
+	/**
+	 * Use `WipeProfileAsync()` to erase user data when complying with right of erasure requests. In live Roblox servers `WipeProfileAsync()` must be used on profiles created through `ProfileStore.Mock` after `Profile:Release()` and it's known that the `Profile` will no longer be loaded again.
+	 * @param profileKey The key to wipe
+	 * @returns If the wipe was successful or not
+	 */
+	WipeProfileAsync(profileKey: string): boolean;
 }
