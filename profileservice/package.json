@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/profileservice",
-	"version": "1.0.5",
+	"version": "1.1.0",
 	"description": "Roblox-ts typings for loleris's ProfileService",
 	"main": "src/init.lua",
 	"types": "index.d.ts",

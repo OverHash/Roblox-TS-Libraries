@@ -10,6 +10,8 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 
 ## Changelog
 ### Unreleased
+
+### 1.1.0
 - Update to commit [f5ef22b](https://github.com/MadStudioRoblox/ProfileService/commit/f5ef22b2e2d31c039f59656f38df60df7ad08eb2)
 
 ### 1.0.5
