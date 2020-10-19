@@ -286,7 +286,7 @@ export interface ProfileStore<T> {
 	 * Writing and saving is not possible for profiles in view mode. `Profile.Data` and `Profile.MetaData` will be nil if the profile hasn't been created.
 	 * @param profileKey DataStore key
 	 */
-	ViewProfileAsync(profileKey: string): Profile<false> | void;
+	ViewProfileAsync(profileKey: string): Profile<T> | undefined;
 
 	/**
 	 * Use `WipeProfileAsync()` to erase user data when complying with right of erasure requests. In live Roblox servers `WipeProfileAsync()` must be used on profiles created through `ProfileStore.Mock` after `Profile:Release()` and it's known that the `Profile` will no longer be loaded again.

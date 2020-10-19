@@ -4,8 +4,8 @@ declare class abbreviator {
 	 * @param settingName The name of the setting to set
 	 * @param settingValue The value of the setting to set
 	 */
-	setSetting(settingName: 'suffixTable', settingValue: Array<string>): void;
-	setSetting(settingName: 'decimalPlaces', settingValue: number): void;
+	setSetting(settingName: "suffixTable", settingValue: Array<string>): void;
+	setSetting(settingName: "decimalPlaces", settingValue: number): void;
 
 	/**
 	 * Converts a number of full length into a string with a suffix as defined in the prefix table
