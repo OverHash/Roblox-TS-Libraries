@@ -17,7 +17,7 @@ declare class abbreviator {
 	 * Converts a string that has a suffix as defined in the suffix table to a full number
 	 * @param str The string to convert into a number
 	 */
-	stringToNumber(str: string): void;
+	stringToNumber(str: string): number;
 }
 
 declare function createAbbreviator(): abbreviator;

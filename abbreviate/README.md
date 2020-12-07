@@ -37,5 +37,8 @@ To solve this, abbreviate requires you to construct a new "app"
 These settings are independent of other "apps"
 
 ## Changelog
+
+### 2.3.4
+- Fixed `stringToNumber` returning `void` instead of `number`
 ### 2.3.3
 - Fixed numbers under 1000 not being decimal placed correctly when numberToString is called
