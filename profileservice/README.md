@@ -11,6 +11,9 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.1.2
+- Made initial DataStore call wrapped in a coroutine to prevent errors in applications such as AeroGameFramework
+
 ### 1.1.1
 - Fixed `ViewProfileAsync` returning incorrect datatype
 

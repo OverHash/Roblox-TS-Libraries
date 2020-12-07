@@ -1608,27 +1608,29 @@ end
 
 ----- Initialize -----
 
-if IsStudio == true then
-	local status, message = pcall(function()
-		-- This will error if current instance has no Studio API access:
-		DataStoreService:GetDataStore("____PS"):SetAsync("____PS", os.time())
-	end)
-	local no_internet_access = status == false and string.find(message, "ConnectFail", 1, true) ~= nil
-	if no_internet_access == true then
-		warn("[ProfileService]: No internet access - check your network connection")
+coroutine.wrap(function()
+	if IsStudio == true then
+		local status, message = pcall(function()
+			-- This will error if current instance has no Studio API access:
+			DataStoreService:GetDataStore("____PS"):SetAsync("____PS", os.time())
+		end)
+		local no_internet_access = status == false and string.find(message, "ConnectFail", 1, true) ~= nil
+		if no_internet_access == true then
+			warn("[ProfileService]: No internet access - check your network connection")
+		end
+		if status == false and
+			(string.find(message, "403", 1, true) ~= nil or -- Cannot write to DataStore from studio if API access is not enabled
+				string.find(message, "must publish", 1, true) ~= nil or -- Game must be published to access live keys
+				no_internet_access == true) then -- No internet access
+			
+			UseMockDataStore = true
+			ProfileService._use_mock_data_store = true
+			print("[ProfileService]: Roblox API services unavailable - data will not be saved")
+		else
+			print("[ProfileService]: Roblox API services available - data will be saved")
+		end
 	end
-	if status == false and
-		(string.find(message, "403", 1, true) ~= nil or -- Cannot write to DataStore from studio if API access is not enabled
-			string.find(message, "must publish", 1, true) ~= nil or -- Game must be published to access live keys
-			no_internet_access == true) then -- No internet access
-		
-		UseMockDataStore = true
-		ProfileService._use_mock_data_store = true
-		print("[ProfileService]: Roblox API services unavailable - data will not be saved")
-	else
-		print("[ProfileService]: Roblox API services available - data will be saved")
-	end
-end
+end)()
 
 ----- Connections -----
 
