@@ -175,7 +175,7 @@ function RotatedRegion3:CastRotatedRegion3(r3)
 end
 function RotatedRegion3:CastPart(part)
 	local r3 = RotatedRegion3.FromPart(part)
-	return RotatedRegion3:CastRegion3(r3);
+	return RotatedRegion3:CastRotatedRegion3(r3);
 end
 function RotatedRegion3:FindPartsInRegion3(ignore, maxParts)
 	local found = {}
