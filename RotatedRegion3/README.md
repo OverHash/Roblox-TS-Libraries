@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/@rbxts/module3d.png)](https://npmjs.org/package/@rbxts/module3d)
 
 ## Installation:
-```npm i @rbxts/module3d```
+```npm i @rbxts/rotatedregion3```
 
 ## Example Usage
 ```typescript
