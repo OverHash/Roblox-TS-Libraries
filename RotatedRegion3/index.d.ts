@@ -84,6 +84,13 @@ declare class RotatedRegion3 {
 	CastPoint(point: Vector3): boolean
 
 	/**
+	 * Checks if a RotatedRegion3 is within the RotatedRegion3 object
+	 * @param r3 the RotatedRegion3 to check is within the RotatedRegion3 object
+	 * @returns true or false if the RotatedRegion3 is within the RotatedRegion3 object
+	 */
+	CastRotatedRegion3(r3: RotatedRegion3): boolean
+
+	/**
 	 * Checks if a part is within the RotatedRegion3 object
 	 * @param part the part to check is within the RotatedRegion3 object
 	 * @returns true or false if the point is within the RotatedRegion3 object

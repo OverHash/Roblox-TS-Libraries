@@ -29,8 +29,10 @@ Constructors:
 Methods:
 	RotatedRegion3:CastPoint(Vector3 point)
 		> returns true or false if the point is within the RotatedRegion3 object
+	RotatedRegion3:CastRotatedRegion3(RotatedRegion3 r3)
+		> returns true or false if the RotatedRegion3 is within the RotatedRegion3 object
 	RotatedRegion3:CastPart(BasePart part)
-		> returns true or false if the part is withing the RotatedRegion3 object
+		> returns true or false if the part is within the RotatedRegion3 object
 	RotatedRegion3:FindPartsInRegion3(Instance ignore, Integer maxParts)
 		> returns array of parts in the RotatedRegion3 object
 		> will return a maximum number of parts in array [maxParts] the default is 20
@@ -167,10 +169,13 @@ function RotatedRegion3:CastPoint(point)
 	local gjk = GJK.new(self.Set, {point}, self.Centroid, point, self.Support, Supports.PointCloud)
 	return gjk:IsColliding()
 end
-function RotatedRegion3:CastPart(part)
-	local r3 = RotatedRegion3.FromPart(part)
+function RotatedRegion3:CastRotatedRegion3(r3)
 	local gjk = GJK.new(self.Set, r3.Set, self.Centroid, r3.Centroid, self.Support, r3.Support)
 	return gjk:IsColliding()
+end
+function RotatedRegion3:CastPart(part)
+	local r3 = RotatedRegion3.FromPart(part)
+	return RotatedRegion3:CastRegion3(r3);
 end
 function RotatedRegion3:FindPartsInRegion3(ignore, maxParts)
 	local found = {}
