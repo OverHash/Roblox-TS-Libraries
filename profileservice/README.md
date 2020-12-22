@@ -11,6 +11,9 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.2.0
+- Update to commit [df74918](https://github.com/MadStudioRoblox/ProfileService/commit/df7491868929d456aa6e0a871b55e5b092ff8317)
+
 ### 1.1.2
 - Made initial DataStore call wrapped in a coroutine to prevent errors in applications such as AeroGameFramework
 

@@ -117,10 +117,10 @@ export interface ProfileMetaData {
 	 */
 	readonly SessionLoadCount: number;
 	/**
-	 * [placeId, gameJobId]
-	 * Set to a session link if a Roblox server is currently the owner of this profile; void if released
+	 * [placeId, gameJobId] | nil
+	 * Set to a session link if a Roblox server is currently the owner of this profile; nil if released
 	 */
-	readonly ActiveSession: [number, string] | void;
+	readonly ActiveSession: [number, string] | undefined;
 	/**
 	 * Saved and auto-saved just like Profile.Data
 	 */
@@ -129,15 +129,19 @@ export interface ProfileMetaData {
 	 * The most recent version of MetaData.MetaTags which has
 	 * been saved to the DataStore during the last auto-save
 	 * or `Profile.Save()` call
-	 *
-	 * Saved on the same DataStore key together with `Profile.Data`.
 	 */
 	MetaTagsLatest: Map<string, unknown>;
 }
 
 export interface Profile<DataType extends Object> extends ViewProfile<DataType> {
+	/**
+	 * `Profile.Data` is the primary variable of a Profile object. The developer is free to read and write from the table while it is automatically saved to the [DataStore](https://developer.roblox.com/en-us/api-reference/class/DataStoreService). `Profile.Data` will no longer be saved after being released remotely or locally via `Profile.Release()`.
+	 */
 	Data: DataType;
-	MetaData: ProfileMetaData;
+	/**
+	 * A table containing data about the profile itself.
+	 */
+	readonly MetaData: ProfileMetaData;
 }
 
 export interface ViewProfile<DataType extends Object> {
@@ -145,6 +149,9 @@ export interface ViewProfile<DataType extends Object> {
 	 * The primary variable of a Profile object. The developer is free to read and write from the table while it is automatically saved to the DataStore. `Profile.Data` will no longer be saved after being released remotely or locally via `Profile.Release()`.
 	 */
 	readonly Data: DataType | void;
+	/**
+	 * A table containing data about the profile itself.
+	 */
 	readonly MetaData: ProfileMetaData | void;
 	/**
 	 * This is the GlobalUpdates object tied to this specific Profile. It exposes GlobalUpdates methods for update processing. (See [Global Updates](https://madstudioroblox.github.io/ProfileService/api/#global-updates) for more info)
@@ -186,7 +193,7 @@ export interface ViewProfile<DataType extends Object> {
 	Reconcile(): void;
 
 	/**
-	 * Listener functions subscribed to `Profile.ListenToRelease()` will be called when the profile is released remotely (Being "ForceLoad"'ed on a remote server) or locally (`Profile.Release()`). In common practice, the profile will rarely be released before the player leaves the game so it's recommended to simply [.Kick()](https://developer.roblox.com/en-us/api-reference/function/Player/Kick) the Player when this happens.
+	 * Listener functions subscribed to `Profile.ListenToRelease()` will be called when the profile is released remotely (Being `"ForceLoad"`'ed on a remote server) or locally (`Profile.Release()`). In common practice, the profile will rarely be released before the player leaves the game so it's recommended to simply [.Kick()](https://developer.roblox.com/en-us/api-reference/function/Player/Kick) the Player when this happens.
 	 *
 	 * You cannot modify `Profile.Data` once this has been triggered.
 	 */
@@ -227,7 +234,7 @@ export interface ProfileStore<T> {
 	 * `ProfileStore.Mock` is useful for customizing your testing environment in cases when you want to [enable Roblox API services](https://developer.roblox.com/en-us/articles/Data-store#using-data-stores-in-studio) in studio, but don't want ProfileService to save to live keys:
 	 * @example
 	 * ```ts
-	 * const RunService = game:GetService("RunService")
+	 * const RunService = game.GetService("RunService")
 	 * let GameProfileStore = ProfileService.GetProfileStore("PlayerData", ProfileTemplate)
 	 * if (RunService:IsStudio() === true) {
 	 *		GameProfileStore = GameProfileStore.Mock
@@ -235,31 +242,31 @@ export interface ProfileStore<T> {
 	 * ```
 	 * A few more things:
 
-	 * - Even when Roblox API services are disabled, ProfileStore and ProfileStore.Mock will store profiles in separate stores.
-	 * - It's better to think of ProfileStore and ProfileStore.Mock as two different ProfileStore objects unrelated to each other in any way.
+	 * - Even when Roblox API services are disabled, `ProfileStore` and `ProfileStore.Mock` will store profiles in separate stores.
+	 * - It's better to think of `ProfileStore` and `ProfileStore.Mock` as two different ProfileStore objects unrelated to each other in any way.
 	 * - It's possible to create a project that utilizes both live and mock profiles on live servers!
 	 */
 	Mock: ProfileStore<T>;
 	/**
-	 * For basic usage, pass "ForceLoad" for the not_released_handler argument.
+	 * For basic usage, pass `"ForceLoad"` for the `notReleasedHandler` argument.
 	 *
-	 * Can return `void` when another remote Roblox server attempts to load the profile at the same time. This case should be extremely rare and it would be recommended to [Kick](https://developer.roblox.com/en-us/api-reference/function/Player/Kick) theh player if `LoadProfileAsync` does not return a `Profile` object.
+	 * `notReleasedHandler as a `function` argument is called when the profile is session-locked by a remote Roblox server:
 	 *
-	 * notReleasedHandler as a function argument is called when the profile is session-locked by a remote Roblox server:
 	 * @example
 	 * const profile = ProfileStore.LoadProfileAsync("Player_2312310", (placeId, gameJobId) => {
 	 * 	// placeId and gameJobId identify the Roblox server that has
 	 * 	// this profile currently locked. In rare cases, if the server
 	 * 	// crashes, the profile will stay locked until ForceLoaded by
 	 * 	// a new session.
-	 * 	return "Repeat" || "Cancel" || "ForceLoad"
+	 * 	return "Repeat" || "Cancel" || "ForceLoad" || "Steal"
 	 * })
 	 * @param profileKey DataStore key
 	 * @param notReleasedHandler Called when the profile is session-locked by a remote Roblox server. Must return one of the follow values:
 	 *
 	 * `"Repeat"` - ProfileService will repeat the profile loading process and may call the release handler again
 	 * `"Cancel"` - `.LoadProfileAsync()` will immediately return nil
-	 * `"ForceLoad"` - ProfileService will indefinetly attempt to load the profile. If the profile is session-locked by a remote Roblox server, it will either be released for that remote server or "stolen" (Stealing is nescessary for remote servers that are not responding in time and for handling crashed server session-locks).
+	 * `"ForceLoad"` - ProfileService will indefinitely attempt to load the profile. If the profile is session-locked by a remote Roblox server, it will either be released for that remote server or "stolen" (Stealing is necessary for remote servers that are not responding in time and for handling crashed server session-locks).
+	 * `"Steal"` - The profile will usually be loaded immediately, ignoring an existing remote session lock and applying a session lock for this session. `"Steal"` can be used to clear dead session locks faster than `"ForceLoad"` assuming your code knows that the session lock is dead.
 	 */
 	LoadProfileAsync(
 		profileKey: string,
@@ -283,13 +290,13 @@ export interface ProfileStore<T> {
 	GlobalUpdateProfileAsync(profileKey: string, updateHandler: GlobalUpdateHandler): GlobalUpdates | void;
 
 	/**
-	 * Writing and saving is not possible for profiles in view mode. `Profile.Data` and `Profile.MetaData` will be nil if the profile hasn't been created.
+	 * Writing and saving is not possible for profiles in view mode. `Profile.Data` and `Profile.MetaData` will be `nil` if the profile hasn't been created.
 	 * @param profileKey DataStore key
 	 */
 	ViewProfileAsync(profileKey: string): Profile<T> | undefined;
 
 	/**
-	 * Use `WipeProfileAsync()` to erase user data when complying with right of erasure requests. In live Roblox servers `WipeProfileAsync()` must be used on profiles created through `ProfileStore.Mock` after `Profile:Release()` and it's known that the `Profile` will no longer be loaded again.
+	 * Use `WipeProfileAsync()` to erase user data when complying with right of erasure requests. In live Roblox servers `WipeProfileAsync()` must be used on profiles created through `ProfileStore.Mock` after `Profile.Release()` and it's known that the `Profile` will no longer be loaded again.
 	 * @param profileKey The key to wipe
 	 * @returns If the wipe was successful or not
 	 */
