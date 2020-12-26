@@ -8,6 +8,18 @@ declare class abbreviator {
 	setSetting(settingName: "decimalPlaces", settingValue: number): void;
 
 	/**
+	 * Separates a number by the thousands of places with commas.
+	 * @example
+	 * 10 => "10"
+	 * 10.1234 => "10.1234"
+	 * 1000 => "1,400"
+	 * 123456789 => "123,456,789"
+	 * 1234567890 => "1,234,567,890"
+	 * @param number The number to comma separate
+	 */
+	commify(number: number): string;
+
+	/**
 	 * Converts a number of full length into a string with a suffix as defined in the prefix table
 	 * @param number The number to convert into a abbreviated string
 	 */

@@ -111,5 +111,13 @@ return function()
 		return totalMagnitude * str
 	end
 
+	function module:commify(number)
+		assert(type(number) == 'number', 'Attempt to commify a non-number value')
+
+		local strNum = tostring(number)
+		local a, b = string.match(strNum, '(%d+)%.(%d+)')
+		return string.format("%s.%s", string.gsub(string.gsub(a, '(%d%d%d)', '%1,'), ',$', ''), b)
+	end
+
 	return module
 end

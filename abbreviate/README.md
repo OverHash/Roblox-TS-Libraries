@@ -38,6 +38,9 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.4.0
+- Added `commify(num: number): string` to convert a string into a comma separated value.
+
 ### 2.3.4
 - Fixed `stringToNumber` returning `void` instead of `number`
 ### 2.3.3
