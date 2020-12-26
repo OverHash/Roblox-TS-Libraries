@@ -38,6 +38,9 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.5.0
+- Fixed a bug with `commify` function erroring.
+
 ### 2.4.0
 - Added `commify(num: number): string` to convert a string into a comma separated value.
 
