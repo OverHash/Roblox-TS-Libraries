@@ -26,6 +26,38 @@ declare class abbreviator {
 	numberToString(number: number): string;
 
 	/**
+	 * Converts an array of numbers into sorted strings with a suffix as defined in the prefix table
+	 * @param numbers The numbers to abbreviate and sort correctly
+	 * @example
+	 * ```ts
+	 * const abbreviator = createAbbreviator();
+	 * abbreviator.setSetting("decimalPlaces", 2);
+	 *
+	 * const nums = ["7.1M", "87.2M", "23.5M", "8.0k", "1.0B", "15B", "999.99k"].map((x) => abbreviator.stringToNumber(x));
+	 *
+	 * const sortedNumbers = abbreviator.numbersToSortedString(nums);
+	 * table.sort(sortedNumbers, (a, b) => a < b);
+	 *
+	 * print(sortedNumbers);
+	 * ```
+	 * 
+	 * will produce
+	 * ```
+	 * {
+	 *		[1] = "​​​⁠8.00k",
+	 *		[2] = "​​⁠​999.99k",
+	 *		[3] = "​​⁠⁠7.10M",
+	 *		[4] = "​⁠​​23.50M",
+	 *		[5] = "​⁠​⁠87.20M",
+	 *		[6] = "​⁠⁠​1.00B",
+	 *		[7] = "​⁠⁠⁠15.00B"
+	 * }
+	 *
+	```
+	 */
+	numbersToSortedString(numbers: Array<number>): Array<string>;
+
+	/**
 	 * Converts a string that has a suffix as defined in the suffix table to a full number
 	 * @param str The string to convert into a number
 	 */
