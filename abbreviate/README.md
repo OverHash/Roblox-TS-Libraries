@@ -38,6 +38,9 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.6.2
+- Removed prints in `numbersToSortedString`
+
 ### 2.6.1
 - Updated README.md
 

@@ -166,8 +166,6 @@ return function()
 				if numberData.value >= shortenedNumber then
 					local suffix = module._suffixTable[index]
 
-					print(numberData.value, shortenedNumber, suffix)
-
 					local prefixed = string.format('%.'..module._decimalPlaces..'f'..suffix, numberData.value / shortenedNumber)
 
 					returnResult[numberData.initialIndex] = getSortablePrefix(sortedIndex, numbersSize, false)..prefixed
