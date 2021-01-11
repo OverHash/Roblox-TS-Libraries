@@ -38,6 +38,12 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.6.1
+- Updated README.md
+
+### 2.6.0
+- Created `numbersToSortedString`
+
 ### 2.5.0
 - Fixed a bug with `commify` function erroring.
 
