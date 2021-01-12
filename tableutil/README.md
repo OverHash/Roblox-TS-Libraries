@@ -14,6 +14,9 @@ Updated since [this commit](https://github.com/Sleitnick/AeroGameFramework/blob/
 - EncodeJSON/DecodeJSON has been removed, it's better practice to use the HttpService methods.
 
 ## Changelog
+
+### 1.3.2
+- Converted `Object` into `object` for the types.
 ### 1.3.1
 - Fixed TableUtil.Sync incorrectly returning the original array in typings ([#5](https://github.com/OverHash/Roblox-TS-Libraries/issues/5))
 
