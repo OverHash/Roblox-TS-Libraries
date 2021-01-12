@@ -160,6 +160,10 @@ return function()
 		-- Make return result
 		local returnResult = table.create(numbersSize)
 		for sortedIndex, numberData in ipairs(sortedNumbers) do
+			if numberData.value < 1000 then
+				returnResult[numberData.initialIndex] = string.format('%.'..module._decimalPlaces..'f', numberData.value)
+			end
+
 			for index = #module._suffixTable, 1, -1 do
 				local shortenedNumber = 10 ^ (index * 3)
 

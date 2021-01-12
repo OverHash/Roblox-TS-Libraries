@@ -38,14 +38,17 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.6.3
+- Fixed numbers under 1000 not being added to the return result in `numbersToSortedString`.
+
 ### 2.6.2
-- Removed prints in `numbersToSortedString`
+- Removed prints in `numbersToSortedString`.
 
 ### 2.6.1
-- Updated README.md
+- Updated README.md.
 
 ### 2.6.0
-- Created `numbersToSortedString`
+- Created `numbersToSortedString`.
 
 ### 2.5.0
 - Fixed a bug with `commify` function erroring.
@@ -54,6 +57,6 @@ These settings are independent of other "apps"
 - Added `commify(num: number): string` to convert a string into a comma separated value.
 
 ### 2.3.4
-- Fixed `stringToNumber` returning `void` instead of `number`
+- Fixed `stringToNumber` returning `void` instead of `number`.
 ### 2.3.3
-- Fixed numbers under 1000 not being decimal placed correctly when numberToString is called
+- Fixed numbers under 1000 not being decimal placed correctly when numberToString is called.
