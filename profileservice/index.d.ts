@@ -35,7 +35,7 @@ declare namespace ProfileService {
 	 * @param profileStoreName DataStore name
 	 * @param profileTemplate Profile.Data will default to given table (deep-copy) when no data was previously saved.
 	 */
-	const GetProfileStore: <playerData extends Object>(
+	const GetProfileStore: <playerData extends object>(
 		profileStoreName: string,
 		profileTemplate: playerData,
 	) => ProfileStore<playerData>;

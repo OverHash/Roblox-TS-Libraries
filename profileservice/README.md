@@ -11,6 +11,8 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.2.1
+- Converted `Object` into `object` for the types.
 ### 1.2.0
 - Update to commit [df74918](https://github.com/MadStudioRoblox/ProfileService/commit/df7491868929d456aa6e0a871b55e5b092ff8317)
 

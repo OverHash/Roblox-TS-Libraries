@@ -133,7 +133,7 @@ export interface ProfileMetaData {
 	MetaTagsLatest: Map<string, unknown>;
 }
 
-export interface Profile<DataType extends Object> extends ViewProfile<DataType> {
+export interface Profile<DataType extends object> extends ViewProfile<DataType> {
 	/**
 	 * `Profile.Data` is the primary variable of a Profile object. The developer is free to read and write from the table while it is automatically saved to the [DataStore](https://developer.roblox.com/en-us/api-reference/class/DataStoreService). `Profile.Data` will no longer be saved after being released remotely or locally via `Profile.Release()`.
 	 */
@@ -144,7 +144,7 @@ export interface Profile<DataType extends Object> extends ViewProfile<DataType> 
 	readonly MetaData: ProfileMetaData;
 }
 
-export interface ViewProfile<DataType extends Object> {
+export interface ViewProfile<DataType extends object> {
 	/**
 	 * The primary variable of a Profile object. The developer is free to read and write from the table while it is automatically saved to the DataStore. `Profile.Data` will no longer be saved after being released remotely or locally via `Profile.Release()`.
 	 */
