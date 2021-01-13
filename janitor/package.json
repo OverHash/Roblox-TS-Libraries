@@ -1,0 +1,41 @@
+{
+	"name": "@rbxts/janitor",
+	"version": "1.0.3",
+	"description": "A port of pobammer's janitor module.",
+	"main": "init.lua",
+	"types": "index.d.ts",
+	"files": [
+		"index.d.ts",
+		"init.lua"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/janitor"
+	},
+	"keywords": [
+		"janitor",
+		"cleanup",
+		"garbage collection",
+		"validark",
+		"maid",
+		"roblox",
+		"roblox-typescript",
+		"roblox-ts"
+	],
+	"author": "OverHash",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+	},
+	"homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/janitor/README.md",
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"@rbxts/compiler-types": "^1.0.0-beta.14.0",
+		"@rbxts/types": "^1.0.437"
+	}
+}
