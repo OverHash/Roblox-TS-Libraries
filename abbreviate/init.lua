@@ -75,22 +75,39 @@ return function()
 		end
 	end
 
-	function module:numberToString(number)
-		if not (number and type(number) == 'number') then
-			error('numberToString had invalid parameters.\nP1 - number: number', 2)
+	function module:numberToString(number, roundDown)
+		if roundDown == nil then
+			roundDown = true
 		end
 
-		if number < 1000 then
-			return string.format('%.'..module._decimalPlaces..'f', number)
-		end
+		local negative = number < 0
+		number = math.abs(math.floor(number))
 
 		for index = #module._suffixTable, 1, -1 do
-			local shortenedNumber = 10 ^ (index * 3)
+			local unit = module._suffixTable[index]
+			local size = 10 ^ (index * 3)
 
-			if number >= shortenedNumber then
-				local suffix = module._suffixTable[index]
-				return string.format('%.'..module._decimalPlaces..'f'..suffix, number / shortenedNumber)
+			if size <= number then
+				if roundDown then
+					number = math.floor(number * 10^module._decimalPlaces / size) / 10^module._decimalPlaces
+				else
+					number = math.floor((number * 10^module._decimalPlaces / size) + 0.5) / 10^module._decimalPlaces
+				end
+
+				if number == 1000 and index < #module._suffixTable[index] then
+					number = 1
+					unit = module._suffixTable[index][index + 1]
+				end
+
+				number = ("%."..module._decimalPlaces.."f"):format(number) .. unit
+				break
 			end
+		end
+
+		if negative then
+			return "-" .. number
+		else
+			return tostring(number)
 		end
 	end
 

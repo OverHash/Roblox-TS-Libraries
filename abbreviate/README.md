@@ -38,6 +38,9 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.7.0
+- Changed the method used in `numberToString` to be similar to [Zombie Strike's](https://github.com/Kampfkarren/zombie-strike/blob/master/src/shared/ReplicatedStorage/Core/EnglishNumbers.lua) for more accurate rounding.
+
 ### 2.6.3
 - Fixed numbers under 1000 not being added to the return result in `numbersToSortedString`.
 
@@ -60,3 +63,7 @@ These settings are independent of other "apps"
 - Fixed `stringToNumber` returning `void` instead of `number`.
 ### 2.3.3
 - Fixed numbers under 1000 not being decimal placed correctly when numberToString is called.
+
+## Credits
+[Kampfkarren](http://github.com/Kampfkarren/) - `numberToString` method
+[Corecii](https://github.com/Corecii) - Help with `numbersToSortedString`

@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/abbreviate",
-	"version": "2.6.3",
+	"version": "2.7.0",
 	"description": "A lightweight number abbreviator",
 	"main": "init.lua",
 	"types": "index.d.ts",
@@ -19,7 +19,7 @@
 		"number"
 	],
 	"author": "OverHash",
-	"license": "ISC",
+	"license": "mpl-2.0",
 	"bugs": {
 		"url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
 	},

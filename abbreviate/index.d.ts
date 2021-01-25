@@ -22,8 +22,9 @@ declare class abbreviator {
 	/**
 	 * Converts a number of full length into a string with a suffix as defined in the prefix table
 	 * @param number The number to convert into a abbreviated string
+	 * @param roundDown If the abbreviation should round up or down. @default down.
 	 */
-	numberToString(number: number): string;
+	numberToString(number: number, roundDown?: boolean): string;
 
 	/**
 	 * Converts an array of numbers into sorted strings with a suffix as defined in the prefix table
