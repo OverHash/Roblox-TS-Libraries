@@ -17,7 +17,7 @@ export type GlobalUpdateData = {
  * - Normally, when the profile is active on a Roblox server, you should always progress all `Active` updates to the `Locked` state.
  * - `Locked` updates can no longer be **changed** or **cleared** within a `.GlobalUpdateProfileAsync()` call.
  * - `Locked` updates are ready to be processed (e.g. add gift to player inventory) and immediately `Locked` by calling `.LockActiveUpdate(updateId)`
- * - `Cleared` updates will immediately dissapear from the profile forever.
+ * - `Cleared` updates will immediately disappear from the profile forever.
  */
 export interface GlobalUpdates {
 	/**
@@ -56,7 +56,7 @@ export interface GlobalUpdates {
 	ListenToNewActiveUpdate(listener: (updateId: number, updateData: GlobalUpdateData) => void): RBXScriptSignal;
 
 	/**
-	 * When you get a Locked update via `GlobalUpdates.ListenToNewLockedUpdate()`, the update is ready to be proccessed and immediately locked:
+	 * When you get a Locked update via `GlobalUpdates.ListenToNewLockedUpdate()`, the update is ready to be processed and immediately locked:
 	 * @example
 	 * profile.GlobalUpdates.ListenToNewLockedUpdate((updateId, updateData) => {
 	 * 	if (updateData.Type === "AdminGift" && updateData.Item === "Coins") {
@@ -227,7 +227,7 @@ export interface ViewProfile<DataType extends object> {
 	Save(): void;
 }
 
-export interface ProfileStore<T> {
+export interface ProfileStore<T extends object> {
 	/**
 	 * `ProfileStore.Mock` is a reflection of methods available in the `ProfileStore` object with the exception of profile operations being performed on profiles stored on a separate, detached "fake" DataStore that will be forgotten when the game session ends. You may load profiles of the same key from `ProfileStore` and `ProfileStore.Mock` in parallel - these will be two different profiles because the regular and mock versions of the same `ProfileStore` are completely isolated from each other.
 	 *
@@ -250,7 +250,7 @@ export interface ProfileStore<T> {
 	/**
 	 * For basic usage, pass `"ForceLoad"` for the `notReleasedHandler` argument.
 	 *
-	 * `notReleasedHandler as a `function` argument is called when the profile is session-locked by a remote Roblox server:
+	 * `notReleasedHandler` as a `function` argument is called when the profile is session-locked by a remote Roblox server:
 	 *
 	 * @example
 	 * const profile = ProfileStore.LoadProfileAsync("Player_2312310", (placeId, gameJobId) => {
@@ -271,7 +271,7 @@ export interface ProfileStore<T> {
 	LoadProfileAsync(
 		profileKey: string,
 		notReleasedHandler: "ForceLoad" | "Steal" | notReleasedHandlerFunc,
-	): Profile<T> | void;
+	): Profile<T> | undefined;
 
 	/**
 	 * Used to create and manage `Active` global updates for a specified Profile. Can be called on any Roblox server of your game. Updates should reach the recipient in less than 30 seconds, regardless of whether it was called on the same server the Profile is session-locked to. See [Global Updates](https://madstudioroblox.github.io/ProfileService/api/#global-updates) for more information.
