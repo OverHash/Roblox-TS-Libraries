@@ -1,14 +1,12 @@
---!nocheck
 -- Janitor
 -- Original by Validark
 -- Modifications by pobammer
-
-local RunService = game:GetService("RunService")
+-- roblox-ts support by OverHash and Validark
 
 local TS = _G[script]
-local Promise = TS.Promise
 
-local Heartbeat = RunService.Heartbeat
+local Promise = TS.Promise
+local Scheduler = require(script.Scheduler)
 
 local Janitors = setmetatable({}, {__mode = "k"})
 local Janitor = {__index = {CurrentlyCleaning = true}}
@@ -18,28 +16,12 @@ getmetatable(LinkToInstanceIndex).__tostring = function()
 	return "LinkToInstanceIndex"
 end
 
-local function Wait(Seconds)
-	local TimeRemaining = Seconds
-	while TimeRemaining > 0 do
-		TimeRemaining -= Heartbeat:Wait()
-	end
-end
-
-local function FastSpawn(Function, ...)
-	local Arguments = table.pack(...)
-	local BindableEvent = Instance.new("BindableEvent")
-
-	BindableEvent.Event:Connect(function()
-		Function(table.unpack(Arguments, 1, Arguments.n))
-	end)
-
-	BindableEvent:Fire()
-	BindableEvent:Destroy()
-end
+local FastSpawn = Scheduler.FastSpawn
+local Wait = Scheduler.Wait
 
 local TypeDefaults = {
 	["function"] = true;
-	["RBXScriptConnection"] = "Disconnect";
+	RBXScriptConnection = "Disconnect";
 }
 
 --[[**
@@ -94,7 +76,9 @@ end
 function Janitor.__index:AddPromise(PromiseObject)
 	if PromiseObject:getStatus() == Promise.Status.Started then
 		local Id = newproxy(false)
-		return self:Add(Promise.resolve(PromiseObject):finallyCall(self.Remove, self, Id), "cancel", Id)
+		local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
+		NewPromise:finallyCall(self.Remove, self, Id)
+		return NewPromise
 	else
 		return PromiseObject
 	end
@@ -266,5 +250,5 @@ function Janitor.__index:LinkToInstances(...)
 end
 
 return {
-	Janitor = Janitor
+	Janitor = Janitor,
 }

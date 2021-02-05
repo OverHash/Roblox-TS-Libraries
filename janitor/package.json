@@ -1,12 +1,12 @@
 {
 	"name": "@rbxts/janitor",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "A port of pobammer's janitor module.",
-	"main": "init.lua",
+	"main": "src/init.lua",
 	"types": "index.d.ts",
 	"files": [
 		"index.d.ts",
-		"init.lua"
+		"src/"
 	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"

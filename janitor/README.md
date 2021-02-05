@@ -18,19 +18,31 @@ instead of just returning the `Janitor` namespace.
 
 ## Example Usage
 ```typescript
-import janitor from "@rbxts/tableutil";
+import { Janitor } from "@rbxts/janitor";
 
-const Obliterator = new Janitor();
+const Obliterator = new Janitor<{ Instances: Instance }>();
 
 // Queue the Part to be Destroyed at Cleanup time
 Obliterator.Add(new Instance("Part"), "Destroy");
 
 // Queue function to be called with `true` MethodName
-Obliterator.Add(print, true);
+Obliterator.Add(print);
 
 // By passing an Index, the Object will occupy a namespace
 // If "Instances" already exists, it will call :Remove("Instances") before writing
 Obliterator.Add(new Instance("Part"), "Destroy", "Instances");
+
+// Queue a promise to be cancelled when the Janitor is cleaned
+Obliterator.AddPromise(
+	new Promise((resolve, reject) => {
+		wait(5);
+		resolve(42);
+	}),
+);
+
+// Cleanup all connections, calling `print`, Destroying our Part, and cancelling our promise
+Obliterator.Cleanup();
+
 ```
 
 ## Changelog
