@@ -47,6 +47,9 @@ Obliterator.Cleanup();
 
 ## Changelog
 
+### 1.0.5
+- Fixed the imports to `Scheduler` being the wrong path
+
 ### 1.0.3
 - Fixed `README.md` example
 - Changed `package.json` keywords
