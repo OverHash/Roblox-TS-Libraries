@@ -1,0 +1,15 @@
+{
+	"name": "abbreviate-tests",
+	"tree": {
+		"$className": "DataModel",
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"testEz": {
+				"$path": "vendor/testez/src"
+			},
+			"abbreviate": {
+				"$path": "src"
+			}
+		}
+	}
+}

@@ -38,6 +38,11 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### 2.7.1
+- Fixed a case where numbers under 1000 would have their decimal places stripped (e.g. `1.05` would become `1`, `0.5` would become `0`)
+- Added unit tests
+- Made function calls safer (it now validates the type of the data you pass)
+
 ### 2.7.0
 - Changed the method used in `numberToString` to be similar to [Zombie Strike's](https://github.com/Kampfkarren/zombie-strike/blob/master/src/shared/ReplicatedStorage/Core/EnglishNumbers.lua) for more accurate rounding.
 
