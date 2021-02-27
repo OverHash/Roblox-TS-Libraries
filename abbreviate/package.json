@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/abbreviate",
-	"version": "2.7.0",
+	"version": "2.7.1",
 	"description": "A lightweight number abbreviator",
 	"main": "src/init.lua",
 	"types": "src/index.d.ts",
