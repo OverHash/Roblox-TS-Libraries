@@ -76,6 +76,15 @@ return function()
 	end
 
 	function module:numberToString(number, roundDown)
+		if type(number) ~= "number" then
+			error('numberToString invalid parameter #1, expected number, got "nil"', 2)
+		end
+
+		if number < 1000 and number > -1000 then
+			-- special case: we must manually abbreviate numbers between -1000 and 1000
+			return ("%."..module._decimalPlaces.."f"):format(number)
+		end
+
 		if roundDown == nil then
 			roundDown = true
 		end
@@ -211,6 +220,11 @@ return function()
 				totalMagnitude = totalMagnitude * (10 ^ (key * 3))
 				return ''
 			end)
+		end
+
+		-- validate that user passed an actual string that we can convert to number
+		if not tonumber(str) then
+			error('stringToNumber invalid parameter #1: Expected a string which could be converted to a number, got "'..str..'"', 2)
 		end
 
 		return totalMagnitude * str
