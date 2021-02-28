@@ -1,0 +1,38 @@
+{
+  "name": "@rbxts/quicksave",
+  "version": "1.0.0",
+  "description": "A port of evaera's quicksave package - a DataStore abstraction library",
+  "main": "src/Quicksave/init.lua",
+  "types": "src/Quicksave/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/quicksave"
+  },
+  "keywords": [
+    "quicksave",
+    "typescript",
+    "roblox-ts",
+    "datastore",
+    "library",
+    "evaera"
+  ],
+  "author": "OverHash",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/quicksave/README.md",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@rbxts/compiler-types": "^1.0.0-beta.16.1",
+    "@rbxts/types": "^1.0.456"
+  },
+  "dependencies": {
+    "@rbxts/t": "^2.1.1"
+  }
+}
