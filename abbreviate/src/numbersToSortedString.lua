@@ -35,6 +35,17 @@ local function getSortablePrefix(num, maxNum, descending)
 	return (string.gsub(numHex, ".", descending and binToUnicodeDescending or binToUnicodeAscending))
 end
 
+local function round(number, decimalPlaces, roundDown)
+	number = number * 10^decimalPlaces
+	if roundDown then
+		return math.floor(number) / 10^decimalPlaces
+	else
+		number = tonumber(tostring(number))
+		-- cast to string and back to number to prevent floating point errors
+		return math.floor(number + 0.5) / 10^decimalPlaces
+	end
+end
+
 function numbersToSortedString(self, numbers)
 	if not (numbers and type(numbers) == 'table') then
 		error('numbersToSortedString had invalid parameters.\nP1 - numbers: Array<number>', 2)
@@ -65,7 +76,11 @@ function numbersToSortedString(self, numbers)
 	local returnResult = table.create(numbersSize)
 	for sortedIndex, numberData in ipairs(sortedNumbers) do
 		if numberData.value < 1000 then
-			returnResult[numberData.initialIndex] = string.format('%.'..self._decimalPlaces..'f', numberData.value)
+			if not self._stripTrailingZeroes then
+				returnResult[numberData.initialIndex] = string.format('%.'..self._decimalPlaces..'f', numberData.value)
+			else
+				returnResult[numberData.initialIndex] = tostring(round(numberData.value, self._decimalPlaces))
+			end
 		end
 
 		for index = #self._suffixTable, 1, -1 do
@@ -74,9 +89,15 @@ function numbersToSortedString(self, numbers)
 			if numberData.value >= shortenedNumber then
 				local suffix = self._suffixTable[index]
 
-				local prefixed = string.format('%.'..self._decimalPlaces..'f'..suffix, numberData.value / shortenedNumber)
+				local prefixed
+				
+				if not self._stripTrailingZeroes then
+					prefixed = string.format('%.'..self._decimalPlaces..'f', numberData.value / shortenedNumber)
+				else
+					prefixed = tostring(round(numberData.value / shortenedNumber, self._decimalPlaces))
+				end
 
-				returnResult[numberData.initialIndex] = getSortablePrefix(sortedIndex, numbersSize, false)..prefixed
+				returnResult[numberData.initialIndex] = getSortablePrefix(sortedIndex, numbersSize, false)..prefixed..suffix
 				break
 			end
 		end

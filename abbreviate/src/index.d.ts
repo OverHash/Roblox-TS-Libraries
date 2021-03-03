@@ -6,6 +6,7 @@ declare class abbreviator {
 	 */
 	setSetting(settingName: "suffixTable", settingValue: Array<string>): void;
 	setSetting(settingName: "decimalPlaces", settingValue: number): void;
+	setSetting(settingName: "stripTrailingZeroes", settingValue: boolean): void;
 
 	/**
 	 * Separates a number by the thousands of places with commas.

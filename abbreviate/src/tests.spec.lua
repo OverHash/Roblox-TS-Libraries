@@ -13,6 +13,7 @@ return function()
 		it("should have settings", function()
 			expect(abbreviate._suffixTable).to.be.a("table")
 			expect(abbreviate._decimalPlaces).to.be.a("number")
+			expect(abbreviate._stripTrailingZeroes).to.be.a("boolean")
 		end)
 
 		it("should allow changable decimal places", function()
@@ -29,6 +30,13 @@ return function()
 				abbreviate:setSetting("suffixTable", newSuffixTable)
 			end).to.never.throw()
 			expect(abbreviate._suffixTable).to.equal(newSuffixTable)
+		end)
+
+		it("should allow changable strip trailing zeroes", function()
+			expect(function()
+				abbreviate:setSetting("stripTrailingZeroes", true)
+			end).to.never.throw()
+			expect(abbreviate._stripTrailingZeroes).to.equal(true)
 		end)
 	end)
 
@@ -69,6 +77,19 @@ return function()
 			-- test roundDown
 			expect(abbreviate:numberToString(1005, false)).to.equal("1.01k")
 			expect(abbreviate:numberToString(1005)).to.equal("1.00k")
+		end)
+
+		it("should work with stripTrailingZeroes set to true", function()
+			abbreviate:setSetting("stripTrailingZeroes", true)
+
+			expect(abbreviate:numberToString(0)).to.equal("0")
+			expect(abbreviate:numberToString(0.01)).to.equal("0.01")
+			expect(abbreviate:numberToString(0.1)).to.equal("0.1")
+			expect(abbreviate:numberToString(0.12)).to.equal("0.12")
+
+			expect(abbreviate:numberToString(1000)).to.equal("1k")
+			expect(abbreviate:numberToString(1200)).to.equal("1.2k")
+			expect(abbreviate:numberToString(1230)).to.equal("1.23k")
 		end)
 	end)
 
