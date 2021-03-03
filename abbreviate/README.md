@@ -38,6 +38,9 @@ These settings are independent of other "apps"
 
 ## Changelog
 
+### Unpublished changes
+- Refactored internal code to use less memory
+
 ### 2.7.1
 - Fixed a case where numbers under 1000 would have their decimal places stripped (e.g. `1.05` would become `1`, `0.5` would become `0`)
 - Added unit tests

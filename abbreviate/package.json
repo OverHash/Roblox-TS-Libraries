@@ -27,5 +27,14 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"files": ["src/index.d.ts", "src/init.lua"]
+	"files": [
+		"src/init.lua",
+		"src/index.d.ts",
+
+		"src/commify.lua",
+		"src/numbersToSortedString.lua",
+		"src/numberToString.lua",
+		"src/setSetting.lua",
+		"src/stringToNumber.lua"
+	]
 }
