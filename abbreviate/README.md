@@ -7,9 +7,9 @@
 
 ## Example Usage
 ```typescript
-import abbreviate from "@rbxts/abbreviate";
+import createAbbreviator from "@rbxts/abbreviate";
 
-const abbreviator = abbreviate();
+const abbreviator = createAbbreviator();
 abbreviator.setSetting('suffixTable', ['k', 'm', 'b']);
 abbreviator.setSetting('decimalPlaces', 2);
 
@@ -38,7 +38,10 @@ These settings are independent of other "apps"
 
 ## Changelog
 
-### Unpublished changes
+### 2.7.3
+- Updated `README.md` to use `createAbbreviator()`
+
+### 2.7.2
 - Refactored internal code to use less memory
 
 ### 2.7.1
