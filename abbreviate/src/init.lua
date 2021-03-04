@@ -57,16 +57,18 @@ local numbersToSortedString = require(script.numbersToSortedString).numbersToSor
 local stringToNumber = require(script.stringToNumber).stringToNumber
 local commify = require(script.commify).commify
 
-return function()
-	return {
-		_suffixTable = DEFAULT_SUFFIX_TABLE,
-		_decimalPlaces = 2,
-		_stripTrailingZeroes = false,
-
-		setSetting = setSetting,
-		numberToString = numberToString,
-		numbersToSortedString = numbersToSortedString,
-		stringToNumber = stringToNumber,
-		commify = commify,
-	}
-end
+return {
+	new = function()
+		return {
+			_suffixTable = DEFAULT_SUFFIX_TABLE,
+			_decimalPlaces = 2,
+			_stripTrailingZeroes = false,
+	
+			setSetting = setSetting,
+			numberToString = numberToString,
+			numbersToSortedString = numbersToSortedString,
+			stringToNumber = stringToNumber,
+			commify = commify,
+		}
+	end
+}

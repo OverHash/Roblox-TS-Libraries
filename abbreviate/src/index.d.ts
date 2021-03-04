@@ -1,4 +1,4 @@
-declare class abbreviator {
+declare class Abbreviator {
 	/**
 	 * Sets a setting
 	 * @param settingName The name of the setting to set
@@ -64,8 +64,8 @@ declare class abbreviator {
 	 * @param str The string to convert into a number
 	 */
 	stringToNumber(str: string): number;
+
+	constructor();
 }
 
-declare function createAbbreviator(): abbreviator;
-
-export = createAbbreviator;
+export = Abbreviator;

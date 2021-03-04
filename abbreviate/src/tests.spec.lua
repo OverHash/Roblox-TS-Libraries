@@ -3,7 +3,7 @@ return function()
 
 	local function realDescribe(str, callback)
 		beforeEach(function()
-			abbreviate = require(script.Parent)()
+			abbreviate = require(script.Parent).new()
 		end)
 
 		return describe(str, callback)
