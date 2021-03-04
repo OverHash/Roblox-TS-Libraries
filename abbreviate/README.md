@@ -30,6 +30,7 @@ The possible settings you can set are the following:
 |---|---|---|---|---|
 | suffixTable | Array\<string\> | Sets the suffix table to be used when using `numberToString` | [here](https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/init.lua#L1-L52) 	| <pre lang="ts">["k", "m", "b"] |
 | decimalPlaces | number | Sets the amount of decimal places a number may have when using `numberToString` | 2 | 4 |
+| removeDanglingZeroes | boolean | Removes any extra zeroes after a decimal place that are dangling after `numberToString` calls. E.g. `"52506.004"` => `"5.2506k"`
 
 ## Why make me call the function?
 You may want multiple abbreviators throughout your game with different settings, i.e. one module may want only 2 d.p. while another may want 0 d.p
