@@ -90,7 +90,7 @@ function numbersToSortedString(self, numbers)
 				local suffix = self._suffixTable[index]
 
 				local prefixed
-				
+
 				if not self._stripTrailingZeroes then
 					prefixed = string.format('%.'..self._decimalPlaces..'f', numberData.value / shortenedNumber)
 				else

@@ -30,7 +30,7 @@ The possible settings you can set are the following:
 |---|---|---|---|---|
 | suffixTable | Array\<string\> | Sets the suffix table to be used when using `numberToString` | [here](https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/init.lua#L1-L52) 	| <pre lang="ts">["k", "m", "b"] |
 | decimalPlaces | number | Sets the amount of decimal places a number may have when using `numberToString` | 2 | 4 |
-| removeDanglingZeroes | boolean | Removes any extra zeroes after a decimal place that are dangling after `numberToString` calls. E.g. `"52506.004"` => `"5.2506k"` | false | `true`
+| stripTrailingZeroes | boolean | Removes any extra zeroes after a decimal place that are dangling after `numberToString` calls. E.g. `"52506.004"` => `"5.2506k"` | false | `true`
 
 ## Why make `Abbreviator` a class?
 You may want multiple abbreviators throughout your game with different settings, i.e. one module may want only 2 d.p. while another may want 0 d.p
@@ -39,8 +39,11 @@ The settings of this abbreviator is independent of other abbreviators.
 
 ## Changelog
 
+### 3.0.3
+- Fixed `stripTrailingZeroes` incorrectly showing as `removeDanglingZeroes` in `README.md`
+
 ### 3.0.2
-- Added setting default and setting example for `removeDanglingZeroes`
+- Added setting default and setting example for `stripTrailingZeroes`
 
 ### 3.0.1
 - Fixed `README.md` example being outdated
@@ -48,7 +51,7 @@ The settings of this abbreviator is independent of other abbreviators.
 
 ### 3.0.0
 - Changed the method to create an abbreviator from `createAbbreviator()` to `abbreviator.new()` (`new Abbreviator()` in TypeScript)
-- Added option `removeDanglingZeroes`
+- Added option `stripTrailingZeroes`
 - Fixed some bugs regarding settings changes
 - Slight speed improvements
 
@@ -92,4 +95,4 @@ The settings of this abbreviator is independent of other abbreviators.
 ## Credits
 [Kampfkarren](http://github.com/Kampfkarren/) - `numberToString` method
 [Corecii](https://github.com/Corecii) - Help with `numbersToSortedString`
-[Scyfren](https://github.com/Scyfren) - Help with `removeDanglingZeroes`
+[Scyfren](https://github.com/Scyfren) - Help with `stripTrailingZeroes`

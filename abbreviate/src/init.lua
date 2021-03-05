@@ -63,7 +63,7 @@ return {
 			_suffixTable = DEFAULT_SUFFIX_TABLE,
 			_decimalPlaces = 2,
 			_stripTrailingZeroes = false,
-	
+
 			setSetting = setSetting,
 			numberToString = numberToString,
 			numbersToSortedString = numbersToSortedString,
