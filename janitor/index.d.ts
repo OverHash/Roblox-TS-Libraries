@@ -26,13 +26,13 @@ export class Janitor<U extends object | void = void> {
 			: I extends keyof U
 			? U[I]
 			: M extends true
-			? () => void
+			? Callback
 			: M extends undefined
 			? RBXScriptConnection | { Destroy(): void }
 			: object,
-		M extends undefined | ((this: O) => void) | ((_: O) => void) | ExtractKeys<O, () => void>,
+		M extends undefined | ((this: O) => void) | ((_: O) => void) | ExtractKeys<O, () => void> | true,
 		I extends keyof U | undefined = undefined
-	>(object: O, methodName?: M, index?: I): void;
+	>(object: O, methodName?: M, index?: I): O;
 
 	/**
 	 * Adds a promise to the janitor. If the janitor is cleaned up and the promise is not completed, the promise will be cancelled.
