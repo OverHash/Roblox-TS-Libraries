@@ -20,6 +20,9 @@ parts.forEach(part => {
 ## Changelog
 ### Unreleased
 
+### 1.1.0
+- Fixed the types of many constructors such as `FromPart`
+
 ### 1.0.8
 - Fix README.md ([#7](https://github.com/OverHash/Roblox-TS-Libraries/pull/7))
 
