@@ -8,13 +8,18 @@ local TS = _G[script]
 local Promise = TS.Promise
 local Scheduler = require(script.Scheduler)
 
-local Janitors = setmetatable({}, {__mode = "k"})
-local Janitor = {__index = {CurrentlyCleaning = true}}
-
+local IndicesReference = newproxy(false)
 local LinkToInstanceIndex = newproxy(true)
 getmetatable(LinkToInstanceIndex).__tostring = function()
 	return "LinkToInstanceIndex"
 end
+
+local Janitor = {
+	__index = {
+		CurrentlyCleaning = true;
+		[IndicesReference] = nil;
+	};
+}
 
 local FastSpawn = Scheduler.FastSpawn
 local Wait = Scheduler.Wait
@@ -29,7 +34,10 @@ local TypeDefaults = {
 	@returns [Janitor]
 **--]]
 function Janitor.new()
-	return setmetatable({CurrentlyCleaning = false}, Janitor)
+	return setmetatable({
+		CurrentlyCleaning = false;
+		[IndicesReference] = nil;
+	}, Janitor)
 end
 
 --[[**
@@ -52,11 +60,10 @@ function Janitor.__index:Add(Object, MethodName, Index)
 	if Index then
 		self:Remove(Index)
 
-		local This = Janitors[self]
-
+		local This = self[IndicesReference]
 		if not This then
 			This = {}
-			Janitors[self] = This
+			self[IndicesReference] = This
 		end
 
 		This[Index] = Object
@@ -90,7 +97,7 @@ end
 	@returns [Janitor] The same janitor, for chaining reasons.
 **--]]
 function Janitor.__index:Remove(Index)
-	local This = Janitors[self]
+	local This = self[IndicesReference]
 
 	if This then
 		local Object = This[Index]
@@ -121,7 +128,7 @@ end
 	@returns [any?] This will return the object if it is found, but it won't return anything if it doesn't exist.
 **--]]
 function Janitor.__index:Get(Index)
-	local This = Janitors[self]
+	local This = self[IndicesReference]
 	if This then
 		return This[Index]
 	end
@@ -135,6 +142,10 @@ function Janitor.__index:Cleanup()
 	if not self.CurrentlyCleaning then
 		self.CurrentlyCleaning = nil
 		for Object, MethodName in next, self do
+			if Object == IndicesReference then
+				continue
+			end
+
 			if MethodName == true then
 				Object()
 			else
@@ -144,13 +155,13 @@ function Janitor.__index:Cleanup()
 			self[Object] = nil
 		end
 
-		local This = Janitors[self]
+		local This = self[IndicesReference]
 		if This then
 			for Index in next, This do
 				This[Index] = nil
 			end
 
-			Janitors[self] = nil
+			self[IndicesReference] = {}
 		end
 
 		self.CurrentlyCleaning = false
@@ -242,8 +253,8 @@ end
 **--]]
 function Janitor.__index:LinkToInstances(...)
 	local ManualCleanup = Janitor.new()
-	for Index = 1, select("#", ...) do
-		ManualCleanup:Add(self:LinkToInstance(select(Index, ...), true), "Disconnect")
+	for _, Object in ipairs({...}) do
+		ManualCleanup:Add(self:LinkToInstance(Object, true), "Disconnect")
 	end
 
 	return ManualCleanup
