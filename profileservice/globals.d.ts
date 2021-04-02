@@ -205,6 +205,13 @@ export interface ViewProfile<DataType extends object> {
 	Release(): void;
 
 	/**
+	 * In many cases ProfileService will be fast enough when loading and releasing profiles as the player teleports between places belonging to the same universe / game. However, if you're experiencing noticable delays when loading profiles after a universe teleport, you should try implementing `:ListenToHopReady()`.
+	 *
+	 * A listener passed to `:ListenToHopReady()` will be executed after the releasing UpdateAsync call finishes. `:ListenToHopReady()` will usually call the listener in around a second, but may ocassionally take up to 7 seconds when a profile is released next to an auto-update interval (regular usage scenario - rapid loading / releasing of the same profile key may yield different results).
+	 */
+	 ListenToHopReady(listener: () => void): RBXScriptSignal;
+
+	/**
 	 * Equivalent of `Profile.MetaData.MetaTags.set(tagName, value)`.
 	 *
 	 * Useful for tagging your profile with information about itself such as
