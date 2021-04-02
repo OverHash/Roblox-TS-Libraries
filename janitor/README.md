@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/@rbxts/janitor.png)](https://npmjs.org/package/@rbxts/janitor)
 
-Typings for pobammer's forked [janitor module](https://gist.github.com/howmanysmall/55a2ea914ad0ecfa4c74028931f77825#file-janitorwithpromisesupport-lua)
+Typings for pobammer's forked [janitor module](https://github.com/howmanysmall/Janitor)
 
 Credits to Validark for the original module, see [RoStrap's Janitor docs](https://rostrap.github.io/Libraries/Events/Janitor/) for more information.
 
@@ -48,6 +48,8 @@ Obliterator.Cleanup();
 ```
 
 ## Changelog
+### Unreleased Changes
+- Fixed link to Janitor repository in README.md
 
 ### 1.0.7
 - Removed the usage of global state.
