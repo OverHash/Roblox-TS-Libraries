@@ -11,6 +11,10 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 ## Changelog
 ### Unreleased
 
+### 1.3.0
+- Added `ListenToHopReady`
+- Updated to commit [96e10b3](https://github.com/MadStudioRoblox/ProfileService/commit/96e10b376663379001fc63f6793ddfc31a0f491d)
+
 ### 1.2.1
 - Converted `Object` into `object` for the types.
 ### 1.2.0
