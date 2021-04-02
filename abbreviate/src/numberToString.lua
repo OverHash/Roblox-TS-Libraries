@@ -19,7 +19,7 @@ local function round(number, decimalPlaces, roundDown)
 	end
 end
 
-function numberToString(self, number, roundDown)
+local function numberToString(self, number, roundDown)
 	if type(number) ~= "number" then
 		error('numberToString invalid parameter #1, expected number, got "nil"', 2)
 	end

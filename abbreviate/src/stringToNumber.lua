@@ -1,4 +1,4 @@
-function stringToNumber(self, str)
+local function stringToNumber(self, str)
 	if not (str and type(str) == 'string') then
 		error('stringToNumber had invalid parameters.\nP1 - string: string', 2)
 	end

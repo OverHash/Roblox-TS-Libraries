@@ -46,7 +46,7 @@ local function round(number, decimalPlaces, roundDown)
 	end
 end
 
-function numbersToSortedString(self, numbers)
+local function numbersToSortedString(self, numbers)
 	if not (numbers and type(numbers) == 'table') then
 		error('numbersToSortedString had invalid parameters.\nP1 - numbers: Array<number>', 2)
 	end

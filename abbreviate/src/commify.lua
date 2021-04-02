@@ -1,4 +1,4 @@
-function commify(self, number)
+local function commify(self, number)
 	assert(type(number) == 'number', 'Attempt to commify a non-number value')
 
 	local formatted = tostring(number)

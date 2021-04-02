@@ -1,4 +1,4 @@
-function setSetting(self, settingName, settingValue)
+local function setSetting(self, settingName, settingValue)
 	if not (settingName and settingValue ~= nil and type(settingName) == 'string') then
 		error('setSetting had invalid parameters.\nP1 - settingName: string\nP2 - settingValue: unknown', 2)
 	end
