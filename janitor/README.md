@@ -49,6 +49,10 @@ Obliterator.Cleanup();
 
 ## Changelog
 
+### 1.0.7
+- Removed the usage of global state.
+- Optimized the `LinkToInstances` function.
+
 ### 1.0.6
 - Fixed the return type of `Janitor.Add` to return the object passed.
 - Fixed `Janitor.Add` to accept `true` for `methodName` when passing a function
