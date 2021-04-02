@@ -212,6 +212,8 @@ export interface ViewProfile<DataType extends object> {
 	 * In short, `Profile:ListenToRelease()` and `Profile:ListenToHopReady()` will both execute the listener function after release, but `Profile:ListenToHopReady()` will additionally wait until the session lock is removed from the `Profile`.
 	 * @param listener The listener to execute after the releasing UpdateAsync call finishes.
 	 */
+	ListenToHopReady(listener: () => void): RBXScriptSignal;
+	
 	/**
 	 * Equivalent of `Profile.MetaData.MetaTags.set(tagName, value)`.
 	 *
