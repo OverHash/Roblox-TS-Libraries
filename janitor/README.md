@@ -58,6 +58,7 @@ Obliterator.Cleanup();
 - Added safety check to `AddPromise`.
 - Added `ClassName` to Janitor object.
 - Changed version to match the official release.
+- Fixed link to Janitor repository in README.md
 
 ### 1.0.7
 - Removed the usage of global state.
