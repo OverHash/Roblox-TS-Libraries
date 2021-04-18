@@ -48,8 +48,6 @@ Obliterator.Cleanup();
 ```
 
 ## Changelog
-### Unreleased Changes
-- Fixed link to Janitor repository in README.md
 
 ### 1.1.2
 - Fixed major bug where destroyed Janitors added to a Janitor do not clean up nicely. See [official release page](https://github.com/howmanysmall/Janitor/releases/tag/1.1.2) for example code.
