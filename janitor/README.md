@@ -49,6 +49,14 @@ Obliterator.Cleanup();
 
 ## Changelog
 ### Unreleased Changes
+
+### 1.1.2
+- Fixed major bug where destroyed Janitors added to a Janitor do not clean up nicely. See [official release page](https://github.com/howmanysmall/Janitor/releases/tag/1.1.2) for example code.
+- Reduced the size of Scheduler.
+- Added `__tostring` to `IndicesReference`.
+- Added safety check to `AddPromise`.
+- Added `ClassName` to Janitor object.
+- Changed version to match the official release.
 - Fixed link to Janitor repository in README.md
 
 ### 1.0.7

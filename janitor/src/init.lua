@@ -8,13 +8,20 @@ local TS = _G[script]
 local Promise = TS.Promise
 local Scheduler = require(script.Scheduler)
 
-local IndicesReference = newproxy(false)
+local IndicesReference = newproxy(true)
+getmetatable(IndicesReference).__tostring = function()
+	return "IndicesReference"
+end
+
 local LinkToInstanceIndex = newproxy(true)
 getmetatable(LinkToInstanceIndex).__tostring = function()
 	return "LinkToInstanceIndex"
 end
 
+local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s))"
+
 local Janitor = {
+	ClassName = "Janitor";
 	__index = {
 		CurrentlyCleaning = true;
 		[IndicesReference] = nil;
@@ -81,6 +88,10 @@ end
 	@returns [Promise]
 **--]]
 function Janitor.__index:AddPromise(PromiseObject)
+	if not Promise.is(PromiseObject) then
+		error(string.format(NOT_A_PROMISE, typeof(PromiseObject), tostring(PromiseObject)))
+	end
+
 	if PromiseObject:getStatus() == Promise.Status.Started then
 		local Id = newproxy(false)
 		local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
@@ -109,7 +120,10 @@ function Janitor.__index:Remove(Index)
 				if MethodName == true then
 					Object()
 				else
-					Object[MethodName](Object)
+					local ObjectMethod = Object[MethodName]
+					if ObjectMethod then
+						ObjectMethod(Object)
+					end
 				end
 
 				self[Object] = nil
@@ -149,7 +163,10 @@ function Janitor.__index:Cleanup()
 			if MethodName == true then
 				Object()
 			else
-				Object[MethodName](Object)
+				local ObjectMethod = Object[MethodName]
+				if ObjectMethod then
+					ObjectMethod(Object)
+				end
 			end
 
 			self[Object] = nil
