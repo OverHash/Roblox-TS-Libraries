@@ -30,7 +30,7 @@ declare namespace tableutil {
 	 * Shuffles the array. Internally, this is using the Fisher-Yates algorithm to shuffle around the items.
 	 * @param tbl The array to shuffle
 	 */
-	export function Shuffle<T>(tbl: Array<T>): Array<T>;
+	export function Shuffle(tbl: object): void;
 
 	/**
 	 * Returns `true` if the table is empty.
