@@ -40,41 +40,41 @@ declare class RotatedRegion3 {
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static Block(cframe: CFrame, size: Vector3): RotatedRegion3;
+	static Block(this: void, cframe: CFrame, size: Vector3): RotatedRegion3;
 
 	/**
 	 * Creates a region from a cframe which acts as the center of the region and size which extends to the corners like a wedge part.
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static Wedge: (cframe: CFrame, size: Vector3) => RotatedRegion3;
+	static Wedge: (this: void, cframe: CFrame, size: Vector3) => RotatedRegion3;
 
 	/**
 	 * Creates a region from a cframe which acts as the center of the region and size which extends to the corners like a cornerWedge part.
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static CornerWedge: (cframe: CFrame, size: Vector3) => RotatedRegion3;
+	static CornerWedge: (this: void, cframe: CFrame, size: Vector3) => RotatedRegion3;
 
 	/**
 	 * Creates a region from a cframe which acts as the center of the region and size which extends to the corners like a cylinder part.
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static Cylinder: (cframe: CFrame, size: Vector3) => RotatedRegion3;
+	static Cylinder: (this: void, cframe: CFrame, size: Vector3) => RotatedRegion3;
 
 	/**
 	 * Creates a region from a cframe which acts as the center of the region and size which extends to the corners like a ball part.
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static Ball: (cframe: CFrame, size: Vector3) => RotatedRegion3;
+	static Ball: (this: void, cframe: CFrame, size: Vector3) => RotatedRegion3;
 
 	/**
 	 * Creates a region from a part in the game. It can be used on any base part, but the region will treat unknown shapes (meshes, unions, etc) as block shapes.
 	 * @param part The part to create a Region3 from
 	 */
-	static FromPart: (part: BasePart) => RotatedRegion3;
+	static FromPart: (this: void, part: BasePart) => RotatedRegion3;
 
 	/**
 	 * Checks if a point is within the RotatedRegion3 object
