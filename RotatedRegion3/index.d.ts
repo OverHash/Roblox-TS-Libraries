@@ -40,7 +40,7 @@ declare class RotatedRegion3 {
 	 * @param cframe The central point of the region3
 	 * @param size The size of the region3
 	 */
-	static Block(cframe: CFrame, size: Vector3): RotatedRegion3;
+	static Block: (cframe: CFrame, size: Vector3) => RotatedRegion3;
 
 	/**
 	 * Creates a region from a cframe which acts as the center of the region and size which extends to the corners like a wedge part.

@@ -7,7 +7,7 @@
 
 ## Example Usage
 ```typescript
-import * as rotatedregion3 from "@rbxts/rotatedregion3";
+import RotatedRegion3 from "@rbxts/rotatedregion3";
 
 const myRegion = new RotatedRegion3(new CFrame(10, 0, 5), new Vector3(5, 10, 5));
 const parts = myRegion.FindPartsInRegion3();
@@ -19,6 +19,10 @@ parts.forEach(part => {
 
 ## Changelog
 ### Unreleased
+
+### 1.2.0
+- Fixed the type of `RotatedRegion3.Block` to correctly be a callback.
+- Changed `README.md` code example.
 
 ### 1.1.0
 - Fixed the types of many constructors such as `FromPart`
