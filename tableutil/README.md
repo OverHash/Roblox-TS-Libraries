@@ -23,7 +23,7 @@ Updated since [this release](https://github.com/Sleitnick/Knit/releases/tag/v0.0
 
 - Updated to [Knit v0.0.18-alpha](https://github.com/Sleitnick/Knit/releases/tag/v0.0.18-alpha)
   - This removes certain APIs such as `Print` and `IndexOf`
-  - This creates new APIs such as `Extend`, `Flat`, `FlatMap`, `Keys`, `Find`, `Every`, `Some`
+  - This implements new APIs such as `Reverse`
 - Renamed the exported namespace to `TableUtil` (previously `tableutil`)
 
 ### 1.3.2

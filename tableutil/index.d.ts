@@ -72,14 +72,6 @@ declare namespace TableUtil {
 	export function Sync<T extends RealObject, K extends RealObject>(tbl: T, templateTbl: K): T & K;
 
 	/**
-	 * Prints the table to the output. This is useful for debugging tables.
-	 * @param tbl The table to print
-	 * @param label The name of the table
-	 * @param deepPrint If print should be called on deep objects
-	 */
-	//export function Print(tbl: object, label: string, deepPrint?: boolean): void;
-
-	/**
 	 * Creates a reversed version of this table.
 	 * @example
 	 * ```ts
