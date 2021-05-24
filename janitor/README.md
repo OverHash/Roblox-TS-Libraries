@@ -50,6 +50,9 @@ Obliterator.Cleanup();
 ## Changelog
 ### Unreleased Changes
 
+### 1.1.3
+- Fixed LinkToInstance for deferred Signal type. This does slightly worsen stack traces, but it shouldn't be as bad as it breaking.
+
 ### 1.1.2
 - Fixed major bug where destroyed Janitors added to a Janitor do not clean up nicely. See [official release page](https://github.com/howmanysmall/Janitor/releases/tag/1.1.2) for example code.
 - Reduced the size of Scheduler.

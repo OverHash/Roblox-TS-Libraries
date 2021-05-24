@@ -8,9 +8,8 @@ local RunService = game:GetService("RunService")
 local Heartbeat = RunService.Heartbeat
 local TimeFunction = RunService:IsRunning() and time or os.clock
 
-local Scheduler = {
-	TimeFunction = TimeFunction;
-}
+local Scheduler = {}
+Scheduler.TimeFunction = TimeFunction
 
 local Queue = {}
 local CurrentLength = 0
@@ -93,10 +92,10 @@ end
 
 --[[**
 	"Overengineered" `delay` reimplementation. Takes parameters. This should take significantly less time to execute than the original.
-	@param [number?] DelayTime The amount of time to delay for.
-	@param [function] Function The function to call.
-	@param [...?] ... Optional arguments to call the function with.
-	@returns [void]
+	@param [t:number?] DelayTime The amount of time to delay for.
+	@param [t:function] Function The function to call.
+	@param [t:...?] ... Optional arguments to call the function with.
+	@returns [t:void]
 **--]]
 function Scheduler.Delay(Seconds, Function, ...)
 	-- If seconds is nil, -INF, INF, NaN, or less than MINIMUM_DELAY, assume seconds is MINIMUM_DELAY.
@@ -144,8 +143,8 @@ local Scheduler_Delay = Scheduler.Delay
 
 --[[**
 	Overengineered `wait` reimplementation. Uses `Scheduler.Delay`.
-	@param [number?] Seconds The amount of time to yield for.
-	@returns [number] The actual time yielded.
+	@param [t:number?] Seconds The amount of time to yield for.
+	@returns [t:number] The actual time yielded.
 **--]]
 function Scheduler.Wait(Seconds)
 	local BindableEvent = Instance.new("BindableEvent")
@@ -155,9 +154,9 @@ end
 
 --[[**
 	Spawns the passed function immediately using a BindableEvent. This keeps the traceback as well, and will throw an error if the function errors.
-	@param [function] Function The function you are calling.
-	@param [...?] ... The optional arguments to call the function with.
-	@returns [void]
+	@param [t:function] Function The function you are calling.
+	@param [t:...?] ... The optional arguments to call the function with.
+	@returns [t:void]
 **--]]
 function Scheduler.FastSpawn(Function, ...)
 	local Arguments = table.pack(...)
@@ -168,6 +167,25 @@ function Scheduler.FastSpawn(Function, ...)
 
 	BindableEvent:Fire()
 	BindableEvent:Destroy()
+end
+
+local function ResumeThreadWithTraceback(Thread, Success, ...)
+	if not Success then
+		warn(debug.traceback(Thread, tostring(...)))
+	end
+
+	return Success, ...
+end
+
+--[[**
+	Spawns the passed function immediately using coroutines. This keeps the traceback as well, and warns if the function errors.
+	@param [t:function] Function The function you are calling.
+	@param [t:...any?] ... The optional arguments to call the function with.
+	@returns [t:boolean,...any?] Whether or not the call was successful and the returned values.
+**--]]
+function Scheduler.ThreadSpawn(Function, ...)
+	local Thread = coroutine.create(Function)
+	return ResumeThreadWithTraceback(Thread, coroutine.resume(Thread, ...))
 end
 
 return Scheduler
