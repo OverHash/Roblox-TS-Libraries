@@ -1,5 +1,3 @@
-type methods = ExtractKeys<Part, Callback>;
-
 /**
  * A class to manage the connections in your game
  */

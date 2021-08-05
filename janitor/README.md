@@ -55,6 +55,18 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.13.5-ts.2
+
+- Fixed `README.md` changelog.
+
+### 1.13.5-ts.1
+
+- Removed unused types.
+
+### 1.13.5-ts.0
+
+- Updated TS package to match Luau package ([release](https://github.com/howmanysmall/Janitor/releases/tag/1.13.5)).
+
 ### 1.1.3
 
 - Fixed LinkToInstance for deferred Signal type. This does slightly worsen stack traces, but it shouldn't be as bad as it breaking.
@@ -67,7 +79,7 @@ Obliterator.Cleanup();
 - Added safety check to `AddPromise`.
 - Added `ClassName` to Janitor object.
 - Changed version to match the official release.
-- Fixed link to Janitor repository in README.md
+- Fixed link to Janitor repository in README.md.
 
 ### 1.0.7
 
