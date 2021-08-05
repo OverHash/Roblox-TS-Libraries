@@ -6,9 +6,7 @@
 
 local TS = _G[script]
 
-local RunService = game:GetService("RunService")
 local Promise = TS.Promise
-local Heartbeat = RunService.Heartbeat
 
 local IndicesReference = newproxy(true)
 getmetatable(IndicesReference).__tostring = function()
@@ -24,16 +22,16 @@ local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expe
 local METHOD_NOT_FOUND_ERROR = "Object %s doesn't have method %s, are you sure you want to add it? Traceback: %s"
 
 local Janitor = {
-	ClassName = "Janitor";
+	ClassName = "Janitor",
 	__index = {
-		CurrentlyCleaning = true;
-		[IndicesReference] = nil;
-	};
+		CurrentlyCleaning = true,
+		[IndicesReference] = nil,
+	},
 }
 
 local TypeDefaults = {
-	["function"] = true;
-	RBXScriptConnection = "Disconnect";
+	["function"] = true,
+	RBXScriptConnection = "Disconnect",
 }
 
 --[[**
@@ -42,8 +40,8 @@ local TypeDefaults = {
 **--]]
 function Janitor.new()
 	return setmetatable({
-		CurrentlyCleaning = false;
-		[IndicesReference] = nil;
+		CurrentlyCleaning = false,
+		[IndicesReference] = nil,
 	}, Janitor)
 end
 
@@ -61,7 +59,7 @@ end
 	@param [t:any] Object The object you want to clean up.
 	@param [t:string|true?] MethodName The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
 	@param [t:any?] Index The index that can be used to clean up the object manually.
-	@returns [t:any] The object that was passed.
+	@returns [t:any] The object that was passed as the first argument.
 **--]]
 function Janitor.__index:Add(Object, MethodName, Index)
 	if Index then
@@ -78,7 +76,14 @@ function Janitor.__index:Add(Object, MethodName, Index)
 
 	MethodName = MethodName or TypeDefaults[typeof(Object)] or "Destroy"
 	if type(Object) ~= "function" and not Object[MethodName] then
-		warn(string.format(METHOD_NOT_FOUND_ERROR, tostring(Object), tostring(MethodName), debug.traceback(nil, 2)))
+		warn(
+			string.format(
+				METHOD_NOT_FOUND_ERROR,
+				tostring(Object),
+				tostring(MethodName),
+				debug.traceback(nil :: any, 2)
+			)
+		)
 	end
 
 	self[Object] = MethodName
@@ -150,6 +155,8 @@ function Janitor.__index:Get(Index)
 	local This = self[IndicesReference]
 	if This then
 		return This[Index]
+	else
+		return nil
 	end
 end
 
@@ -206,7 +213,7 @@ Janitor.__call = Janitor.__index.Cleanup
 -- @param Instance Instance The Instance the Janitor will wait for to be Destroyed
 -- @returns Disconnectable table to stop Janitor from being cleaned up upon Instance Destroy (automatically cleaned up by Janitor, btw)
 -- @author Corecii
-local Disconnect = {Connected = true}
+local Disconnect = { Connected = true }
 Disconnect.__index = Disconnect
 function Disconnect:Disconnect()
 	if self.Connected then
@@ -223,7 +230,7 @@ end
 	"Links" this Janitor to an Instance, such that the Janitor will `Cleanup` when the Instance is `Destroyed()` and garbage collected. A Janitor may only be linked to one instance at a time, unless `AllowMultiple` is true. When called with a truthy `AllowMultiple` parameter, the Janitor will "link" the Instance without overwriting any previous links, and will also not be overwritable. When called with a falsy `AllowMultiple` parameter, the Janitor will overwrite the previous link which was also called with a falsy `AllowMultiple` parameter, if applicable.
 	@param [t:Instance] Object The instance you want to link the Janitor to.
 	@param [t:boolean?] AllowMultiple Whether or not to allow multiple links on the same Janitor.
-	@returns [t:RbxScriptConnection] A pseudo RBXScriptConnection that can be disconnected.
+	@returns [t:RbxScriptConnection] A pseudo RBXScriptConnection that can be disconnected to prevent the cleanup of LinkToInstance.
 **--]]
 function Janitor.__index:LinkToInstance(Object, AllowMultiple)
 	local Connection
@@ -237,22 +244,21 @@ function Janitor.__index:LinkToInstance(Object, AllowMultiple)
 			IsNilParented = NewParent == nil
 
 			if IsNilParented then
-				coroutine.wrap(function()
-					Heartbeat:Wait()
+				task.defer(function()
 					if not ManualDisconnect.Connected then
 						return
 					elseif not Connection.Connected then
 						self:Cleanup()
 					else
 						while IsNilParented and Connection.Connected and ManualDisconnect.Connected do
-							Heartbeat:Wait()
+							task.wait()
 						end
 
 						if ManualDisconnect.Connected and IsNilParented then
 							self:Cleanup()
 						end
 					end
-				end)()
+				end)
 			end
 		end
 	end
@@ -271,11 +277,11 @@ end
 --[[**
 	Links several instances to a janitor, which is then returned.
 	@param [t:...Instance] ... All the instances you want linked.
-	@returns [t:Janitor] A janitor that can be used to manually disconnect all LinkToInstances.
+	@returns [t:Janitor] A new janitor that can be used to manually disconnect all LinkToInstances.
 **--]]
 function Janitor.__index:LinkToInstances(...)
 	local ManualCleanup = Janitor.new()
-	for _, Object in ipairs({...}) do
+	for _, Object in ipairs({ ... }) do
 		ManualCleanup:Add(self:LinkToInstance(Object, true), "Disconnect")
 	end
 
