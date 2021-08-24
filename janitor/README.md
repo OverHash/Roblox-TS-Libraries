@@ -55,6 +55,9 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.13.6-ts.0
+- Added thread safety
+
 ### 1.13.5-ts.2
 
 - Fixed `README.md` changelog.
