@@ -2,13 +2,13 @@ import { ProfileStore } from "./globals";
 
 declare namespace ProfileService {
 	/**
-	 * Set to false when the Roblox server is shutting down. ProfileStore methods should not be called after this value is set to false
+	 * Set to false when the Roblox server is shutting down. `ProfileStore` methods should not be called after this value is set to `false`
 	 */
 	const ServiceLocked: boolean;
 	/**
 	 * Analytics endpoint for DataStore error logging. Example usage:
 	 * @example
-	 *	ProfileService.IssueSignal:Connect((errorMessage, profileStoreName, profileKey) => {
+	 *	ProfileService.IssueSignal.Connect((errorMessage, profileStoreName, profileKey) => {
 	 *		pcall(() => {
 	 *			AnalyticsService.FireEvent("ProfileServiceIssue", errorMessage, profileStoreName, profileKey)
 	 *	   })
@@ -27,18 +27,25 @@ declare namespace ProfileService {
 	const CriticalStateSignal: RBXScriptSignal<(isCriticalState: boolean) => void>;
 
 	/**
-	 * ProfileStore objects expose methods for loading / viewing profiles and sending global updates. Equivalent of .GetDataStore() in Roblox DataStoreService API.
+	 * `ProfileStore` objects expose methods for loading / viewing profiles and sending global updates. Equivalent of [:GetDataStore()](https://developer.roblox.com/en-us/api-reference/function/DataStoreService/GetDataStore) in Roblox [DataStoreService](https://developer.roblox.com/en-us/api-reference/class/DataStoreService) API.
 	 *
-	 * `ProfileStore` objects expose methods for loading / viewing profiles and sending global updates. Equivalent of []:GetDataStore()](https://developer.roblox.com/en-us/api-reference/function/DataStoreService/GetDataStore) in Roblox [DataStoreService](https://developer.roblox.com/en-us/api-reference/class/DataStoreService) API.
-	 *
-	 * @see By default, `profileTemplate` is only copied for `Profile.Data` for new profiles. Changes made to `profileTemplate` can be applied to `Profile.Data` of previously saved profiles by calling [Profile.Reconcile()](https://madstudioroblox.github.io/ProfileService/api/#profilereconcile). You can also create your own function to fill in the missing components in `Profile.Data` as soon as it is loaded or have `nil` exceptions in your personal `.Get()` and `.Set()` method libraries.
-	 * @param profileStoreName DataStore name
-	 * @param profileTemplate Profile.Data will default to given table (deep-copy) when no data was previously saved.
+	 * By default, `profile_template` is only copied for `Profile.Data` for new profiles. Changes made to `profile_template` can be applied to `Profile.Data` of previously saved profiles by calling [Profile:Reconcile()](https://madstudioroblox.github.io/ProfileService/api/#profilereconcile). You can also create your own function to fill in the missing components in `Profile.Data` as soon as it is loaded or have `nil` exceptions in your personal `:Get()` and `:Set()` method libraries.
+	 * @param profileStoreIndex DataStore name
+	 * @param profileTemplate Profile.Data will default to given table (deep-copy) when no data was saved previously
 	 */
-	const GetProfileStore: <playerData extends object>(
-		profileStoreName: string,
-		profileTemplate: playerData,
-	) => ProfileStore<playerData>;
+	const GetProfileStore: <ProfileTemplate extends object, RobloxMetaData extends unknown = unknown>(
+		profileStoreIndex: string | {
+			/**
+			 * DataStore name
+			 */
+			Name: string;
+			/**
+			 * DataStore scope
+			 */
+			Scope?: string;
+		},
+		profileTemplate: ProfileTemplate,
+	) => ProfileStore<ProfileTemplate, RobloxMetaData>;
 }
 
 export = ProfileService;
