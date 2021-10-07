@@ -4,54 +4,105 @@
 -- roblox-ts support by OverHash and Validark
 -- LinkToInstance fixed by Elttob.
 
-local TS = _G[script]
+local GetPromiseLibrary = require(script.GetPromiseLibrary)
+local Symbol = require(script.Symbol)
+local FoundPromiseLibrary, Promise = GetPromiseLibrary()
 
-local Promise = TS.Promise
+local IndicesReference = Symbol("IndicesReference")
+local LinkToInstanceIndex = Symbol("LinkToInstanceIndex")
 
-local IndicesReference = newproxy(true)
-getmetatable(IndicesReference).__tostring = function()
-	return "IndicesReference"
-end
-
-local LinkToInstanceIndex = newproxy(true)
-getmetatable(LinkToInstanceIndex).__tostring = function()
-	return "LinkToInstanceIndex"
-end
-
-local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s))"
 local METHOD_NOT_FOUND_ERROR = "Object %s doesn't have method %s, are you sure you want to add it? Traceback: %s"
+local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s))"
 
+--[=[
+	Janitor is a light-weight, flexible object for cleaning up connections, instances, or anything. This implementation covers all use cases,
+	as it doesn't force you to rely on naive typechecking to guess how an instance should be cleaned up.
+	Instead, the developer may specify any behavior for any object.
+
+	@class Janitor
+]=]
 local Janitor = {}
 Janitor.ClassName = "Janitor"
-Janitor.__index = {}
-
-Janitor.__index.CurrentlyCleaning = true
-Janitor.__index[IndicesReference] = nil
+Janitor.CurrentlyCleaning = true
+Janitor[IndicesReference] = nil
+Janitor.__index = Janitor
 
 local TypeDefaults = {
 	["function"] = true;
 	RBXScriptConnection = "Disconnect";
 }
 
---[[**
-	Determines if the passed object is a Janitor.
-	@param [t:any] Object The object you are checking.
-	@returns [t:boolean] Whether or not the object is a Janitor.
-**--]]
+--[=[
+	Determines if the passed object is a Janitor. This checks the metatable directly.
+
+	@param Object any -- The object you are checking.
+	@return boolean -- `true` if `Object` is a Janitor.
+]=]
 function Janitor.Is(Object: any): boolean
 	return type(Object) == "table" and getmetatable(Object) == Janitor
 end
 
 type StringOrTrue = string | boolean
 
---[[**
-	Adds an `Object` to Janitor for later cleanup, where `MethodName` is the key of the method within `Object` which should be called at cleanup time. If the `MethodName` is `true` the `Object` itself will be called instead. If passed an index it will occupy a namespace which can be `Remove()`d or overwritten. Returns the `Object`.
-	@param [t:any] Object The object you want to clean up.
-	@param [t:string|true?] MethodName The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
-	@param [t:any?] Index The index that can be used to clean up the object manually.
-	@returns [t:any] The object that was passed as the first argument.
-**--]]
-function Janitor.__index:Add(Object: any, MethodName: StringOrTrue?, Index: any?): any
+--[=[
+	Adds an `Object` to Janitor for later cleanup, where `MethodName` is the key of the method within `Object` which should be called at cleanup time.
+	If the `MethodName` is `true` the `Object` itself will be called instead. If passed an index it will occupy a namespace which can be `Remove()`d or overwritten.
+	Returns the `Object`.
+
+	:::info
+	Objects not given an explicit `MethodName` will be passed into the `typeof` function for a very naive typecheck.
+	RBXConnections will be assigned to "Disconnect", functions will be assigned to `true`, and everything else will default to "Destroy".
+	Not recommended, but hey, you do you.
+	:::
+
+	```lua
+	local Workspace = game:GetService("Workspace")
+	local TweenService = game:GetService("TweenService")
+
+	local Obliterator = Janitor.new()
+	local Part = Workspace.Part
+
+	-- Queue the Part to be Destroyed at Cleanup time
+	Obliterator:Add(Part, "Destroy")
+
+	-- Queue function to be called with `true` MethodName
+	Obliterator:Add(print, true)
+
+	-- This implementation allows you to specify behavior for any object
+	Obliterator:Add(TweenService:Create(Part, TweenInfo.new(1), {Size = Vector3.new(1, 1, 1)}), "Cancel")
+
+	-- By passing an Index, the Object will occupy a namespace
+	-- If "CurrentTween" already exists, it will call :Remove("CurrentTween") before writing
+	Obliterator:Add(TweenService:Create(Part, TweenInfo.new(1), {Size = Vector3.new(1, 1, 1)}), "Destroy", "CurrentTween")
+	```
+
+	```ts
+	import { Workspace, TweenService } from "@rbxts/services";
+	import { Janitor } from "@rbxts/janitor";
+
+	const Obliterator = new Janitor<{ CurrentTween: Tween }>();
+	const Part = Workspace.FindFirstChild("Part") as Part;
+
+	// Queue the Part to be Destroyed at Cleanup time
+	Obliterator.Add(Part, "Destroy");
+
+	// Queue function to be called with `true` MethodName
+	Obliterator.Add(print, true);
+
+	// This implementation allows you to specify behavior for any object
+	Obliterator.Add(TweenService.Create(Part, new TweenInfo(1), {Size: new Vector3(1, 1, 1)}), "Cancel");
+
+	// By passing an Index, the Object will occupy a namespace
+	// If "CurrentTween" already exists, it will call :Remove("CurrentTween") before writing
+	Obliterator.Add(TweenService.Create(Part, new TweenInfo(1), {Size: new Vector3(1, 1, 1)}), "Destroy", "CurrentTween");
+	```
+
+	@param Object T -- The object you want to clean up.
+	@param MethodName? string|true -- The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
+	@param Index? any -- The index that can be used to clean up the object manually.
+	@return T -- The object that was passed as the first argument.
+]=]
+function Janitor:Add(Object: any, MethodName: StringOrTrue?, Index: any?): any
 	if Index then
 		self:Remove(Index)
 
@@ -73,34 +124,69 @@ function Janitor.__index:Add(Object: any, MethodName: StringOrTrue?, Index: any?
 	return Object
 end
 
--- My version of Promise has PascalCase, but I converted it to use lowerCamelCase for this release since obviously that's important to do.
+--[=[
+	Adds a [Promise](https://github.com/evaera/roblox-lua-promise) to the Janitor. If the Janitor is cleaned up and the Promise is not completed, the Promise will be cancelled.
 
---[[**
-	Adds a promise to the janitor. If the janitor is cleaned up and the promise is not completed, the promise will be cancelled.
-	@param [t:Promise] PromiseObject The promise you want to add to the janitor.
-	@returns [t:Promise]
-**--]]
-function Janitor.__index:AddPromise(PromiseObject)
-	if not Promise.is(PromiseObject) then
-		error(string.format(NOT_A_PROMISE, typeof(PromiseObject), tostring(PromiseObject)))
-	end
+	```lua
+	local Obliterator = Janitor.new()
+	Obliterator:AddPromise(Promise.delay(3)):andThenCall(print, "Finished!"):catch(warn)
+	task.wait(1)
+	Obliterator:Cleanup()
+	```
 
-	if PromiseObject:getStatus() == Promise.Status.Started then
-		local Id = newproxy(false)
-		local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
-		NewPromise:finallyCall(self.Remove, self, Id)
-		return NewPromise
+	```ts
+	import { Janitor } from "@rbxts/janitor";
+
+	const Obliterator = new Janitor();
+	Obliterator.AddPromise(Promise.delay(3)).andThenCall(print, "Finished!").catch(warn);
+	task.wait(1);
+	Obliterator.Cleanup();
+	```
+
+	@param PromiseObject Promise -- The promise you want to add to the Janitor.
+	@return Promise
+]=]
+function Janitor:AddPromise(PromiseObject)
+	if FoundPromiseLibrary then
+		if not Promise.is(PromiseObject) then
+			error(string.format(NOT_A_PROMISE, typeof(PromiseObject), tostring(PromiseObject)))
+		end
+
+		if PromiseObject:getStatus() == Promise.Status.Started then
+			local Id = newproxy(false)
+			local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
+			NewPromise:finallyCall(self.Remove, self, Id)
+			return NewPromise
+		else
+			return PromiseObject
+		end
 	else
 		return PromiseObject
 	end
 end
 
---[[**
-	Cleans up whatever `Object` was set to this namespace by the 3rd parameter of `:Add()`.
-	@param [t:any] Index The index you want to remove.
-	@returns [t:Janitor] The same janitor, for chaining reasons.
-**--]]
-function Janitor.__index:Remove(Index: any): Janitor
+--[=[
+	Cleans up whatever `Object` was set to this namespace by the 3rd parameter of [Janitor.Add](#Add).
+
+	```lua
+	local Obliterator = Janitor.new()
+	Obliterator:Add(workspace.Baseplate, "Destroy", "Baseplate")
+	Obliterator:Remove("Baseplate")
+	```
+
+	```ts
+	import { Workspace } from "@rbxts/services";
+	import { Janitor } from "@rbxts/janitor";
+
+	const Obliterator = new Janitor<{ Baseplate: Part }>();
+	Obliterator.Add(Workspace.FindFirstChild("Baseplate") as Part, "Destroy", "Baseplate");
+	Obliterator.Remove("Baseplate");
+	```
+
+	@param Index any -- The index you want to remove.
+	@return Janitor
+]=]
+function Janitor:Remove(Index: any): Janitor
 	local This = self[IndicesReference]
 
 	if This then
@@ -111,11 +197,11 @@ function Janitor.__index:Remove(Index: any): Janitor
 
 			if MethodName then
 				if MethodName == true then
-					task.spawn(Object)
+					Object()
 				else
 					local ObjectMethod = Object[MethodName]
 					if ObjectMethod then
-						task.spawn(ObjectMethod, Object)
+						ObjectMethod(Object)
 					end
 				end
 
@@ -129,12 +215,28 @@ function Janitor.__index:Remove(Index: any): Janitor
 	return self
 end
 
---[[**
+--[=[
 	Gets whatever object is stored with the given index, if it exists. This was added since Maid allows getting the task using `__index`.
-	@param [t:any] Index The index that the object is stored under.
-	@returns [t:any?] This will return the object if it is found, but it won't return anything if it doesn't exist.
-**--]]
-function Janitor.__index:Get(Index: any): any?
+
+	```lua
+	local Obliterator = Janitor.new()
+	Obliterator:Add(workspace.Baseplate, "Destroy", "Baseplate")
+	print(Obliterator:Get("Baseplate")) -- Returns Baseplate.
+	```
+
+	```ts
+	import { Workspace } from "@rbxts/services";
+	import { Janitor } from "@rbxts/janitor";
+
+	const Obliterator = new Janitor<{ Baseplate: Part }>();
+	Obliterator.Add(Workspace.FindFirstChild("Baseplate") as Part, "Destroy", "Baseplate");
+	print(Obliterator.Get("Baseplate")); // Returns Baseplate.
+	```
+
+	@param Index any -- The index that the object is stored under.
+	@return any? -- This will return the object if it is found, but it won't return anything if it doesn't exist.
+]=]
+function Janitor:Get(Index: any): any?
 	local This = self[IndicesReference]
 	if This then
 		return This[Index]
@@ -143,24 +245,33 @@ function Janitor.__index:Get(Index: any): any?
 	end
 end
 
---[[**
-	Calls each Object's `MethodName` (or calls the Object if `MethodName == true`) and removes them from the Janitor. Also clears the namespace. This function is also called when you call a Janitor Object (so it can be used as a destructor callback).
-	@returns [t:void]
-**--]]
-function Janitor.__index:Cleanup()
+--[=[
+	Calls each Object's `MethodName` (or calls the Object if `MethodName == true`) and removes them from the Janitor. Also clears the namespace.
+	This function is also called when you call a Janitor Object (so it can be used as a destructor callback).
+
+	```lua
+	Obliterator:Cleanup() -- Valid.
+	Obliterator() -- Also valid.
+	```
+
+	```ts
+	Obliterator.Cleanup()
+	```
+]=]
+function Janitor:Cleanup()
 	if not self.CurrentlyCleaning then
 		self.CurrentlyCleaning = nil
-		for Object, MethodName in next, self do
+		for Object, MethodName in pairs(self) do
 			if Object == IndicesReference then
 				continue
 			end
 
 			if MethodName == true then
-				task.spawn(Object)
+				Object()
 			else
 				local ObjectMethod = Object[MethodName]
 				if ObjectMethod then
-					task.spawn(ObjectMethod, Object)
+					ObjectMethod(Object)
 				end
 			end
 
@@ -169,10 +280,7 @@ function Janitor.__index:Cleanup()
 
 		local This = self[IndicesReference]
 		if This then
-			for Index in next, This do
-				This[Index] = nil
-			end
-
+			table.clear(This)
 			self[IndicesReference] = {}
 		end
 
@@ -180,56 +288,97 @@ function Janitor.__index:Cleanup()
 	end
 end
 
---[[**
-	Calls `:Cleanup()` and renders the Janitor unusable.
-	@returns [t:void]
-**--]]
-function Janitor.__index:Destroy()
+--[=[
+	Calls [Janitor.Cleanup](#Cleanup) and renders the Janitor unusable.
+
+	:::warning
+	Running this will make any attempts to call a function of Janitor error.
+	:::
+]=]
+function Janitor:Destroy()
 	self:Cleanup()
 	table.clear(self)
 	setmetatable(self, nil)
 end
 
-Janitor.__call = Janitor.__index.Cleanup
+Janitor.__call = Janitor.Cleanup
 
---- Makes the Janitor clean up when the instance is destroyed
--- @param Instance Instance The Instance the Janitor will wait for to be Destroyed
--- @returns Disconnectable table to stop Janitor from being cleaned up upon Instance Destroy (automatically cleaned up by Janitor, btw)
--- @author Corecii
-local Disconnect = {}
-Disconnect.Connected = true
-Disconnect.__index = Disconnect
+--[=[
+	A wrapper for an `RBXScriptConnection`. Makes the Janitor clean up when the instance is destroyed. This was created by Corecii.
 
-function Disconnect:Disconnect()
+	@class RbxScriptConnection
+	@__index RbxScriptConnection
+]=]
+local RbxScriptConnection = {}
+RbxScriptConnection.Connected = true
+RbxScriptConnection.__index = RbxScriptConnection
+
+--[=[
+	Disconnects the Signal.
+]=]
+function RbxScriptConnection:Disconnect()
 	if self.Connected then
 		self.Connected = false
 		self.Connection:Disconnect()
 	end
 end
 
-function Disconnect._new(RBXScriptConnection: RBXScriptConnection)
+function RbxScriptConnection._new(RBXScriptConnection: RBXScriptConnection)
 	return setmetatable({
 		Connection = RBXScriptConnection;
-	}, Disconnect)
+	}, RbxScriptConnection)
 end
 
-function Disconnect:__tostring()
-	return "Disconnect<" .. tostring(self.Connected) .. ">"
+function RbxScriptConnection:__tostring()
+	return "RbxScriptConnection<" .. tostring(self.Connected) .. ">"
 end
 
-type RbxScriptConnection = typeof(Disconnect._new(game:GetPropertyChangedSignal("ClassName"):Connect(function() end)))
+type RbxScriptConnection = typeof(RbxScriptConnection._new(game:GetPropertyChangedSignal("ClassName"):Connect(function() end)))
 
---[[**
-	"Links" this Janitor to an Instance, such that the Janitor will `Cleanup` when the Instance is `Destroyed()` and garbage collected. A Janitor may only be linked to one instance at a time, unless `AllowMultiple` is true. When called with a truthy `AllowMultiple` parameter, the Janitor will "link" the Instance without overwriting any previous links, and will also not be overwritable. When called with a falsy `AllowMultiple` parameter, the Janitor will overwrite the previous link which was also called with a falsy `AllowMultiple` parameter, if applicable.
-	@param [t:Instance] Object The instance you want to link the Janitor to.
-	@param [t:boolean?] AllowMultiple Whether or not to allow multiple links on the same Janitor.
-	@returns [t:RbxScriptConnection] A pseudo RBXScriptConnection that can be disconnected to prevent the cleanup of LinkToInstance.
-**--]]
-function Janitor.__index:LinkToInstance(Object: Instance, AllowMultiple: boolean?): RbxScriptConnection
+--[=[
+	"Links" this Janitor to an Instance, such that the Janitor will `Cleanup` when the Instance is `Destroyed()` and garbage collected.
+	A Janitor may only be linked to one instance at a time, unless `AllowMultiple` is true. When called with a truthy `AllowMultiple` parameter,
+	the Janitor will "link" the Instance without overwriting any previous links, and will also not be overwritable.
+	When called with a falsy `AllowMultiple` parameter, the Janitor will overwrite the previous link which was also called with a falsy `AllowMultiple` parameter, if applicable.
+
+	```lua
+	local Obliterator = Janitor.new()
+
+	Obliterator:Add(function()
+		print("Cleaning up!")
+	end, true)
+
+	do
+		local Folder = Instance.new("Folder")
+		Obliterator:LinkToInstance(Folder)
+		Folder:Destroy()
+	end
+	```
+
+	```ts
+	import { Janitor } from "@rbxts/janitor";
+
+	const Obliterator = new Janitor();
+	Obliterator.Add(() => print("Cleaning up!"), true);
+
+	{
+		const Folder = new Instance("Folder");
+		Obliterator.LinkToInstance(Folder, false);
+		Folder.Destroy();
+	}
+	```
+
+	This returns a mock `RBXScriptConnection` (see: [RbxScriptConnection](#RbxScriptConnection)).
+
+	@param Object Instance -- The instance you want to link the Janitor to.
+	@param AllowMultiple? boolean -- Whether or not to allow multiple links on the same Janitor.
+	@return RbxScriptConnection -- A pseudo RBXScriptConnection that can be disconnected to prevent the cleanup of LinkToInstance.
+]=]
+function Janitor:LinkToInstance(Object: Instance, AllowMultiple: boolean?): RbxScriptConnection
 	local Connection
 	local IndexToUse = AllowMultiple and newproxy(false) or LinkToInstanceIndex
 	local IsNilParented = Object.Parent == nil
-	local ManualDisconnect = setmetatable({}, Disconnect)
+	local ManualDisconnect = setmetatable({}, RbxScriptConnection)
 
 	local function ChangedFunction(_DoNotUse, NewParent)
 		if ManualDisconnect.Connected then
@@ -267,12 +416,13 @@ function Janitor.__index:LinkToInstance(Object: Instance, AllowMultiple: boolean
 	return self:Add(ManualDisconnect, "Disconnect", IndexToUse)
 end
 
---[[**
-	Links several instances to a janitor, which is then returned.
-	@param [t:...Instance] ... All the instances you want linked.
-	@returns [t:Janitor] A new janitor that can be used to manually disconnect all LinkToInstances.
-**--]]
-function Janitor.__index:LinkToInstances(...: Instance): Janitor
+--[=[
+	Links several instances to a new Janitor, which is then returned.
+
+	@param ... Instance -- All the Instances you want linked.
+	@return Janitor -- A new Janitor that can be used to manually disconnect all LinkToInstances.
+]=]
+function Janitor:LinkToInstances(...: Instance): Janitor
 	local ManualCleanup = Janitor.new()
 	for _, Object in ipairs({...}) do
 		ManualCleanup:Add(self:LinkToInstance(Object, true), "Disconnect")
@@ -281,10 +431,10 @@ function Janitor.__index:LinkToInstances(...: Instance): Janitor
 	return ManualCleanup
 end
 
---[[**
+--[=[
 	Instantiates a new Janitor object.
-	@returns [t:Janitor]
-**--]]
+	@return Janitor
+]=]
 function Janitor.new()
 	return setmetatable({
 		CurrentlyCleaning = false;

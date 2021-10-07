@@ -4,7 +4,13 @@
 
 Typings for howmanysmall's forked [janitor module](https://github.com/howmanysmall/Janitor)
 
+View the [Janitor docs](https://howmanysmall.github.io/Janitor/)!
+
 Credits to Validark for the original module, see [RoStrap's Janitor docs](https://rostrap.github.io/Libraries/Events/Janitor/) for more information.
+
+## Installation:
+
+`npm i @rbxts/janitor`
 
 ## Changes
 
@@ -55,7 +61,13 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.13.12-ts.0
+
+- Removes the change from `1.13.6-ts.0` where cleanup tasks were no longer called synchronously.
+  - Janitor now calls the cleanup tasks one-by-one, synchronously.
+
 ### 1.13.6-ts.0
+
 - Added thread safety
 
 ### 1.13.5-ts.2
@@ -115,7 +127,3 @@ Obliterator.Cleanup();
 ### 1.0.0
 
 - Initial release
-
-## Installation:
-
-`npm i @rbxts/janitor`
