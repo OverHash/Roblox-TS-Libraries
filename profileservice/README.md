@@ -14,6 +14,11 @@ See [MadStudioRoblox/ProfileService](https://github.com/MadStudioRoblox/ProfileS
 
 ### Unreleased
 
+### 1.4.1
+
+- ViewProfileAsync MetaData load bug fix
+- Updated to commit [83d0696](https://github.com/MadStudioRoblox/ProfileService/commit/83d06966fd9151e581a292f5e5d0ad0ca9222bd7)
+
 ### 1.4.0
 
 - Introduced DS v2 support
