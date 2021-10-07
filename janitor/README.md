@@ -61,6 +61,10 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.13.12-ts.1
+
+- Fixed Janitor loading bug
+
 ### 1.13.12-ts.0
 
 - Removes the change from `1.13.6-ts.0` where cleanup tasks were no longer called synchronously.
