@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/janitor",
-  "version": "1.13.12-ts.1",
+  "version": "1.13.15-ts.0",
   "description": "A port of howmanysmall's janitor module.",
   "main": "src/init.lua",
   "types": "index.d.ts",
@@ -35,6 +35,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@rbxts/compiler-types": "^1.1.0-types.0"
+    "@rbxts/compiler-types": "^1.1.0-types.0",
+    "@rbxts/types": "^1.0.553"
   }
 }

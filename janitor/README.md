@@ -61,6 +61,11 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.13.15-ts.0
+
+- `Janitor.AddPromise` now will handle cancellations properly.
+- `Janitor.Cleanup` now uses a while loop instead of a for loop when cleaning up to fix adding other janitors during cleanup.
+
 ### 1.13.12-ts.1
 
 - Fixed Janitor loading bug

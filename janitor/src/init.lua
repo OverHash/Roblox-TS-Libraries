@@ -3,6 +3,7 @@
 -- Modifications by pobammer
 -- roblox-ts support by OverHash and Validark
 -- LinkToInstance fixed by Elttob.
+-- Cleanup edge cases fixed by codesenseAye.
 
 local GetPromiseLibrary = require(script.GetPromiseLibrary)
 local Symbol = require(script.Symbol)
@@ -28,8 +29,8 @@ Janitor[IndicesReference] = nil
 Janitor.__index = Janitor
 
 local TypeDefaults = {
-	["function"] = true;
-	RBXScriptConnection = "Disconnect";
+	["function"] = true,
+	RBXScriptConnection = "Disconnect",
 }
 
 --[=[
@@ -117,7 +118,14 @@ function Janitor:Add(Object: any, MethodName: StringOrTrue?, Index: any?): any
 
 	MethodName = MethodName or TypeDefaults[typeof(Object)] or "Destroy"
 	if type(Object) ~= "function" and not Object[MethodName] then
-		warn(string.format(METHOD_NOT_FOUND_ERROR, tostring(Object), tostring(MethodName), debug.traceback(nil :: any, 2)))
+		warn(
+			string.format(
+				METHOD_NOT_FOUND_ERROR,
+				tostring(Object),
+				tostring(MethodName),
+				debug.traceback(nil :: any, 2)
+			)
+		)
 	end
 
 	self[Object] = MethodName
@@ -154,7 +162,20 @@ function Janitor:AddPromise(PromiseObject)
 
 		if PromiseObject:getStatus() == Promise.Status.Started then
 			local Id = newproxy(false)
-			local NewPromise = self:Add(Promise.resolve(PromiseObject), "cancel", Id)
+			local NewPromise = self:Add(
+				Promise.new(function(Resolve, _, OnCancel)
+					if OnCancel(function()
+						PromiseObject:cancel()
+					end) then
+						return
+					end
+
+					Resolve(PromiseObject)
+				end),
+				"cancel",
+				Id
+			)
+
 			NewPromise:finallyCall(self.Remove, self, Id)
 			return NewPromise
 		else
@@ -186,7 +207,7 @@ end
 	@param Index any -- The index you want to remove.
 	@return Janitor
 ]=]
-function Janitor:Remove(Index: any): Janitor
+function Janitor:Remove(Index: any)
 	local This = self[IndicesReference]
 
 	if This then
@@ -245,6 +266,16 @@ function Janitor:Get(Index: any): any?
 	end
 end
 
+local function GetFenv(self)
+	return function()
+		for Object, MethodName in pairs(self) do
+			if Object ~= IndicesReference then
+				return Object, MethodName
+			end
+		end
+	end
+end
+
 --[=[
 	Calls each Object's `MethodName` (or calls the Object if `MethodName == true`) and removes them from the Janitor. Also clears the namespace.
 	This function is also called when you call a Janitor Object (so it can be used as a destructor callback).
@@ -261,11 +292,11 @@ end
 function Janitor:Cleanup()
 	if not self.CurrentlyCleaning then
 		self.CurrentlyCleaning = nil
-		for Object, MethodName in pairs(self) do
-			if Object == IndicesReference then
-				continue
-			end
 
+		local Get = GetFenv(self)
+		local Object, MethodName = Get()
+
+		while Object and MethodName do -- changed to a while loop so that if you add to the janitor inside of a callback it doesn't get untracked (instead it will loop continuously which is a lot better than a hard to pindown edgecase)
 			if MethodName == true then
 				Object()
 			else
@@ -276,6 +307,7 @@ function Janitor:Cleanup()
 			end
 
 			self[Object] = nil
+			Object, MethodName = Get()
 		end
 
 		local This = self[IndicesReference]
@@ -325,7 +357,7 @@ end
 
 function RbxScriptConnection._new(RBXScriptConnection: RBXScriptConnection)
 	return setmetatable({
-		Connection = RBXScriptConnection;
+		Connection = RBXScriptConnection,
 	}, RbxScriptConnection)
 end
 
@@ -333,7 +365,9 @@ function RbxScriptConnection:__tostring()
 	return "RbxScriptConnection<" .. tostring(self.Connected) .. ">"
 end
 
-type RbxScriptConnection = typeof(RbxScriptConnection._new(game:GetPropertyChangedSignal("ClassName"):Connect(function() end)))
+type RbxScriptConnection = typeof(RbxScriptConnection._new(
+	game:GetPropertyChangedSignal("ClassName"):Connect(function() end)
+))
 
 --[=[
 	"Links" this Janitor to an Instance, such that the Janitor will `Cleanup` when the Instance is `Destroyed()` and garbage collected.
@@ -422,9 +456,9 @@ end
 	@param ... Instance -- All the Instances you want linked.
 	@return Janitor -- A new Janitor that can be used to manually disconnect all LinkToInstances.
 ]=]
-function Janitor:LinkToInstances(...: Instance): Janitor
+function Janitor:LinkToInstances(...: Instance)
 	local ManualCleanup = Janitor.new()
-	for _, Object in ipairs({...}) do
+	for _, Object in ipairs({ ... }) do
 		ManualCleanup:Add(self:LinkToInstance(Object, true), "Disconnect")
 	end
 
@@ -437,8 +471,8 @@ end
 ]=]
 function Janitor.new()
 	return setmetatable({
-		CurrentlyCleaning = false;
-		[IndicesReference] = nil;
+		CurrentlyCleaning = false,
+		[IndicesReference] = nil,
 	}, Janitor)
 end
 
