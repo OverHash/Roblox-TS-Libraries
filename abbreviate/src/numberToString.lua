@@ -15,7 +15,7 @@ local function round(number, decimalPlaces, roundDown)
 			print(number, math.floor(number))
 			> 101 101
 		]]
-		return math.floor(number + 0.5) / 10 ^ decimalPlaces
+		return math.ceil(number + 0.5) / 10 ^ decimalPlaces
 	end
 end
 
