@@ -1,7 +1,7 @@
 local function round(number, decimalPlaces, roundDown)
-	number = number * 10^decimalPlaces
+	number = number * 10 ^ decimalPlaces
 	if roundDown then
-		return math.floor(number) / 10^decimalPlaces
+		return math.floor(number) / 10 ^ decimalPlaces
 	else
 		number = tonumber(tostring(number))
 		-- cast to string and back to number to prevent floating point errors
@@ -15,7 +15,7 @@ local function round(number, decimalPlaces, roundDown)
 			print(number, math.floor(number))
 			> 101 101
 		]]
-		return math.floor(number + 0.5) / 10^decimalPlaces
+		return math.floor(number + 0.5) / 10 ^ decimalPlaces
 	end
 end
 
@@ -31,9 +31,9 @@ local function numberToString(self, number, roundDown)
 	if number < 1000 and number > -1000 then
 		-- special case: we must manually abbreviate numbers between -1000 and 1000
 		if not self._stripTrailingZeroes then
-			return ("%."..self._decimalPlaces.."f"):format(number)
+			return ("%." .. self._decimalPlaces .. "f"):format(number)
 		else
-			number = round(number, self._decimalPlaces)
+			number = round(number, self._decimalPlaces, roundDown)
 			return tostring(number)
 		end
 	end
@@ -54,7 +54,7 @@ local function numberToString(self, number, roundDown)
 			end
 
 			if not self._stripTrailingZeroes then
-				number = ("%."..self._decimalPlaces.."f"):format(number)
+				number = ("%." .. self._decimalPlaces .. "f"):format(number)
 			end
 
 			number = number .. unit

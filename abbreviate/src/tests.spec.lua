@@ -24,7 +24,7 @@ return function()
 		end)
 
 		it("should allow changable suffix table", function()
-			local newSuffixTable = {"k", "M", "B"}
+			local newSuffixTable = { "k", "M", "B" }
 
 			expect(function()
 				abbreviate:setSetting("suffixTable", newSuffixTable)
@@ -54,7 +54,7 @@ return function()
 			expect(abbreviate:numberToString(-0.099)).to.equal("-0.10")
 		end)
 
-		it("should work with negative numbers (-1000 > x", function()
+		it("should work with negative numbers (-1000 > x)", function()
 			expect(abbreviate:numberToString(-1000)).to.equal("-1.00k")
 			-- test rounding
 			expect(abbreviate:numberToString(-1005, false)).to.equal("-1.01k")
