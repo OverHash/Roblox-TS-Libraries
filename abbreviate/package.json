@@ -1,40 +1,39 @@
 {
-	"name": "@rbxts/abbreviate",
-	"version": "3.0.3",
-	"description": "A lightweight number abbreviator",
-	"main": "src/init.lua",
-	"types": "src/index.d.ts",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/abbreviate"
-	},
-	"keywords": [
-		"abbreviate",
-		"roblox",
-		"roblox-ts",
-		"roblox-typescript",
-		"number"
-	],
-	"author": "OverHash",
-	"license": "mpl-2.0",
-	"bugs": {
-		"url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
-	},
-	"homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/README.md",
-	"publishConfig": {
-		"access": "public"
-	},
-	"files": [
-		"src/init.lua",
-		"src/index.d.ts",
-
-		"src/commify.lua",
-		"src/numbersToSortedString.lua",
-		"src/numberToString.lua",
-		"src/setSetting.lua",
-		"src/stringToNumber.lua"
-	]
+  "name": "@rbxts/abbreviate",
+  "version": "3.0.4",
+  "description": "A lightweight number abbreviator",
+  "main": "src/init.lua",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/abbreviate"
+  },
+  "keywords": [
+    "abbreviate",
+    "roblox",
+    "roblox-ts",
+    "roblox-typescript",
+    "number"
+  ],
+  "author": "OverHash",
+  "license": "mpl-2.0",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/abbreviate/README.md",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src/init.lua",
+    "src/index.d.ts",
+    "src/commify.lua",
+    "src/numbersToSortedString.lua",
+    "src/numberToString.lua",
+    "src/setSetting.lua",
+    "src/stringToNumber.lua"
+  ]
 }
