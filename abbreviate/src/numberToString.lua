@@ -3,8 +3,8 @@ local function round(number, decimalPlaces, roundDown)
 	if roundDown then
 		return math.floor(number) / 10 ^ decimalPlaces
 	else
-		number = tonumber(tostring(number))
-		-- cast to string and back to number to prevent floating point errors
+		number = tonumber(string.format("%.14g", number))
+		-- cast to string and back to number to give some epsilon for floating point numbers
 		--[[ e.g.:
 			local number = 1005 / 10^3 * 10^2 + 0.5 -- 101
 			print(number, math.floor(number))
@@ -15,7 +15,7 @@ local function round(number, decimalPlaces, roundDown)
 			print(number, math.floor(number))
 			> 101 101
 		]]
-		return math.ceil(number + 0.5) / 10 ^ decimalPlaces
+		return math.floor(number + 0.5) / 10 ^ decimalPlaces
 	end
 end
 

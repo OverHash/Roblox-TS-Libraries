@@ -76,7 +76,10 @@ return function()
 
 			-- test roundDown
 			expect(abbreviate:numberToString(1005, false)).to.equal("1.01k")
+			expect(abbreviate:numberToString(1004, false)).to.equal("1.00k")
+
 			expect(abbreviate:numberToString(1005)).to.equal("1.00k")
+			expect(abbreviate:numberToString(1004)).to.equal("1.00k")
 		end)
 
 		it("should work with stripTrailingZeroes set to true", function()
