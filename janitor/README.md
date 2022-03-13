@@ -61,6 +61,16 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.14.0-ts.0
+
+- You can now add a `thread` using `:Add`. This will cancel said thread when the Janitor is cleaned up.
+- Added `__tostring` to the Janitor class.
+- Added `:RemoveList` as an alternative to long `:Remove` chains.
+- Added the properties of `Janitor` and `RbxScriptConnection` to the documentation.
+- Recompiled with L+ C Edition.
+- Put `RbxScriptConnection` in a separate file.
+- Documentation now will split the code examples by language more obviously.
+
 ### 1.13.15-ts.0
 
 - `Janitor.AddPromise` now will handle cancellations properly.

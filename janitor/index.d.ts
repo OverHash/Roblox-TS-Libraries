@@ -24,7 +24,7 @@ export class Janitor<U extends object | void = void> {
 			: I extends keyof U
 			? U[I]
 			: M extends true
-			? Callback
+			? Callback | thread
 			: M extends undefined
 			? RBXScriptConnection | { Destroy(): void }
 			: object,
