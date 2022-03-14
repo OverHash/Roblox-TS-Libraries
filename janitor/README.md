@@ -61,6 +61,10 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.14.0-ts.1
+
+- Fixed `RemoveList` definitions
+
 ### 1.14.0-ts.0
 
 - You can now add a `thread` using `:Add`. This will cancel said thread when the Janitor is cleaned up.

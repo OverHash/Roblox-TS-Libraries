@@ -47,6 +47,13 @@ export class Janitor<U extends object | void = void> {
 	public Remove(index: keyof U): this;
 
 	/**
+	 * Cleans up multiple objects at once.
+	 * @param indices The indices you want to remove.
+	 * @returns The same janitor, for chaining reasons.
+	 */
+	public RemoveList(...indices: Array<keyof U>): this;
+
+	/**
 	 * Gets whatever object is stored with the given index, if it exists. This was added since Maid allows getting the task using `__index`.
 	 * @param index The index that the object is stored under.
 	 * @returns This will return the object if it is found, but it won't return anything if it doesn't exist.
