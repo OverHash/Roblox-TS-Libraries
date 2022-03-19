@@ -61,6 +61,14 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.14.1-ts.0
+
+- Added a new `LinkToInstance` method which will instead use `Instance.Destroying`.
+- Added traceback to `Janitor:AddPromise` for invalid promises.
+- The legacy `LinkToInstance` method has been renamed to `LegacyLinkToInstance`.
+- Fixed Janitor not warning about an invalid `MethodName` for threads and functions.
+- Fixed incorrect documentation about `Janitor.CurrentlyCleaning`.
+
 ### 1.14.0-ts.1
 
 - Fixed `RemoveList` definitions
