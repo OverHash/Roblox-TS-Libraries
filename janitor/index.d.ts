@@ -96,5 +96,5 @@ export class Janitor<U extends object | void = void> {
 	 * @param object The object you are checking.
 	 * @returns Whether or not the object is a Janitor.
 	 */
-	public static Is<T extends object>(object: unknown): object is Janitor<T>;
+	public static Is: <T extends object>(object: unknown) => object is Janitor<T>;
 }
