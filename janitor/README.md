@@ -62,6 +62,9 @@ Obliterator.Cleanup();
 ### Unreleased Changes
 
 ### 1.14.1-ts.0
+- Fixed `Is` method type definition
+
+### 1.14.1-ts.0
 
 - Added a new `LinkToInstance` method which will instead use `Instance.Destroying`.
 - Added traceback to `Janitor:AddPromise` for invalid promises.
