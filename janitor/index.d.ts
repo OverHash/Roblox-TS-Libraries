@@ -37,7 +37,7 @@ export class Janitor<U extends object | void = void> {
 	 * @param promise The promise you want to add to the janitor.
 	 * @returns The promise that was passed
 	 */
-	public AddPromise<T extends Promise<unknown>>(promise: T): T;
+	public AddPromise<T extends Promise<any>>(promise: T): T;
 
 	/**
 	 * Cleans up whatever `object` was set to this namespace by the 3rd parameter of `.Add()`.
