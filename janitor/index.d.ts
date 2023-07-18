@@ -29,7 +29,7 @@ export class Janitor<U extends object | void = void> {
 			? RBXScriptConnection | { Destroy(): void }
 			: object,
 		M extends undefined | ((this: O) => void) | ((_: O) => void) | ExtractKeys<O, () => void> | true,
-		I extends keyof U | undefined = undefined
+		I extends keyof U | undefined = undefined,
 	>(object: O, methodName?: M, index?: I): O;
 
 	/**
@@ -47,6 +47,22 @@ export class Janitor<U extends object | void = void> {
 	public Remove(index: keyof U): this;
 
 	/**
+	 * Removes an object from the Janitor without running a cleanup.
+	 *
+	 * ```ts
+	 * import { Janitor } from "@rbxts/janitor";
+	 *
+	 * const Obliterator = new Janitor<{ Function: () => void }>();
+	 * Obliterator.Add(() => print("Removed!"), true, "Function");
+	 *
+	 * Obliterator.RemoveNoClean("Function"); // Does not print.
+	 * ```
+	 * @param index The index you want to remove.
+	 * @returns The same janitor, for chaining reasons.
+	 */
+	public RemoveNoClean(index: keyof U): this;
+
+	/**
 	 * Cleans up multiple objects at once.
 	 * @param indices The indices you want to remove.
 	 * @returns The same janitor, for chaining reasons.
@@ -54,11 +70,45 @@ export class Janitor<U extends object | void = void> {
 	public RemoveList(...indices: Array<keyof U>): this;
 
 	/**
+	 * Cleans up multiple objects at once without running their cleanup.
+	 *
+	 * ```ts
+	 * import { Janitor } from "@rbxts/janitor";
+	 *  s
+	 * type NoOp = () => void
+	 *
+	 * const Obliterator = new Janitor<{ One: NoOp, Two: NoOp, Three: NoOp }>();
+	 * Obliterator.Add(() => print("Removed One"), true, "One");
+	 * Obliterator.Add(() => print("Removed Two"), true, "Two");
+	 * Obliterator.Add(() => print("Removed Three"), true, "Three");
+	 *
+	 * Obliterator.RemoveListNoClean("One", "Two", "Three"); // Nothing is printed.
+	 * ```
+	 *
+	 * @param indices
+	 */
+	public RemoveListNoClean(...indices: Array<keyof U>): this;
+
+	/**
 	 * Gets whatever object is stored with the given index, if it exists. This was added since Maid allows getting the task using `__index`.
 	 * @param index The index that the object is stored under.
 	 * @returns This will return the object if it is found, but it won't return anything if it doesn't exist.
 	 */
 	public Get<T extends keyof U>(index: T): U[T] | undefined;
+
+	/**
+	 * Returns a frozen copy of the Janitor's indices.
+	 *
+	 * ```ts
+	 * import { Workspace } from "@rbxts/services";
+	 * import { Janitor } from "@rbxts/janitor";
+	 *
+	 * const Obliterator = new Janitor<{ Baseplate: Part }>();
+	 * Obliterator.Add(Workspace.FindFirstChild("Baseplate") as Part, "Destroy", "Baseplate");
+	 * print(Obliterator.GetAll().Baseplate); // Prints Baseplate.
+	 * ```
+	 */
+	public GetAll<T extends keyof U>(): Array<U[T] | undefined>;
 
 	/**
 	 * Calls each Object's `MethodName` (or calls the Object if `MethodName === true`) and removes them from the Janitor. Also clears the namespace. This function is also called when you call a Janitor Object (so it can be used as a destructor callback).
