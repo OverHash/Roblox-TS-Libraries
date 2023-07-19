@@ -74,7 +74,7 @@ export class Janitor<U extends object | void = void> {
 	 *
 	 * ```ts
 	 * import { Janitor } from "@rbxts/janitor";
-	 *  s
+	 * 
 	 * type NoOp = () => void
 	 *
 	 * const Obliterator = new Janitor<{ One: NoOp, Two: NoOp, Three: NoOp }>();
@@ -108,7 +108,7 @@ export class Janitor<U extends object | void = void> {
 	 * print(Obliterator.GetAll().Baseplate); // Prints Baseplate.
 	 * ```
 	 */
-	public GetAll<T extends keyof U>(): Array<U[T] | undefined>;
+	public GetAll(): {[P in keyof U]: U[P] | undefined};
 
 	/**
 	 * Calls each Object's `MethodName` (or calls the Object if `MethodName === true`) and removes them from the Janitor. Also clears the namespace. This function is also called when you call a Janitor Object (so it can be used as a destructor callback).
