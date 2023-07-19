@@ -57,7 +57,7 @@ export class Janitor<U extends object | void = void> {
 	 *
 	 * Obliterator.RemoveNoClean("Function"); // Does not print.
 	 * ```
-	 * @param index The index you want to remove.
+	 * @param index The index you are removing.
 	 * @returns The same janitor, for chaining reasons.
 	 */
 	public RemoveNoClean(index: keyof U): this;
