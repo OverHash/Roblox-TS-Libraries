@@ -85,7 +85,7 @@ export class Janitor<U extends object | void = void> {
 	 * Obliterator.RemoveListNoClean("One", "Two", "Three"); // Nothing is printed.
 	 * ```
 	 *
-	 * @param indices
+	 * @param indices The indices you want to remove.
 	 */
 	public RemoveListNoClean(...indices: Array<keyof U>): this;
 
