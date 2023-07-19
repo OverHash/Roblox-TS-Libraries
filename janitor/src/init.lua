@@ -829,4 +829,6 @@ export type Janitor = {
 }
 
 table.freeze(Janitor)
-return Janitor
+return {
+	Janitor = Janitor,
+}
