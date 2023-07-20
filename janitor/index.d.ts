@@ -3,6 +3,16 @@
  */
 export class Janitor<U extends object | void = void> {
 	/**
+	 * Whether or not the Janitor is currently cleaning up.
+	 */
+	public readonly CurrentlyCleaning: boolean;
+
+	/**
+	 * Whether or not you want to suppress the re-destroying of instances. Default is false, which is the original behavior. 
+	 */
+	public SupressInstanceReDestroy: boolean;
+
+	/**
 	 * Instantiates a new Janitor object.
 	 */
 	public constructor();
