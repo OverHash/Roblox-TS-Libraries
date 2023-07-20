@@ -61,6 +61,13 @@ Obliterator.Cleanup();
 
 ### Unreleased Changes
 
+### 1.15.4-ts.0
+
+- Updated to upstream `1.15.4` Janitor source
+
+ - Added a toggle to avoid double destruction of instances.
+ - Fixed an error being thrown when an ended thread is cleaned up.
+
 ### 1.15.3-ts.0
 
 - Updated to upstream `1.15.3` Janitor source
