@@ -256,7 +256,7 @@ export interface ViewProfile<DataType extends object, RobloxMetaData extends unk
 	 *
 	 * You cannot modify `Profile.Data` once this has been triggered.
 	 */
-	ListenToRelease(listener: (placeId: number | undefined, jobId: string | undefined) => void): RBXScriptSignal;
+	ListenToRelease(listener: (placeId: number | undefined, jobId: string | undefined) => void): RBXScriptConnection;
 
 	/**
 	 * Removes the session lock for this profile for this Roblox server. Call this method after you're done working with the `Profile` object. Profile data will be immediately saved for the last time.
