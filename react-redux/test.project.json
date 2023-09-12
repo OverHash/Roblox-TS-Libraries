@@ -1,0 +1,9 @@
+{
+  "name": "react-redux",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$path": "src"
+    }
+  }
+}

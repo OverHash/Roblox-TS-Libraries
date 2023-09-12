@@ -1,0 +1,46 @@
+{
+  "name": "@rbxts/react-redux",
+  "version": "0.1.0",
+  "description": "roblox-ts typings for react-redux",
+  "main": "src/init.lua",
+  "types": "src/index.d.ts",
+  "files": [
+    "src/",
+    "index.d.ts",
+    "CHANGELOG.md",
+    "default.project.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/react-redux"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "roblox-ts",
+    "roblox typescript",
+    "react-redux",
+    "hooks",
+    "jsdotlua"
+  ],
+  "author": "OverHash",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/react-redux/README.md",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@rbxts/compiler-types": "^2.1.1-types.0"
+  },
+  "dependencies": {
+    "@rbxts/luau-polyfill-internal": "^1.2.3-ts.0",
+    "@rbxts/redux": "npm:@rbxts/rodux@^3.0.0-ts.3",
+    "@rbxts/roact": "npm:@rbxts/react-ts@^1.0.1"
+  }
+}
