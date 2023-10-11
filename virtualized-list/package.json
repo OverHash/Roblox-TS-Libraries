@@ -1,0 +1,47 @@
+{
+  "name": "@rbxts/virtualized-list",
+  "version": "1.3.2",
+  "description": "roblox-ts typings for virtualized-list-lua",
+  "main": "src/init.luau",
+  "types": "src/index.d.ts",
+  "files": [
+    "src/",
+    "CHANGELOG.md",
+    "default.project.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/virtualized-list"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "roblox-ts",
+    "roblox typescript",
+    "virtualized-list-lua",
+    "virtualized list",
+    "flat list",
+    "hooks",
+    "jsdotlua"
+  ],
+  "author": "OverHash",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OverHash/Roblox-TS-Libraries/issues"
+  },
+  "homepage": "https://github.com/OverHash/Roblox-TS-Libraries/blob/master/virtualized-list/README.md",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@rbxts/compiler-types": "^2.2.0-types.0"
+  },
+  "dependencies": {
+    "@rbxts/flipper": "^2.0.1",
+    "@rbxts/luau-polyfill-internal": "^1.2.3-ts.0",
+    "@rbxts/roact": "npm:@rbxts/react-ts@^1.0.1"
+  }
+}
