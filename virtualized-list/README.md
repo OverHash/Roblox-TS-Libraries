@@ -1,4 +1,4 @@
-# [`virtualized-list`](https://www.npmjs.com/package/@rbxts/virtualized-list)`
+# [`virtualized-list`](https://www.npmjs.com/package/@rbxts/virtualized-list)
 
 roblox-ts typings of [`virtualized-list-lua`](https://github.com/jsdotlua/virtualized-list-lua) for Roblox.
 
