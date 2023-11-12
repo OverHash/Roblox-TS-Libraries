@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Constructor } from "./shared";
-import { ScrollResponderEvent } from "./unimplemented";
-import { ColorValue, ScrollEvent, StyleProp, ViewStyle } from "./unimplemented";
+import { ColorValue, ScrollEvent, ScrollResponderEvent, StyleProp, ViewStyle } from "./unimplemented";
 import { Touchable, ViewProps } from "./view";
 
 export interface Insets {
@@ -518,7 +517,7 @@ export interface ScrollViewProps extends ViewProps, ScrollViewPropsIOS, ScrollVi
      * transforms, for example, when you want your list to have an animated and hidable header.
      * If component have not been provided, the default ScrollViewStickyHeader component will be used.
      */
-    StickyHeaderComponent?: Roact.Component<any> | undefined; // OverHash deviation: originally `React.ComponentType<any>`
+    StickyHeaderComponent?: Roact.ComponentType<any> | undefined; // OverHash deviation: originally `React.ComponentType<any>`
 }
 
 declare class ScrollViewComponent extends Roact.Component<ScrollViewProps> {

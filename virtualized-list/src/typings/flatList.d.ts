@@ -1,24 +1,24 @@
 import Roact from "@rbxts/roact";
-import { ListRenderItem, ViewToken, VirtualizedListProps } from "./virtualizedList";
+import { ScrollViewComponent } from "./scrollView";
 import { StyleProp, ViewStyle } from "./unimplemented";
 import { View } from "./view";
-import { ScrollViewComponent } from "./scrollView";
+import { ListRenderItem, ViewToken, VirtualizedListProps } from "./virtualizedList";
 
 export interface FlatListProps<ItemT> extends VirtualizedListProps<ItemT> {
     /**
      * Rendered in between each item, but not at the top or bottom
      */
-    ItemSeparatorComponent?: Roact.Component<any> | null | undefined;
+    ItemSeparatorComponent?: Roact.ComponentType<any> | null | undefined;
 
     /**
      * Rendered when the list is empty.
      */
-    ListEmptyComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListEmptyComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Rendered at the very end of the list.
      */
-    ListFooterComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListFooterComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Styling for internal View for ListFooterComponent
@@ -28,7 +28,7 @@ export interface FlatListProps<ItemT> extends VirtualizedListProps<ItemT> {
     /**
      * Rendered at the very beginning of the list.
      */
-    ListHeaderComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListHeaderComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Styling for internal View for ListHeaderComponent
