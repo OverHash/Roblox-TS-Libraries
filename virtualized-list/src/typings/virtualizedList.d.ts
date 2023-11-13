@@ -74,19 +74,19 @@ export interface VirtualizedListWithoutRenderItemProps<ItemT> extends ScrollView
      * Rendered when the list is empty. Can be a React Component Class, a render function, or
      * a rendered element.
      */
-    ListEmptyComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListEmptyComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Rendered at the bottom of all the items. Can be a React Component Class, a render function, or
      * a rendered element.
      */
-    ListFooterComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListFooterComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Rendered at the top of all the items. Can be a React Component Class, a render function, or
      * a rendered element.
      */
-    ListHeaderComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListHeaderComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * The default accessor functions assume this is an Array<{key: string}> but you can override

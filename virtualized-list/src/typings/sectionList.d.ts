@@ -26,7 +26,7 @@ export interface SectionBase<ItemT, SectionT = DefaultSectionT> {
 
     renderItem?: SectionListRenderItem<ItemT, SectionT> | undefined;
 
-    ItemSeparatorComponent?: Roact.Component<any> | null | undefined;
+    ItemSeparatorComponent?: Roact.ComponentType<any> | null | undefined;
 
     keyExtractor?: ((item: ItemT, index: number) => string) | undefined;
 }
@@ -49,17 +49,17 @@ export interface SectionListProps<ItemT, SectionT = DefaultSectionT>
     /**
      * Rendered in between adjacent Items within each section.
      */
-    ItemSeparatorComponent?: Roact.Component<any> | null | undefined;
+    ItemSeparatorComponent?: Roact.ComponentType<any> | null | undefined;
 
     /**
      * Rendered when the list is empty.
      */
-    ListEmptyComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListEmptyComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Rendered at the very end of the list.
      */
-    ListFooterComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListFooterComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Styling for internal View for ListFooterComponent
@@ -69,7 +69,7 @@ export interface SectionListProps<ItemT, SectionT = DefaultSectionT>
     /**
      * Rendered at the very beginning of the list.
      */
-    ListHeaderComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    ListHeaderComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * Styling for internal View for ListHeaderComponent
@@ -79,7 +79,7 @@ export interface SectionListProps<ItemT, SectionT = DefaultSectionT>
     /**
      * Rendered in between each section.
      */
-    SectionSeparatorComponent?: Roact.Component<any> | Roact.Element | null | undefined;
+    SectionSeparatorComponent?: Roact.ComponentType<any> | Roact.Element | null | undefined;
 
     /**
      * A marker property for telling the list to re-render (since it implements PureComponent).
