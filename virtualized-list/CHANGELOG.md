@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.3.2-ts.0 (November 13, 2023)
+
 - Fix component types to allow for functional components (#30)
 
 ## v1.3.2 (October 12, 2023)
