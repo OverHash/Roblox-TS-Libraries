@@ -1,3 +1,5 @@
+--!optimize 2
+--!strict
 -- Compiled with L+ C Edition
 -- Janitor
 -- Original by Validark
@@ -6,19 +8,28 @@
 -- LinkToInstance fixed by Elttob.
 -- Cleanup edge cases fixed by codesenseAye.
 
-local GetPromiseLibrary = require(script.GetPromiseLibrary)
-local RbxScriptConnection = require(script.RbxScriptConnection)
-local Symbol = require(script.Symbol)
-local FoundPromiseLibrary, Promise = GetPromiseLibrary()
+-- monkey patched by OverHash for roblox-ts support
+-- roblox-ts exposes the TS runtime lib through _G[script]
+-- which exposes the Promise library
+-- selene: allow(global_usage)
+local Promise = _G[script].Promise
 
-local IndicesReference = Symbol("IndicesReference")
-local LinkToInstanceIndex = Symbol("LinkToInstanceIndex")
+local IndicesReference = setmetatable({}, {
+	__tostring = function()
+		return "IndicesReference"
+	end,
+})
 
-local INVALID_METHOD_NAME = "Object is a %s and as such expected `true?` for the method name and instead got %s. Traceback: %s"
-local METHOD_NOT_FOUND_ERROR = "Object %s doesn't have method %s, are you sure you want to add it? Traceback: %s"
-local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %s (%s)) Traceback: %s"
+local LinkToInstanceIndex = setmetatable({}, {
+	__tostring = function()
+		return "LinkToInstanceIndex"
+	end,
+})
 
-type RbxScriptConnection = RbxScriptConnection.RbxScriptConnection
+local INVALID_METHOD_NAME =
+	"Object is a %* and as such expected `true?` for the method name and instead got %*. Traceback: %*"
+local METHOD_NOT_FOUND_ERROR = "Object %* doesn't have method %*, are you sure you want to add it? Traceback: %*"
+local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %* (%*)) Traceback: %*"
 
 --[=[
 	Janitor is a light-weight, flexible object for cleaning up connections, instances, or anything. This implementation covers all use cases,
@@ -45,6 +56,7 @@ Janitor.__index = Janitor
 --[=[
 	@prop SuppressInstanceReDestroy boolean
 	@within Janitor
+	@since 1.15.4
 
 	Whether or not you want to suppress the re-destroying
 	of instances. Default is false, which is the original
@@ -52,9 +64,9 @@ Janitor.__index = Janitor
 ]=]
 
 local TypeDefaults = {
-	["function"] = true;
-	thread = true;
-	RBXScriptConnection = "Disconnect";
+	["function"] = true,
+	thread = true,
+	RBXScriptConnection = "Disconnect",
 }
 
 --[=[
@@ -63,8 +75,8 @@ local TypeDefaults = {
 ]=]
 function Janitor.new(): Janitor
 	return setmetatable({
-		CurrentlyCleaning = false;
-		[IndicesReference] = nil;
+		CurrentlyCleaning = false,
+		[IndicesReference] = nil,
 	}, Janitor) :: any
 end
 
@@ -77,6 +89,16 @@ end
 function Janitor.Is(Object: any): boolean
 	return type(Object) == "table" and getmetatable(Object) == Janitor
 end
+
+--[=[
+	An alias for [Janitor.Is](#Is). This is intended for roblox-ts support.
+
+	@function instanceof
+	@within Janitor
+	@param Object any -- The object you are checking.
+	@return boolean -- `true` if `Object` is a Janitor.
+]=]
+Janitor.instanceof = Janitor.Is
 
 type BooleanOrString = boolean | string
 
@@ -154,7 +176,7 @@ type BooleanOrString = boolean | string
 	```
 
 	@param Object T -- The object you want to clean up.
-	@param MethodName? string|true -- The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
+	@param MethodName? boolean | string -- The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
 	@param Index? any -- The index that can be used to clean up the object manually.
 	@return T -- The object that was passed as the first argument.
 ]=]
@@ -176,11 +198,18 @@ function Janitor:Add<T>(Object: T, MethodName: BooleanOrString?, Index: any?): T
 
 	if TypeOf == "function" or TypeOf == "thread" then
 		if NewMethodName ~= true then
-			warn(string.format(INVALID_METHOD_NAME, TypeOf, tostring(NewMethodName), debug.traceback(nil :: any, 2)))
+			warn(string.format(INVALID_METHOD_NAME, TypeOf, tostring(NewMethodName), debug.traceback(nil, 2)))
 		end
 	else
 		if not (Object :: any)[NewMethodName] then
-			warn(string.format(METHOD_NOT_FOUND_ERROR, tostring(Object), tostring(NewMethodName), debug.traceback(nil :: any, 2)))
+			warn(
+				string.format(
+					METHOD_NOT_FOUND_ERROR,
+					tostring(Object),
+					tostring(NewMethodName),
+					debug.traceback(nil, 2)
+				)
+			)
 		end
 	end
 
@@ -215,14 +244,18 @@ end
 	@return Promise
 ]=]
 function Janitor:AddPromise(PromiseObject)
-	if FoundPromiseLibrary then
-		if not Promise.is(PromiseObject) then
-			error(string.format(NOT_A_PROMISE, typeof(PromiseObject), tostring(PromiseObject), debug.traceback(nil :: any, 2)))
-		end
+	if not Promise then
+		return PromiseObject
+	end
 
-		if PromiseObject:getStatus() == Promise.Status.Started then
-			local Id = newproxy(false)
-			local NewPromise = self:Add(Promise.new(function(Resolve, _, OnCancel)
+	if not Promise.is(PromiseObject) then
+		error(string.format(NOT_A_PROMISE, typeof(PromiseObject), tostring(PromiseObject), debug.traceback(nil, 2)))
+	end
+
+	if PromiseObject:getStatus() == Promise.Status.Started then
+		local Id = newproxy(false)
+		local NewPromise = self:Add(
+			Promise.new(function(Resolve, _, OnCancel)
 				if OnCancel(function()
 					PromiseObject:cancel()
 				end) then
@@ -230,13 +263,13 @@ function Janitor:AddPromise(PromiseObject)
 				end
 
 				Resolve(PromiseObject)
-			end), "cancel", Id)
+			end),
+			"cancel",
+			Id
+		)
 
-			NewPromise:finallyCall(self.Remove, self, Id)
-			return NewPromise
-		else
-			return PromiseObject
-		end
+		NewPromise:finallyCall(self.Remove, self, Id)
+		return NewPromise
 	else
 		return PromiseObject
 	end
@@ -299,7 +332,11 @@ function Janitor:Remove(Index: any)
 				else
 					local ObjectMethod = Object[MethodName]
 					if ObjectMethod then
-						if self.SuppressInstanceReDestroy and MethodName == "Destroy" and typeof(Object) == "Instance" then
+						if
+							self.SuppressInstanceReDestroy
+							and MethodName == "Destroy"
+							and typeof(Object) == "Instance"
+						then
 							pcall(ObjectMethod, Object)
 						else
 							ObjectMethod(Object)
@@ -537,7 +574,7 @@ end
 	@since v1.15.1
 	@return {[any]: any}
 ]=]
-function Janitor:GetAll(): {[any]: any}
+function Janitor:GetAll(): { [any]: any }
 	local This = self[IndicesReference]
 	return if This then table.freeze(table.clone(This)) else {}
 end
@@ -545,7 +582,7 @@ end
 local function GetFenv(self)
 	return function()
 		for Object, MethodName in next, self do
-			if Object ~= IndicesReference then
+			if Object ~= IndicesReference and Object ~= "SuppressInstanceReDestroy" then
 				return Object, MethodName
 			end
 		end
@@ -678,99 +715,18 @@ Janitor.__call = Janitor.Cleanup
 	@return RBXScriptConnection -- A RBXScriptConnection that can be disconnected to prevent the cleanup of LinkToInstance.
 ]=]
 function Janitor:LinkToInstance(Object: Instance, AllowMultiple: boolean?): RBXScriptConnection
-	local IndexToUse = AllowMultiple and newproxy(false) or LinkToInstanceIndex
+	local IndexToUse = if AllowMultiple then newproxy(false) else LinkToInstanceIndex
 
-	return self:Add(Object.Destroying:Connect(function()
-		self:Cleanup()
-	end), "Disconnect", IndexToUse)
+	return self:Add(
+		Object.Destroying:Connect(function()
+			self:Cleanup()
+		end),
+		"Disconnect",
+		IndexToUse
+	)
 end
 
---[=[
-	This is the legacy LinkToInstance function. It is kept for backwards compatibility in case something is different with `Instance.Destroying`.
-
-	"Links" this Janitor to an Instance, such that the Janitor will `Cleanup` when the Instance is `Destroyed()` and garbage collected.
-	A Janitor may only be linked to one instance at a time, unless `AllowMultiple` is true. When called with a truthy `AllowMultiple` parameter,
-	the Janitor will "link" the Instance without overwriting any previous links, and will also not be overwritable.
-	When called with a falsy `AllowMultiple` parameter, the Janitor will overwrite the previous link which was also called with a falsy `AllowMultiple` parameter, if applicable.
-	This returns a mock `RBXScriptConnection` (see: [RbxScriptConnection](/api/RbxScriptConnection)).
-
-	### Luau:
-
-	```lua
-	local Obliterator = Janitor.new()
-
-	Obliterator:Add(function()
-		print("Cleaning up!")
-	end, true)
-
-	do
-		local Folder = Instance.new("Folder")
-		Obliterator:LinkToInstance(Folder)
-		Folder:Destroy()
-	end
-	```
-
-	### TypeScript:
-
-	```ts
-	import { Janitor } from "@rbxts/janitor";
-
-	const Obliterator = new Janitor();
-	Obliterator.Add(() => print("Cleaning up!"), true);
-
-	{
-		const Folder = new Instance("Folder");
-		Obliterator.LinkToInstance(Folder, false);
-		Folder.Destroy();
-	}
-	```
-
-	@deprecated v1.4.1 -- Use `Janitor:LinkToInstance` instead.
-	@param Object Instance -- The instance you want to link the Janitor to.
-	@param AllowMultiple? boolean -- Whether or not to allow multiple links on the same Janitor.
-	@return RbxScriptConnection -- A pseudo RBXScriptConnection that can be disconnected to prevent the cleanup of LinkToInstance.
-]=]
-function Janitor:LegacyLinkToInstance(Object: Instance, AllowMultiple: boolean?): RbxScriptConnection
-	local Connection
-	local IndexToUse = AllowMultiple and newproxy(false) or LinkToInstanceIndex
-	local IsNilParented = Object.Parent == nil
-	local ManualDisconnect = setmetatable({}, RbxScriptConnection)
-
-	local function ChangedFunction(_DoNotUse, NewParent)
-		if ManualDisconnect.Connected then
-			_DoNotUse = nil
-			IsNilParented = NewParent == nil
-
-			if IsNilParented then
-				task.defer(function()
-					if not ManualDisconnect.Connected then
-						return
-					elseif not Connection.Connected then
-						self:Cleanup()
-					else
-						while IsNilParented and Connection.Connected and ManualDisconnect.Connected do
-							task.wait()
-						end
-
-						if ManualDisconnect.Connected and IsNilParented then
-							self:Cleanup()
-						end
-					end
-				end)
-			end
-		end
-	end
-
-	Connection = Object.AncestryChanged:Connect(ChangedFunction)
-	ManualDisconnect.Connection = Connection
-
-	if IsNilParented then
-		ChangedFunction(nil, Object.Parent)
-	end
-
-	Object = nil :: any
-	return self:Add(ManualDisconnect, "Disconnect", IndexToUse)
-end
+Janitor.LegacyLinkToInstance = Janitor.LinkToInstance
 
 --[=[
 	Links several instances to a new Janitor, which is then returned.
@@ -780,7 +736,12 @@ end
 ]=]
 function Janitor:LinkToInstances(...: Instance)
 	local ManualCleanup = Janitor.new()
-	for _, Object in {...} do
+	for Index = 1, select("#", ...) do
+		local Object = select(Index, ...)
+		if typeof(Object) ~= "Instance" then
+			continue
+		end
+
 		ManualCleanup:Add(self:LinkToInstance(Object, true), "Disconnect")
 	end
 
@@ -806,14 +767,12 @@ export type Janitor = {
 	RemoveListNoClean: (self: Janitor, ...any) -> Janitor,
 
 	Get: (self: Janitor, Index: any) -> any?,
-	GetAll: (self: Janitor) -> {[any]: any},
+	GetAll: (self: Janitor) -> { [any]: any },
 
 	Cleanup: (self: Janitor) -> (),
 	Destroy: (self: Janitor) -> (),
 
 	LinkToInstance: (self: Janitor, Object: Instance, AllowMultiple: boolean?) -> RBXScriptConnection,
-	LegacyLinkToInstance: (self: Janitor, Object: Instance, AllowMultiple: boolean?) -> RbxScriptConnection,
-
 	LinkToInstances: (self: Janitor, ...Instance) -> Janitor,
 }
 
