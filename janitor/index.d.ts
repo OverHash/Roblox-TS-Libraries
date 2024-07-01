@@ -1,3 +1,5 @@
+type Constructable<T, Args extends Array<unknown>> = new (...args: Args) => T;
+
 /**
  * A class to manage the connections in your game
  */
@@ -8,7 +10,7 @@ export class Janitor<U extends object | void = void> {
 	public readonly CurrentlyCleaning: boolean;
 
 	/**
-	 * Whether or not you want to suppress the re-destroying of instances. Default is false, which is the original behavior. 
+	 * Whether or not you want to suppress the re-destroying of instances. Default is false, which is the original behavior.
 	 */
 	public SupressInstanceReDestroy: boolean;
 
@@ -50,6 +52,28 @@ export class Janitor<U extends object | void = void> {
 	public AddPromise<T extends Promise<unknown>>(promise: T): T;
 
 	/**
+	 * Constructs an object for you and adds it to the Janitor. It's really just shorthand for `Janitor:Add(Object.new(), MethodName, Index)`.
+	 * @example
+	 * ```ts
+	 * import { Janitor } from "@rbxts/janitor";
+	 *
+	 * const Obliterator = new Janitor();
+	 * const SubObliterator = Obliterator.AddObject(Janitor, "Destroy");
+	 * ```
+	 * @param object The constructable class that you want to cleanup.
+	 * @param methodName The name of the method that will be used to clean up. If not passed, it will first check if the object's type exists in TypeDefaults, and if that doesn't exist, it assumes `Destroy`.
+	 * @param index The index that can be used to clean up the object manually.
+	 * @param args The arguments used to create the class.
+	 * @returns The new constructed object from the passed `object` class.
+	 */
+	public AddObject<
+		O extends Constructable<unknown, Array<unknown>>,
+		M extends undefined | ((this: O) => void) | ((_: O) => void) | ExtractKeys<O, () => void> | true,
+		I extends keyof U | undefined = undefined,
+		Args extends Array<unknown> = [],
+	>(object: Constructable<O, Args>, methodName?: M, index?: I, ...args: Args): O;
+
+	/**
 	 * Cleans up whatever `object` was set to this namespace by the 3rd parameter of `.Add()`.
 	 * @param index The index you want to remove.
 	 * @returns The same janitor, for chaining reasons.
@@ -84,7 +108,7 @@ export class Janitor<U extends object | void = void> {
 	 *
 	 * ```ts
 	 * import { Janitor } from "@rbxts/janitor";
-	 * 
+	 *
 	 * type NoOp = () => void
 	 *
 	 * const Obliterator = new Janitor<{ One: NoOp, Two: NoOp, Three: NoOp }>();
@@ -118,7 +142,7 @@ export class Janitor<U extends object | void = void> {
 	 * print(Obliterator.GetAll().Baseplate); // Prints Baseplate.
 	 * ```
 	 */
-	public GetAll(): {[P in keyof U]: U[P] | undefined};
+	public GetAll(): { [P in keyof U]: U[P] | undefined };
 
 	/**
 	 * Calls each Object's `MethodName` (or calls the Object if `MethodName === true`) and removes them from the Janitor. Also clears the namespace. This function is also called when you call a Janitor Object (so it can be used as a destructor callback).

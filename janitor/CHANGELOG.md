@@ -2,18 +2,24 @@
 
 ### Unreleased Changes
 
+### 1.16.0-ts.0
+
+- Updated to upstream `1.16.0` Janitor source
+  - Added `Janitor.AddObject` for constructing an object.
+
 ### 1.15.7-ts.0
+
 - Updated to upstream `1.15.7` Janitor source
-	- Fixed an error when setting `SuppressInstanceReDestroy`
-	- Safeguarded `LinkToInstances` from accepting non-instances at runtime
-	- Support `instanceof` TS usage
+  - Fixed an error when setting `SuppressInstanceReDestroy`
+  - Safeguarded `LinkToInstances` from accepting non-instances at runtime
+  - Support `instanceof` TS usage
 
 ### 1.15.4-ts.0
 
 - Updated to upstream `1.15.4` Janitor source
 
- - Added a toggle to avoid double destruction of instances.
- - Fixed an error being thrown when an ended thread is cleaned up.
+- Added a toggle to avoid double destruction of instances.
+- Fixed an error being thrown when an ended thread is cleaned up.
 
 ### 1.15.3-ts.0
 
