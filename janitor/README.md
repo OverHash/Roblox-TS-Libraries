@@ -14,16 +14,16 @@ Credits to Validark for the original module, see [RoStrap's Janitor docs](https:
 
 ## Changes
 
-- Gets the Promise lib by using \_G
+- Gets the Promise lib by using `_G` rather than using wally package-esque import
 - Returns
 
-	```lua
-	return {
-		Janitor = Janitor
-	}
-	```
+  ```lua
+  return table.freeze({
+  	Janitor = Janitor
+  })
+  ```
 
-	instead of just returning the `Janitor` namespace.
+  instead of just returning the `Janitor` namespace.
 
 ## Example Usage
 
@@ -58,4 +58,5 @@ Obliterator.Cleanup();
 ```
 
 ## Changelog
+
 See [`CHANGELOG.md`](https://github.com/OverHash/Roblox-TS-Libraries/blob/master/janitor/CHANGELOG.md)
