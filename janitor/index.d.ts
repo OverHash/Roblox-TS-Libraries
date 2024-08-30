@@ -67,8 +67,7 @@ export class Janitor<U extends object | void = void> {
 	 * @returns The new constructed object from the passed `object` class.
 	 */
 	public AddObject<
-			T,
-			O extends Constructable<T>,
+			O extends Constructable<unknown>,
 			IO extends InstanceType<O>,
 			M extends undefined | ExtractKeys<IO, () => void> | true,
 			I extends keyof U | undefined = undefined,
