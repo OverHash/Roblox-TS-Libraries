@@ -1,4 +1,4 @@
-type Constructable<T, Args extends Array<unknown>> = new (...args: Args) => T;
+type Constructable<T> = new (...args: Parameters<T>) => T;
 
 /**
  * A class to manage the connections in your game
@@ -67,11 +67,11 @@ export class Janitor<U extends object | void = void> {
 	 * @returns The new constructed object from the passed `object` class.
 	 */
 	public AddObject<
-		O extends Constructable<unknown, Array<unknown>>,
-		M extends undefined | ((this: O) => void) | ((_: O) => void) | ExtractKeys<O, () => void> | true,
-		I extends keyof U | undefined = undefined,
-		Args extends Array<unknown> = [],
-	>(object: Constructable<O, Args>, methodName?: M, index?: I, ...args: Args): O;
+			O extends Constructable<unknown>,
+			T extends InstanceType<O>,
+			M extends undefined | ExtractKeys<T, () => void> | true,
+			I extends keyof U | undefined = undefined,
+		>(object: O, methodName?: M, index?: I, ...args: ConstructorParameters<O>): T;
 
 	/**
 	 * Cleans up whatever `object` was set to this namespace by the 3rd parameter of `.Add()`.

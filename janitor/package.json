@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/janitor",
-  "version": "1.17.0-ts.0",
+  "version": "1.17.0-ts.1",
   "description": "A port of howmanysmall's janitor module.",
   "main": "src/init.lua",
   "types": "index.d.ts",
@@ -8,9 +8,6 @@
     "index.d.ts",
     "src/"
   ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/janitor"

@@ -2,6 +2,9 @@
 
 ### Unreleased Changes
 
+### 1.17.0-ts.1
+- Fix `.AddObject` type definition
+
 ### 1.17.0-ts.0
 
 - Updated to upstream [`1.17.0`](https://github.com/howmanysmall/Janitor/releases/tag/v1.17.0) Janitor source
