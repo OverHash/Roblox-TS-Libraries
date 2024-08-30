@@ -8,9 +8,6 @@
     "index.d.ts",
     "src/"
   ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/OverHash/Roblox-TS-Libraries/tree/master/janitor"
