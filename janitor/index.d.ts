@@ -68,10 +68,10 @@ export class Janitor<U extends object | void = void> {
 	 */
 	public AddObject<
 			O extends Constructable<unknown>,
-			IO extends InstanceType<O>,
-			M extends undefined | ExtractKeys<IO, () => void> | true,
+			T extends InstanceType<O>,
+			M extends undefined | ExtractKeys<T, () => void> | true,
 			I extends keyof U | undefined = undefined,
-		>(object: O, methodName?: M, index?: I, ...args: ConstructorParameters<O>): IO;
+		>(object: O, methodName?: M, index?: I, ...args: ConstructorParameters<O>): T;
 
 	/**
 	 * Cleans up whatever `object` was set to this namespace by the 3rd parameter of `.Add()`.
