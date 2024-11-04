@@ -1,5 +1,5 @@
 --!strict
-local React = require(script.Parent.Parent.Parent.React)
+local React = require(script.Parent.Parent.Parent.react)
 
 local useDefaultReduxContext = require(script.Parent.useReduxContext).useReduxContext
 local ReactReduxContext = require(script.Parent.Parent.components.Context)

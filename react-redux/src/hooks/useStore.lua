@@ -1,5 +1,5 @@
 --!strict
-local React = require(script.Parent.Parent.Parent.React)
+local React = require(script.Parent.Parent.Parent.react)
 -- OverHash deviation: local Redux = require(script.Parent.Parent.Parent.Redux)
 local Context = require(script.Parent.Parent.components.Context)
 local useDefaultReduxContext = require(script.Parent.useReduxContext).useReduxContext

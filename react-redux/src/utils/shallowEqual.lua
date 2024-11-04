@@ -1,7 +1,7 @@
 --!strict
 
 -- OverHash deviation: use "LuauPolyfill" instead of "Collections"
-local Collections = require(script.Parent.Parent.Parent.LuauPolyfill)
+local Collections = require(script.Parent.Parent.Parent.ReactLua.node_modules[".luau-aliases"]["@jsdotlua"].collections)
 
 local Object = Collections.Object
 

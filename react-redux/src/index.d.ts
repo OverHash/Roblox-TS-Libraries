@@ -44,7 +44,7 @@ import {
     Context,
     Element,
 	ExoticComponent
-} from '@rbxts/roact';
+} from '@rbxts/react';
 
 import {
     Action,

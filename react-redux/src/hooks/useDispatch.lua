@@ -1,6 +1,6 @@
 --!strict
 
-local React = require(script.Parent.Parent.Parent.React)
+local React = require(script.Parent.Parent.Parent.react)
 local ReactReduxContext = require(script.Parent.Parent.components.Context)
 local useDefaultStore = require(script.Parent.useStore).useStore
 local createStoreHook = require(script.Parent.useStore).createStoreHook

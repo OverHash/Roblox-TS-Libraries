@@ -1,5 +1,5 @@
 --!strict
-local React = require(script.Parent.Parent.React)
+local React = require(script.Parent.Parent.react)
 
 export type FixTypeLater = any
 

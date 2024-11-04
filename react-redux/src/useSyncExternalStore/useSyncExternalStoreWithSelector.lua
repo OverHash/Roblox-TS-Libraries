@@ -1,8 +1,8 @@
 --!strict
 -- Upstream: https://github.com/facebook/react/blob/0ae348018d5b3a3f1ccdd92de85d9cc581b2b98d/packages/use-sync-external-store/src/useSyncExternalStoreWithSelector.js
 
-local React = require(script.Parent.Parent.Parent.React)
-local Shared = require(script.Parent.Parent.Parent.Shared)
+local React = require(script.Parent.Parent.Parent.react)
+local Shared = require(script.Parent.Parent.Parent.ReactLua.node_modules[".luau-aliases"]["@jsdotlua"].shared)
 local useSyncExternalStore = require(script.Parent.useSyncExternalStoreShimClient)
 
 local is = Shared.objectIs

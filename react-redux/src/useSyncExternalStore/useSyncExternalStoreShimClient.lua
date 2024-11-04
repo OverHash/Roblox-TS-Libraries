@@ -7,8 +7,8 @@
  * LICENSE file in the root directory of this source tree.
 ]]
 
-local React = require(script.Parent.Parent.Parent.React)
-local Shared = require(script.Parent.Parent.Parent.Shared)
+local React = require(script.Parent.Parent.Parent.react)
+local Shared = require(script.Parent.Parent.Parent.ReactLua.node_modules[".luau-aliases"]["@jsdotlua"].shared)
 
 local is = Shared.objectIs
 
