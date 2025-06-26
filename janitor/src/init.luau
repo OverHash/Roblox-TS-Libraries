@@ -25,7 +25,6 @@ local METHOD_NOT_FOUND_ERROR = "Object %* doesn't have method %*, are you sure y
 local NOT_A_PROMISE = "Invalid argument #1 to 'Janitor:AddPromise' (Promise expected, got %* (%*)) Traceback: %*"
 
 export type Janitor = typeof(setmetatable({} :: {
-	CurrentlyCleaning: boolean,
 	SuppressInstanceReDestroy: boolean,
 	UnsafeThreadCleanup: boolean,
 
@@ -55,7 +54,6 @@ export type Janitor = typeof(setmetatable({} :: {
 	LinkToInstances: (self: Janitor, ...Instance) -> Janitor,
 }, {} :: {__call: (self: Janitor) -> ()}))
 type Private = typeof(setmetatable({} :: {
-	CurrentlyCleaning: boolean,
 	SuppressInstanceReDestroy: boolean,
 	UnsafeThreadCleanup: boolean,
 
@@ -90,7 +88,6 @@ type Private = typeof(setmetatable({} :: {
 type Static = {
 	ClassName: "Janitor",
 
-	CurrentlyCleaning: boolean,
 	SuppressInstanceReDestroy: boolean,
 	UnsafeThreadCleanup: boolean,
 
@@ -118,19 +115,12 @@ type PrivateStatic = Static & {
 local Janitor = {} :: Janitor & Static
 local Private = Janitor :: Private & PrivateStatic
 Janitor.ClassName = "Janitor"
-Janitor.CurrentlyCleaning = true
 Janitor.SuppressInstanceReDestroy = false
 Janitor.UnsafeThreadCleanup = false;
 (Janitor :: any).__index = Janitor
 
 local Janitors = setmetatable({} :: {[Private]: {[any]: any}}, {__mode = "ks"})
 
---[=[
-	Whether or not the Janitor is currently cleaning up.
-	@readonly
-	@prop CurrentlyCleaning boolean
-	@within Janitor
-]=]
 --[=[
 	Whether or not you want to suppress the re-destroying of instances. Default
 	is false, which is the original behavior.
@@ -160,9 +150,7 @@ local TYPE_DEFAULTS = {
 	@return Janitor
 ]=]
 function Janitor.new(): Janitor
-	return setmetatable({
-		CurrentlyCleaning = false;
-	}, Janitor) :: never
+	return setmetatable({}, Janitor) :: never
 end
 
 --[=[
@@ -822,77 +810,73 @@ end
 	@within Janitor
 ]=]
 local function Cleanup(self: Private): ()
-	if not self.CurrentlyCleaning then
-		local suppressInstanceReDestroy = self.SuppressInstanceReDestroy
-		local unsafeThreadCleanup = self.UnsafeThreadCleanup
+	local suppressInstanceReDestroy = self.SuppressInstanceReDestroy
+	local unsafeThreadCleanup = self.UnsafeThreadCleanup
 
-		self.CurrentlyCleaning = nil :: never
-		self.SuppressInstanceReDestroy = nil :: never
-		self.UnsafeThreadCleanup = nil :: never
+	self.SuppressInstanceReDestroy = nil :: never
+	self.UnsafeThreadCleanup = nil :: never
 
-		local object, methodName = next(self)
-		while object and methodName do
-			if methodName == true then
-				if type(object) == "function" then
-					object()
-				else
-					local wasCancelled: boolean? = nil
-					if coroutine.running() ~= object then
-						wasCancelled = pcall(function()
-							task.cancel(object)
-						end)
-					end
-
-					if not wasCancelled then
-						local toCleanup = object
-						if unsafeThreadCleanup then
-							FastDefer(function()
-								task.cancel(toCleanup)
-							end)
-						else
-							task.defer(function()
-								task.cancel(toCleanup)
-							end)
-						end
-					end
-				end
+	local object, methodName = next(self)
+	while object and methodName do
+		self[object] = nil
+		if methodName == true then
+			if type(object) == "function" then
+				object()
 			else
-				if methodName == "Destroy" then
-					if self.SuppressInstanceReDestroy and typeof(object) == "Instance" then
-						pcall(Destroy, object)
+				local wasCancelled: boolean? = nil
+				if coroutine.running() ~= object then
+					wasCancelled = pcall(function()
+						task.cancel(object)
+					end)
+				end
+
+				if not wasCancelled then
+					local toCleanup = object
+					if unsafeThreadCleanup then
+						FastDefer(function()
+							task.cancel(toCleanup)
+						end)
 					else
-						local destroy = object.Destroy
-						if destroy then
-							destroy(object)
-						end
-					end
-				elseif methodName == "Disconnect" then
-					local disconnect = object.Disconnect
-					if disconnect then
-						disconnect(object)
-					end
-				else
-					local objectMethod = (object :: never)[methodName] :: (object: unknown) -> ()
-					if objectMethod then
-						objectMethod(object)
+						task.defer(function()
+							task.cancel(toCleanup)
+						end)
 					end
 				end
 			end
-
-			self[object] = nil
-			object, methodName = next(self, object)
+		else
+			if methodName == "Destroy" then
+				if self.SuppressInstanceReDestroy and typeof(object) == "Instance" then
+					pcall(Destroy, object)
+				else
+					local destroy = object.Destroy
+					if destroy then
+						destroy(object)
+					end
+				end
+			elseif methodName == "Disconnect" then
+				local disconnect = object.Disconnect
+				if disconnect then
+					disconnect(object)
+				end
+			else
+				local objectMethod = (object :: never)[methodName] :: (object: unknown) -> ()
+				if objectMethod then
+					objectMethod(object)
+				end
+			end
 		end
 
-		local this = Janitors[self]
-		if this then
-			table.clear(this)
-			Janitors[self] = nil
-		end
-
-		self.CurrentlyCleaning = false
-		self.SuppressInstanceReDestroy = suppressInstanceReDestroy
-		self.UnsafeThreadCleanup = unsafeThreadCleanup
+		object, methodName = next(self)
 	end
+
+	local this = Janitors[self]
+	if this then
+		table.clear(this)
+		Janitors[self] = nil
+	end
+
+	self.SuppressInstanceReDestroy = suppressInstanceReDestroy
+	self.UnsafeThreadCleanup = unsafeThreadCleanup
 end
 Private.Cleanup = Cleanup
 
