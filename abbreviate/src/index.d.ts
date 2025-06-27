@@ -13,7 +13,7 @@ declare class Abbreviator {
 	 * @example
 	 * 10 => "10"
 	 * 10.1234 => "10.1234"
-	 * 1000 => "1,400"
+	 * 1400 => "1,400"
 	 * 123456789 => "123,456,789"
 	 * 1234567890 => "1,234,567,890"
 	 * @param number The number to comma separate
@@ -28,7 +28,9 @@ declare class Abbreviator {
 	numberToString(number: number, roundDown?: boolean): string;
 
 	/**
-	 * Converts an array of numbers into sorted strings with a suffix as defined in the prefix table
+	 * Converts an array of numbers into sorted strings with a suffix as defined in the prefix table.
+	 * 
+	 * This is often useful when using default Roblox leaderboards, as they otherwise won't sort correctly.
 	 * @param numbers The numbers to abbreviate and sort correctly
 	 * @example
 	 * ```ts
