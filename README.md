@@ -17,12 +17,12 @@ Here are the following packages which I am actively maintaining:
 
 ## Contributing
 
-If a package is on my active library list, feel free to make an issue. PR's are, of course, welcome.
+If a package is on my active library list, feel free to make an issue. PRs are, of course, welcome.
 
 1. clone this repository: `git clone git@github.com:OverHash/Roblox-TS-Libraries.git`
 2. run `npm install` in the root directory of the repository
+	- this repository supports using [`volta`](https://volta.sh) to handle your node installation, if you choose to use it.
 3. navigate to the relevant directory of the package you wish to make a change for
-4. this repository supports using [`volta`](https://volta.sh) to handle your node installation, if you choose to use it.
-5. `npm install` for the appropriate packages, and make your changes!
-6. make sure to test your changes!
-7. update any changelogs
+4. `npm install` for the appropriate packages, and make your changes!
+5. make sure to test your changes!
+6. update any changelogs
