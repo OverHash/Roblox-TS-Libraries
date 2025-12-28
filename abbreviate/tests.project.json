@@ -4,11 +4,14 @@
 		"$className": "DataModel",
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
-			"testEz": {
-				"$path": "vendor/testez/src"
-			},
 			"abbreviate": {
 				"$path": "src"
+			}
+		},
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"DevPackages": {
+				"$path": "DevPackages"
 			}
 		}
 	}
