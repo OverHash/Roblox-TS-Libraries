@@ -51,6 +51,6 @@ See [CONTRIBUTING.md](https://github.com/OverHash/Roblox-TS-Libraries/blob/maste
 
 ## Credits
 
-[Kampfkarren](http://github.com/Kampfkarren/) - `numberToString` method
-[Corecii](https://github.com/Corecii) - Help with `numbersToSortedString`
-[Scyfren](https://github.com/Scyfren) - Help with `stripTrailingZeroes`
+- [Kampfkarren](http://github.com/Kampfkarren/) - `numberToString` method
+- [Corecii](https://github.com/Corecii) - Help with `numbersToSortedString`
+- [Scyfren](https://github.com/Scyfren) - Help with `stripTrailingZeroes`
