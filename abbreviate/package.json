@@ -28,12 +28,12 @@
     "access": "public"
   },
   "files": [
-    "src/init.lua",
+    "src/init.luau",
     "src/index.d.ts",
-    "src/commify.lua",
-    "src/numbersToSortedString.lua",
-    "src/numberToString.lua",
-    "src/setSetting.lua",
-    "src/stringToNumber.lua"
+    "src/commify.luau",
+    "src/numbersToSortedString.luau",
+    "src/numberToString.luau",
+    "src/setSetting.luau",
+    "src/stringToNumber.luau"
   ]
 }
