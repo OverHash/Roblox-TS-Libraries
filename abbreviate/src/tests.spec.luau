@@ -1,3 +1,6 @@
+-- Disable ANSI colors from Jest
+_G.NOCOLOR = true
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local JestGlobals = require(ReplicatedStorage.DevPackages.JestGlobals)
@@ -87,6 +90,10 @@ realDescribe("numberToString", function()
 
 		expect(abbreviate:numberToString(1005)).toBe("1.00k")
 		expect(abbreviate:numberToString(1004)).toBe("1.00k")
+	end)
+
+	it("should carry to next suffix when rounding up reaches 1000", function()
+		expect(abbreviate:numberToString(999_995, false)).toBe("1.00M")
 	end)
 
 	it("should work with stripTrailingZeroes set to true", function()

@@ -1,5 +1,9 @@
 ## Changelog
 
+### 3.0.4
+- Fixed `numberToString` suffix carry when rounding up reaches 1000 (e.g. `999995` -> `1.00M`)
+- Updated `numberToString` TypeScript docs with usage examples and `roundDown` rationale
+
 ### 3.0.3
 - Fixed `stripTrailingZeroes` incorrectly showing as `removeDanglingZeroes` in `README.md`
 

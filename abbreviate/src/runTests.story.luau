@@ -1,3 +1,6 @@
+-- Disable ANSI colors from Jest
+_G.NOCOLOR = true
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
@@ -11,6 +14,8 @@ local story = {
 	summary = "Run Jest tests",
 	controls = nil,
 	render = function()
+		_G.NOCOLOR = false
+
 		task.spawn(function()
 			local status, result = runCLI(ServerScriptService.abbreviate, {
 				verbose = false,

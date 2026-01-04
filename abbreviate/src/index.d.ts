@@ -21,9 +21,24 @@ declare class Abbreviator {
 	commify(number: number): string;
 
 	/**
-	 * Converts a number of full length into a string with a suffix as defined in the prefix table
+	 * Converts a number into an abbreviated string using the configured suffix table.
+	 *
+	 * Defaulting to `roundDown = true` avoids overstating balances in UI (e.g. 1.499k won't display as 1.50k),
+	 * which helps prevent players thinking they can afford a purchase when they cannot.
+	 *
 	 * @param number The number to convert into a abbreviated string
-	 * @param roundDown If the abbreviation should round up or down. @default down.
+	 * @param roundDown If the abbreviation should round up or down. @default true.
+	 * @example
+	 * ```ts
+	 * const abbreviator = new Abbreviator();
+	 *
+	 * abbreviator.numberToString(1000); // "1.00k"
+	 *
+	 * abbreviator.numberToString(1005); // "1.00k" // default will round down
+	 * abbreviator.numberToString(1005, false); // "1.01k"
+	 *
+	 * abbreviator.numberToString(999995, false); // "1.00M"
+	 * ```
 	 */
 	numberToString(number: number, roundDown?: boolean): string;
 

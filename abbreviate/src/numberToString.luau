@@ -21,7 +21,7 @@ end
 
 local function numberToString(self, number, roundDown)
 	if type(number) ~= "number" then
-		error('numberToString invalid parameter #1, expected number, got "nil"', 2)
+		error(`numberToString invalid parameter #1, expected number, got "${type(number)}"`, 2)
 	end
 
 	if roundDown == nil then
@@ -48,9 +48,9 @@ local function numberToString(self, number, roundDown)
 		if size <= number then
 			number = round(number / size, self._decimalPlaces, roundDown)
 
-			if number == 1000 and index < #self._suffixTable[index] then
+			if number == 1000 and index < #self._suffixTable then
 				number = 1
-				unit = self._suffixTable[index][index + 1]
+				unit = self._suffixTable[index + 1]
 			end
 
 			if not self._stripTrailingZeroes then
