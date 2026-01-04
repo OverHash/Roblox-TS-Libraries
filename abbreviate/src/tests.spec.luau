@@ -74,11 +74,18 @@ realDescribe("numberToString", function()
 	it("should work with positive numbers (1000 > x > 0)", function()
 		expect(abbreviate:numberToString(0)).toBe("0.00")
 
-		-- todo: maybe change this behavior?
-		expect(abbreviate:numberToString(999.999)).toBe("1000.00")
+		expect(abbreviate:numberToString(999.999)).toBe("999.99")
 		expect(abbreviate:numberToString(999.99)).toBe("999.99")
 
-		expect(abbreviate:numberToString(0.005)).toBe("0.01")
+		expect(abbreviate:numberToString(0.005)).toBe("0.00")
+	end)
+
+	it("should roll over to suffix when rounding crosses 1000", function()
+		expect(abbreviate:numberToString(999.999, false)).toBe("1.00k")
+	end)
+
+	it("should allow rounding up for values below 1000", function()
+		expect(abbreviate:numberToString(0.005, false)).toBe("0.01")
 	end)
 
 	it("should work with positive numbers (x > 1000)", function()

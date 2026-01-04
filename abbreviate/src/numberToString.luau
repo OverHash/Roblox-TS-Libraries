@@ -30,11 +30,15 @@ local function numberToString(self, number, roundDown)
 
 	if number < 1000 and number > -1000 then
 		-- special case: we must manually abbreviate numbers between -1000 and 1000
-		if not self._stripTrailingZeroes then
-			return ("%." .. self._decimalPlaces .. "f"):format(number)
+		local rounded = round(number, self._decimalPlaces, roundDown)
+		if math.abs(rounded) < 1000 then
+			if not self._stripTrailingZeroes then
+				return ("%." .. self._decimalPlaces .. "f"):format(rounded)
+			else
+				return tostring(rounded)
+			end
 		else
-			number = round(number, self._decimalPlaces, roundDown)
-			return tostring(number)
+			number = rounded
 		end
 	end
 
