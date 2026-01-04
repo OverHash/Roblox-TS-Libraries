@@ -1,11 +1,17 @@
 ## Changelog
 
-### 3.0.4
+### 3.0.5
 
 - Fixed `numberToString` suffix carry when rounding up reaches 1000 (e.g. `999995` -> `1.00M`). Thanks, @howmanysmall!
 - Fixed `numberToString` to honor `roundDown` for values under 1000 when formatting with fixed decimals
 - Fixed `numberToString` to roll over to suffixes when rounding values under 1000 crosses the threshold (e.g. `999.999` -> `1.00k`)
 - Updated `numberToString` TypeScript docs with usage examples and `roundDown` rationale
+
+### 3.0.4
+
+- Fixed `numberToString` rounding up after Roblox 509 `tostring` changes
+- Fixed floating point rounding stability in `numberToString`
+- Made abbreviate functions local for a small cleanup
 
 ### 3.0.3
 
